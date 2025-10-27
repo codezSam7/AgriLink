@@ -112,7 +112,7 @@
   <body>
     <div class="container-fluid px-3 px-md-5">
       <!-- Navigation -->
-      <?php include("assets/common/header.php"); ?>
+      <?php require_once("assets/common/header.php"); ?>
 
       <!-- HERO -->
       <section class="hero mx-auto" style="max-width:1200px;">

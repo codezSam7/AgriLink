@@ -132,61 +132,7 @@
   </style>
 </head>
 <body>
-  <nav class="navbar bar fixed-top navbar-expand-lg mb-5 glass-navbar">
-    <div class="container-fluid">
-      <a class="navbar-brand d-flex align-items-center" href="index.php">
-        <img width="56" height="56" src="assets/images/logo.png" alt=""/>
-        <div class="ms-2 d-none d-md-block">
-          <div style="font-weight:800; color:var(--brand-green);">AgriLink</div>
-          <small class="text-muted">Farmers → Consumers</small>
-        </div>
-      </a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNavDropdown"
-        aria-controls="navbarNavDropdown"
-        aria-expanded="false"
-        aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <form class="d-flex ms-3 me-auto" role="search">
-          <div class="input-group">
-            <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
-            <input class="form-control border-start-0" type="search" placeholder="Search farmer or produce" aria-label="Search" />
-          </div>
-        </form>
-
-        <ul class="navbar-nav ms-auto gap-3 align-items-center">
-          <li class="nav-item d-none d-md-block">
-            <a class="bar-link" href="index.php">Home</a>
-          </li>
-          <li class="nav-item d-none d-md-block">
-            <a class="bar-link" href="farmers.php">Farmers</a>
-          </li>
-          <li class="nav-item d-none d-md-block">
-            <a class="bar-link" href="products.php">Products</a>
-          </li>
-          <li class="nav-item">
-            <a class="btn btn-success btn-sm" href="#"><i class="bi bi-people-fill"></i> Farmers</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
-              <img src="assets/images/user.jpg" width="36" height="36" class="rounded-circle border" alt="avatar" />
-              <span class="ms-2 d-none d-md-inline">Admin</span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="#">Profile</a></li>
-              <li><a class="dropdown-item" href="#">Logout</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <?php require_once("assets/common/header.php"); ?>
 
   <div class="container-fluid con">
     <div class="row">

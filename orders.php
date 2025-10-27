@@ -1,105 +1,106 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
-<title>My Orders — Card Grid</title>
-<style>
-  body{
-    background: linear-gradient(90deg,#f3faf3,#e8f5e9); 
-    font-family: "Poppins", monospace;
-  }
-  .orders-grid{
-    max-width:1200px; 
-    margin:2.5rem auto;
-  }
-  .order-card{
-    border:0; 
-    border-radius:12px; 
-    box-shadow: 0 6px 18px rgba(2,6,23,0.06);
-  }
-  .order-hero{
-    font-weight:700;
-  }
-  .order-info small{
-    color:#6b7280;
-  }
-  .order-actions a{
-    margin-left:.35rem;
-  }
-</style>
-</head>
-<body>
-<div class="container orders-grid">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <div>
-      <h2 class="text-success mb-0">My orders</h2>
-      <small class="text-muted">All purchases & delivery status</small>
-    </div>
-  </div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <title>My Orders — Card Grid</title>
+    <style>
+      body{
+        background: linear-gradient(90deg,#f3faf3,#e8f5e9); 
+        font-family: "Poppins", monospace;
+      }
+      .orders-grid{
+        max-width:1200px; 
+        margin:2.5rem auto;
+      }
+      .order-card{
+        border:0; 
+        border-radius:12px; 
+        box-shadow: 0 6px 18px rgba(2,6,23,0.06);
+      }
+      .order-hero{
+        font-weight:700;
+      }
+      .order-info small{
+        color:#6b7280;
+      }
+      .order-actions a{
+        margin-left:.35rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container orders-grid">
+      <?php require_once("assets/common/header.php"); ?>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+          <h2 class="text-success mb-0">My orders</h2>
+          <small class="text-muted">All purchases & delivery status</small>
+        </div>
+      </div>
 
-  <div class="row g-3">
-    <!-- Repeat this col in a PHP loop -->
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="card order-card h-100">
-        <div class="card-body d-flex flex-column">
-          <div class="d-flex justify-content-between align-items-start mb-2">
-            <div>
-              <div class="order-hero">#1001 — Tomato</div>
-              <div class="small text-muted">1 crate · Farmer Ade</div>
-            </div>
-            <div class="text-end">
-              <div><strong>&#8358;10,000</strong></div>
-              <div class="small text-muted">Qty: 1</div>
-            </div>
-          </div>
+      <div class="row g-3">
+        <!-- Repeat this col in a PHP loop -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card order-card h-100">
+            <div class="card-body d-flex flex-column">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                  <div class="order-hero">#1001 — Tomato</div>
+                  <div class="small text-muted">1 crate · Farmer Ade</div>
+                </div>
+                <div class="text-end">
+                  <div><strong>&#8358;10,000</strong></div>
+                  <div class="small text-muted">Qty: 1</div>
+                </div>
+              </div>
 
-          <div class="mb-3 mt-auto d-flex justify-content-between align-items-center">
-            <div>
-              <span class="badge bg-warning text-dark">Pending</span>
-              <small class="d-block text-muted">Placed 3 days ago</small>
-            </div>
-            <div class="order-actions">
-              <a href="order_details.php?id=1001" class="btn btn-sm btn-outline-primary">Details</a>
-              <a href="#" class="btn btn-sm btn-outline-secondary">Chat</a>
+              <div class="mb-3 mt-auto d-flex justify-content-between align-items-center">
+                <div>
+                  <span class="badge bg-warning text-dark">Pending</span>
+                  <small class="d-block text-muted">Placed 3 days ago</small>
+                </div>
+                <div class="order-actions">
+                  <a href="order_details.php?id=1001" class="btn btn-sm btn-outline-primary">Details</a>
+                  <a href="#" class="btn btn-sm btn-outline-secondary">Chat</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="card order-card h-100">
-        <div class="card-body d-flex flex-column">
-          <div class="d-flex justify-content-between align-items-start mb-2">
-            <div>
-              <div class="order-hero">#1002 — Rice</div>
-              <div class="small text-muted">50kg · Greenfields</div>
-            </div>
-            <div class="text-end">
-              <div><strong>&#8358;45,000</strong></div>
-              <div class="small text-muted">Qty: 1</div>
-            </div>
-          </div>
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card order-card h-100">
+            <div class="card-body d-flex flex-column">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                  <div class="order-hero">#1002 — Rice</div>
+                  <div class="small text-muted">50kg · Greenfields</div>
+                </div>
+                <div class="text-end">
+                  <div><strong>&#8358;45,000</strong></div>
+                  <div class="small text-muted">Qty: 1</div>
+                </div>
+              </div>
 
-          <div class="mb-3 mt-auto d-flex justify-content-between align-items-center">
-            <div>
-              <span class="badge bg-success">Delivered</span>
-              <small class="d-block text-muted">Delivered 2025-10-10</small>
-            </div>
-            <div class="order-actions">
-              <a href="invoice.php?id=1002" class="btn btn-sm btn-outline-primary">Invoice</a>
-              <a href="#" class="btn btn-sm btn-outline-secondary">Rate</a>
+              <div class="mb-3 mt-auto d-flex justify-content-between align-items-center">
+                <div>
+                  <span class="badge bg-success">Delivered</span>
+                  <small class="d-block text-muted">Delivered 2025-10-10</small>
+                </div>
+                <div class="order-actions">
+                  <a href="invoice.php?id=1002" class="btn btn-sm btn-outline-primary">Invoice</a>
+                  <a href="#" class="btn btn-sm btn-outline-secondary">Rate</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        <!-- /repeat -->
       </div>
     </div>
-    <!-- /repeat -->
-  </div>
-</div>
 
-<script src="assets/bootstrap/js/bootstrap.bundle.js"></script>
-</body>
+    <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>
+  </body>
 </html>
