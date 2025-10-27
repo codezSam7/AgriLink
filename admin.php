@@ -129,6 +129,8 @@
          padding-top: 70px; 
       }
     }
+
+    <?php require_once("assets/style.php"); ?>
   </style>
 </head>
 <body>

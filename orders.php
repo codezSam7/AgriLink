@@ -28,10 +28,11 @@
       .order-actions a{
         margin-left:.35rem;
       }
+      <?php require_once("assets/style.php"); ?>
     </style>
   </head>
   <body>
-    <div class="container orders-grid">
+    <div class="container py-5 orders-grid">
       <?php require_once("assets/common/header.php"); ?>
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
