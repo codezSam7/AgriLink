@@ -10,7 +10,7 @@
 
     if(empty($fullname) || empty($email) || empty($password)){
       $_SESSION["errormsg"] = "All fields are required";
-      header("location:../pages/login_farmer.php");
+      header("location:../login_farmer.php");
       exit;
     }
     
@@ -22,13 +22,13 @@
       exit;
     }else{
       $_SESSION["errormsg"] = "Error occured, please try again";
-      header("location:../pages/login_farmer.php");
+      header("location:../login_farmer.php");
       exit;
     }
 
   }else{
     $_SESSION["errormsg"] = "Please complete the form";
-    header("location:../pages/login_farmer.php");
+    header("location:../login_farmer.php");
     exit;
   }
 

@@ -38,12 +38,22 @@
       return $rsp;
     }
 
-    public function register_farmer($fulln,$farmn,$phone,$email,$password){
+    public function register_farmer($fulln,$farmn,$phone,$email,$password,$state_id, $lga_id){
       try{
-        $sql = "INSERT INTO farmers(farmer_fullname,farmer_farm_name,farmer_phone,farmer_email,farmer_password_hash) VALUES(?, ?, ?, ?, ?)";
+        // validate state and lga
+        if(!$this->state_exists($state_id)){
+          // invalid state
+          return false;
+        }
+        if(!$this->lga_exists_for_state($lga_id, $state_id)){
+          // invalid lga for that state
+          return false;
+        }
+
+        $sql = "INSERT INTO farmers(farmer_fullname,farmer_farm_name,farmer_phone,farmer_email,farmer_password_hash,farmer_state_id,farmer_lga_id) VALUES(?, ?, ?, ?, ?,?,?)";
         $stmt = $this->agconn->prepare($sql);
         $hashed = password_hash($password, PASSWORD_DEFAULT);
-        $stmt->execute([$fulln,$farmn,$phone,$email,$hashed]);
+        $stmt->execute([$fulln,$farmn,$phone,$email,$hashed,$state_id,$lga_id]);
         $regfarmer = $this->agconn->lastInsertId();
         return $regfarmer;
       }catch(PDOException $e){
@@ -79,22 +89,12 @@
       }
     }
 
-    public function register_buyer($fulln, $phone, $email, $password, $state_id, $lga_id){
+    public function register_buyer($fulln, $phone, $email, $password){
       try{
-        // validate state and lga
-        if(!$this->state_exists($state_id)){
-          // invalid state
-          return false;
-        }
-        if(!$this->lga_exists_for_state($lga_id, $state_id)){
-          // invalid lga for that state
-          return false;
-        }
-
-        $sql = "INSERT INTO buyers(buyer_fullname, buyer_phone, buyer_email, buyer_password_hash, buyer_state_id, buyer_lga_id)VALUES(?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO buyers(buyer_fullname, buyer_phone, buyer_email, buyer_password_hash)VALUES(?, ?, ?, ?)";
         $stmt = $this->agconn->prepare($sql);
         $hashed = password_hash($password, PASSWORD_DEFAULT);
-        $stmt->execute([$fulln,$phone,$email,$hashed,$state_id,$lga_id]);
+        $stmt->execute([$fulln,$phone,$email,$hashed]);
         $rsp = $this->agconn->lastInsertId();
         return $rsp;
       }catch(PDOException $e){

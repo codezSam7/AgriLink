@@ -1,6 +1,6 @@
 <?php 
   session_start(); 
-  require_once("../classes/User.php");
+  require_once("classes/User.php");
   $c = new User;
   $states = $c->fetch_all_states();
 ?>
@@ -39,27 +39,9 @@
               history.
             </p>
 
-            <?php 
-            if(isset($_SESSION["msg"])){ 
-            ?>  
-              <p class="alert alert-success">
-                <?php echo $_SESSION["msg"]; unset($_SESSION["msg"]); ?>
-              </p>
-            <?php 
-              } 
-            ?>
+            <?php require_once("assets/common/alert.php"); ?>
 
-            <?php 
-              if(isset($_SESSION["errormsg"])){ 
-            ?>  
-              <p class="alert alert-danger">
-                <?php echo $_SESSION["errormsg"]; unset($_SESSION["errormsg"]); ?>
-              </p>
-            <?php 
-              } 
-            ?>
-
-            <form action="../process/process_sign_buyer.php" method="post">
+            <form action="process/process_sign_buyer.php" method="post">
               <div class="row g-4">
                 <div class="col-md-6">
                   <label class="form-label">Full name</label>
@@ -74,27 +56,6 @@
                 <div class="col-md-12">
                   <label class="form-label">Email</label>
                   <input class="form-control" name="email" type="email" required />
-                </div>
-
-                <div class="col-md-12">
-                  <label class="form-label">Delivery address - state</label>
-                  <select class="form-select" id="delvstate" name="delvstate">
-                    <option value="">Select State</option>
-                    <?php 
-                      foreach($states as $state){ 
-                    ?>
-                      <option value="<?php echo $state['state_id'] ?>">
-                        <?php echo htmlspecialchars($state['state_name']) ?>
-                      </option>
-                    <?php 
-                      }; 
-                    ?>
-                  </select>
-                </div>
-
-                <div class="col-md-12">
-                  <label class="form-label">Delivery address - lga</label>
-                  <select class="form-select" name="delvlga" id="delvlga"></select>
                 </div>
 
                 <div class="col-md-6">
@@ -120,14 +81,5 @@
 
     <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>
     <script src="assets/jquery.js"></script>
-    <script>
-      // jQuery
-      $(document).ready(function(){
-        $("#delvstate").change(function(){
-        var state_id = $(this).val();
-          $("#delvlga").load("../process/process_state_lga.php?id="+state_id);
-        })
-      })
-    </script>
   </body> 
 </html>

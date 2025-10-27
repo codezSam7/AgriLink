@@ -31,27 +31,9 @@
           Create your farmer profile to list produce and receive orders.
         </p>
 
-        <?php 
-          if(isset($_SESSION["msg"])){ 
-        ?>  
-          <p class="alert alert-success">
-            <?php echo $_SESSION["msg"]; unset($_SESSION["msg"]); ?>
-          </p>
-        <?php 
-          } 
-        ?>
+        <?php require_once("assets/common/alert.php"); ?>
 
-        <?php 
-          if(isset($_SESSION["errormsg"])){ 
-        ?>  
-          <p class="alert alert-danger">
-            <?php echo $_SESSION["errormsg"]; unset($_SESSION["errormsg"]); ?>
-          </p>
-        <?php 
-          } 
-        ?>
-
-        <form action="../process/process_login_farmer.php" method="post">
+        <form action="process/process_login_farmer.php" method="post">
           <div class="row g-5">
             <div class="col-md-6">
               <label class="form-label">Full Name</label>
