@@ -55,12 +55,12 @@
     </button>
     <ul class="dropdown-menu">
       <li>
-        <a href="pages/sign_farmer.php" class="dropdown-item"
+        <a href="sign_farmer.php" class="dropdown-item"
           >As a farmer</a
         >
       </li>
       <li>
-        <a href="pages/sign_buyer.php" class="dropdown-item"
+        <a href="sign_buyer.php" class="dropdown-item"
           >As a buyer</a
         >
       </li>
@@ -77,10 +77,10 @@
     </button>
     <ul class="dropdown-menu">
       <li>
-        <a href="pages/login_farmer.php" class="dropdown-item">As a farmer</a>
+        <a href="login_farmer.php" class="dropdown-item">As a farmer</a>
       </li>
       <li>
-        <a href="pages/login_buyer.php" class="dropdown-item">As a buyer</a>
+        <a href="login_buyer.php" class="dropdown-item">As a buyer</a>
       </li>
     </ul>
   </div>

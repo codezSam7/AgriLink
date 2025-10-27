@@ -21,5 +21,7 @@
 </head>
 <body>
   <?php require_once("assets/common/header.php"); ?>
+
+  <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>
 </body>
 </html>

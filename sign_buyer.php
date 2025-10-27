@@ -118,8 +118,8 @@
 
 
 
-    <script src="../assets/bootstrap/js/bootstrap.bundle.js"></script>
-    <script src="../assets/jquery.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="assets/jquery.js"></script>
     <script>
       // jQuery
       $(document).ready(function(){
