@@ -1,7 +1,7 @@
 <nav class="navbar bar fixed-top navbar-expand-md mb-5 glass-navbar">
   <div class="container-fluid">
     <a class="navbar-brand d-flex align-items-center" href="index.php">
-      <img width="56" height="56" src="images/logo.png" alt=""/>
+      <img width="56" height="56" src="assets/images/logo.png" alt=""/>
       <div class="ms-2 d-none d-md-block">
         <div style="font-weight:800; color:#1fa97a;">AgriLink</div>
         <small class="text-muted">Farmers → Consumers</small>
@@ -77,10 +77,10 @@
     </button>
     <ul class="dropdown-menu">
       <li>
-        <a href="#" class="dropdown-item">As a farmer</a>
+        <a href="pages/login_farmer.php" class="dropdown-item">As a farmer</a>
       </li>
       <li>
-        <a href="#" class="dropdown-item">As a buyer</a>
+        <a href="pages/login_buyer.php" class="dropdown-item">As a buyer</a>
       </li>
     </ul>
   </div>

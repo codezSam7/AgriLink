@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="images/logo.png" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="assets/images/logo.png" />
+    <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="fontawesome/css/all.css" />
+    <link rel="stylesheet" href="assets/fontawesome/css/all.css" />
     <title>AgriLink - Farmers to Consumers</title>
 
     <style>
@@ -27,7 +27,7 @@
         padding-bottom:4rem;
       }
 
-      <?php if (file_exists("style.php")) { include("style.php"); } ?>
+      <?php if (file_exists("assets/style.php")) { require_once("assets/style.php"); } ?>
 
       .hero-header { font-weight:700; font-size: clamp(1.6rem, 4vw, 2.8rem); line-height:1.05; }
       .hero-para { font-size: clamp(1rem, 2.6vw, 1.25rem); color: #234; }
@@ -112,7 +112,7 @@
   <body>
     <div class="container-fluid px-3 px-md-5">
       <!-- Navigation -->
-      <?php include("header.php"); ?>
+      <?php include("assets/common/header.php"); ?>
 
       <!-- HERO -->
       <section class="hero mx-auto" style="max-width:1200px;">
@@ -147,7 +147,7 @@
           </div>
 
           <div class="col-lg-5 text-center">
-            <img src="images/hero-farm.png" alt="AgriLink hero image" class="img-fluid" style="max-height:260px; object-fit:contain;">
+            <img src="assets/images/hero-farm.png" alt="AgriLink hero image" class="img-fluid" style="max-height:260px; object-fit:contain;">
             <div class="mt-3 d-flex gap-2 justify-content-center flex-wrap">
               <span class="category-pill">Vegetables</span>
               <span class="category-pill">Fruits</span>
@@ -170,11 +170,11 @@
         <div class="row g-4">
           <div class="col-6 col-sm-6 col-md-4 col-lg-3">
             <div class="card product-card">
-              <img src="images/vegetables/tomato.png" class="card-img-top" alt="Tomatoes — 1 crate" />
+              <img src="assets/images/vegetables/tomato.png" class="card-img-top" alt="Tomatoes — 1 crate" />
               <div class="card-body">
                 <h6 class="card-title mb-1">Tomato — 1 crate</h6>
                 <p class="mb-1 text-success fw-bold">&#8358;10,000</p>
-                <p class="small-muted mb-2">From: <a href="farmers.php" class="link-dark">Farmer Ade</a></p>
+                <p class="small-muted mb-2">From: <a href="pages/farmer_details.php" class="link-dark">Farmer Ade</a></p>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="small-muted">Kano</div>
                   <a class="btn btn-outline-success btn-sm" href="pages/product_details.php">View</a>
@@ -185,11 +185,11 @@
 
           <div class="col-6 col-sm-6 col-md-4 col-lg-3">
             <div class="card product-card">
-              <img src="images/fruits/banana.png" class="card-img-top" alt="Banana — 25kg" />
+              <img src="assets/images/fruits/banana.png" class="card-img-top" alt="Banana — 25kg" />
               <div class="card-body">
                 <h6 class="card-title mb-1">Banana — 25kg</h6>
                 <p class="mb-1 text-success fw-bold">&#8358;12,500</p>
-                <p class="small-muted mb-2">From: <a href="farmers.php" class="link-dark">Mama Joy</a></p>
+                <p class="small-muted mb-2">From: <a href="pages/farmer_details.php" class="link-dark">Mama Joy</a></p>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="small-muted">Sokoto</div>
                   <a class="btn btn-outline-success btn-sm" href="pages/product_details.php">View</a>
@@ -200,11 +200,11 @@
 
           <div class="col-6 col-sm-6 col-md-4 col-lg-3">
             <div class="card product-card">
-              <img src="images/roots/cotton.png" class="card-img-top" alt="Cotton — 50kg" />
+              <img src="assets/images/roots/cotton.png" class="card-img-top" alt="Cotton — 50kg" />
               <div class="card-body">
                 <h6 class="card-title mb-1">Cotton — 50kg</h6>
                 <p class="mb-1 text-success fw-bold">&#8358;25,000</p>
-                <p class="small-muted mb-2">From: <a href="farmers.php" class="link-dark">FarmCo</a></p>
+                <p class="small-muted mb-2">From: <a href="pages/farmer_details.php" class="link-dark">FarmCo</a></p>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="small-muted">Ibadan</div>
                   <a class="btn btn-outline-success btn-sm" href="pages/product_details.php">View</a>
@@ -215,11 +215,11 @@
 
           <div class="col-6 col-sm-6 col-md-4 col-lg-3">
             <div class="card product-card">
-              <img src="images/grains_legumes/rice.png" class="card-img-top" alt="Local Rice — 50kg" />
+              <img src="assets/images/grains_legumes/rice.png" class="card-img-top" alt="Local Rice — 50kg" />
               <div class="card-body">
                 <h6 class="card-title mb-1">Local Rice — 50kg</h6>
                 <p class="mb-1 text-success fw-bold">&#8358;45,000</p>
-                <p class="small-muted mb-2">From: <a href="farmers.php" class="link-dark">Greenfields</a></p>
+                <p class="small-muted mb-2">From: <a href="pages/farmer_details.php" class="link-dark">Greenfields</a></p>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="small-muted">Lagos</div>
                   <a class="btn btn-outline-success btn-sm" href="pages/product_details.php">View</a>
@@ -246,7 +246,7 @@
                 <p class="small-muted">Location: Kano</p>
                 <p class="small-muted">Products: Tomatoes, Peppers, Okra</p>
                 <div class="d-flex justify-content-between align-items-center mt-2">
-                  <a href="farmers.php" class="btn btn-outline-success btn-sm">View profile</a>
+                  <a href="pages/farmer_details.php" class="btn btn-outline-success btn-sm">View profile</a>
                   <div class="small-muted">
                     <i class="bi bi-star-fill text-warning" aria-hidden="true"></i> 4.6
                   </div>
@@ -263,7 +263,7 @@
                 <p class="small-muted">Location: Sokoto</p>
                 <p class="small-muted">Products: Onions, Garri</p>
                 <div class="d-flex justify-content-between align-items-center mt-2">
-                  <a href="farmers.php" class="btn btn-outline-success btn-sm">View profile</a>
+                  <a href="pages/farmer_details.php" class="btn btn-outline-success btn-sm">View profile</a>
                   <div class="small-muted">
                     <i class="bi bi-star-fill text-warning" aria-hidden="true"></i> 4.8
                   </div>
@@ -280,7 +280,7 @@
                 <p class="small-muted">Location: Ibadan</p>
                 <p class="small-muted">Products: Garri, Yam</p>
                 <div class="d-flex justify-content-between align-items-center mt-2">
-                  <a href="farmers.php" class="btn btn-outline-success btn-sm">View profile</a>
+                  <a href="pages/farmer_details.php" class="btn btn-outline-success btn-sm">View profile</a>
                   <div class="small-muted">
                     <i class="bi bi-star-fill text-warning" aria-hidden="true"></i> 4.4
                   </div>
@@ -358,10 +358,10 @@
       </section>
 
       <!-- Footer  -->
-      <?php if(file_exists("footer.php")) {include("footer.php");} ?>
+      <?php if(file_exists("assets/common/footer.php")) {include("assets/common/footer.php");} ?>
 
     </div>
 
-    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
-<title>My Orders — Card Grid</title>
+<title>My Sales</title>
 <style>
   body{
     background: linear-gradient(90deg,#f3faf3,#e8f5e9); 
@@ -34,8 +34,12 @@
 <div class="container orders-grid">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <div>
-      <h2 class="text-success mb-0">My orders</h2>
-      <small class="text-muted">All purchases & delivery status</small>
+      <h2 class="text-success mb-0">My Sales</h2>
+      <small class="text-muted">All goods bought & delivery status</small>
+    </div>
+    <div>
+      <button class="btn btn-sm btn-outline-secondary">Filter</button>
+      <button class="btn btn-sm btn-outline-secondary">Export</button>
     </div>
   </div>
 
@@ -47,7 +51,7 @@
           <div class="d-flex justify-content-between align-items-start mb-2">
             <div>
               <div class="order-hero">#1001 — Tomato</div>
-              <div class="small text-muted">1 crate · Farmer Ade</div>
+              <div class="small text-muted">1 crate - Mr Jimi</div>
             </div>
             <div class="text-end">
               <div><strong>&#8358;10,000</strong></div>
@@ -58,7 +62,7 @@
           <div class="mb-3 mt-auto d-flex justify-content-between align-items-center">
             <div>
               <span class="badge bg-warning text-dark">Pending</span>
-              <small class="d-block text-muted">Placed 3 days ago</small>
+              <small class="d-block text-muted">Bought 3 days ago</small>
             </div>
             <div class="order-actions">
               <a href="order_details.php?id=1001" class="btn btn-sm btn-outline-primary">Details</a>
@@ -75,7 +79,7 @@
           <div class="d-flex justify-content-between align-items-start mb-2">
             <div>
               <div class="order-hero">#1002 — Rice</div>
-              <div class="small text-muted">50kg · Greenfields</div>
+              <div class="small text-muted">50kg - Omosare</div>
             </div>
             <div class="text-end">
               <div><strong>&#8358;45,000</strong></div>
@@ -86,7 +90,7 @@
           <div class="mb-3 mt-auto d-flex justify-content-between align-items-center">
             <div>
               <span class="badge bg-success">Delivered</span>
-              <small class="d-block text-muted">Delivered 2025-10-10</small>
+              <small class="d-block text-muted">Bought on 2025-10-10</small>
             </div>
             <div class="order-actions">
               <a href="invoice.php?id=1002" class="btn btn-sm btn-outline-primary">Invoice</a>

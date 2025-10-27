@@ -3,23 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="images/logo.png" />
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="animate.min.css" />
+    <link rel="icon" href="assets/images/logo.png" />
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="assets/animate.min.css" />
     <title>AgriLink - Farmers to Consumers</title>
     <style>
       body {
         background: linear-gradient(to left, #e8f5e9, #c8e6c9);
         font-family: "poppins", monospace;
       }
-      <?php include("style.php"); ?>
+      <?php include("assets/style.php"); ?>
     </style>
   </head>
   <body class="container">
     <nav class="navbar bar fixed-top navbar-expand-lg mb-5 glass-navbar">
       <div class="container-fluid">
         <a class="navbar-brand d-flex align-items-center" href="index.php">
-          <img width="56" height="56" src="images/logo.png" alt=""/>
+          <img width="56" height="56" src="assets/images/logo.png" alt=""/>
           <div class="ms-2 d-none d-md-block">
             <div style="font-weight:800; color:#1fa97a;">AgriLink</div>
             <small class="text-muted">Farmers → Consumers</small>
@@ -76,7 +76,9 @@
         </div>
       </div>
     </nav>
+
+     <?php if(file_exists("assets/common/footer.php")) {include("assets/common/footer.php");} ?>
     
-    <script src="bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>
   </body>
 </html>

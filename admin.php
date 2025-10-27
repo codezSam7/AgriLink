@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="images/logo.png" />
+  <link rel="icon" href="assets/images/logo.png" />
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
-  <link rel="stylesheet" href="animate.min.css" />
-  <link rel="stylesheet" href="fontawesome/css/all.css" />
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css" />
+  <link rel="stylesheet" href="assets/animate.min.css" />
+  <link rel="stylesheet" href="assets/fontawesome/css/all.css" />
   <title>AgriLink - Farmers to Consumers</title>
   <style>
     :root{
@@ -27,7 +27,7 @@
       min-height: 100vh;
       padding-top: 80px;
     }
-    <?php include("style.php"); ?>
+    <?php include("assets/style.php"); ?>
 
     /* Navbar */
     .glass-navbar{
@@ -135,7 +135,7 @@
   <nav class="navbar bar fixed-top navbar-expand-lg mb-5 glass-navbar">
     <div class="container-fluid">
       <a class="navbar-brand d-flex align-items-center" href="index.php">
-        <img width="56" height="56" src="images/logo.png" alt=""/>
+        <img width="56" height="56" src="assets/images/logo.png" alt=""/>
         <div class="ms-2 d-none d-md-block">
           <div style="font-weight:800; color:var(--brand-green);">AgriLink</div>
           <small class="text-muted">Farmers → Consumers</small>
@@ -175,7 +175,7 @@
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
-              <img src="images/user.jpg" width="36" height="36" class="rounded-circle border" alt="avatar" />
+              <img src="assets/images/user.jpg" width="36" height="36" class="rounded-circle border" alt="avatar" />
               <span class="ms-2 d-none d-md-inline">Admin</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
@@ -207,18 +207,12 @@
           <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-gear-fill"></i> Settings</a></li>
         </ul>
 
-        <div class="mt-4">
-          <h6 class="mb-2">Quick stats</h6>
-          <div class="d-flex gap-2">
-            <div class="card card-ghost p-2 w-100">
-              <small class="text-muted">Revenue</small>
-              <div class="fw-bold">₦1.2M</div>
+        <div class="mt-5">
+          <h6 class="mb-2 text-center">Quick Stat</h6>
+            <div class="card card-ghost p-2 w-50 mx-auto">
+              <small class="text-muted text-center">Messages</small>
+              <div class="fw-bold text-center">24</div>
             </div>
-            <div class="card card-ghost p-2 w-100">
-              <small class="text-muted">Messages</small>
-              <div class="fw-bold">24</div>
-            </div>
-          </div>
         </div>
       </aside>
 
@@ -307,6 +301,6 @@
     </div>
   </div>
 
-  <script src="bootstrap/js/bootstrap.bundle.js"></script>
+  <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>
 </body>
 </html>
