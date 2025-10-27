@@ -15,8 +15,10 @@
         --accent-2: #1fa97a;
       }
 
-      /* Base */
-      html,body{height:100%}
+      html,
+      body{
+        height:100%
+      }
       body {
         font-family: "Poppins", monospace;
         background: linear-gradient(90deg,#e8f5e9 0%, #c8e6c9 100%);
