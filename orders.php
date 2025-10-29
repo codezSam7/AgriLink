@@ -4,11 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <title>My Orders — Card Grid</title>
     <style>
       body{
         background: linear-gradient(90deg,#f3faf3,#e8f5e9); 
-        font-family: "Poppins", monospace;
+        font-family: "Poppins", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
       }
       .orders-grid{
         max-width:1200px; 
@@ -62,10 +65,6 @@
                   <span class="badge bg-warning text-dark">Pending</span>
                   <small class="d-block text-muted">Placed 3 days ago</small>
                 </div>
-                <div class="order-actions">
-                  <a href="order_details.php?id=1001" class="btn btn-sm btn-outline-primary">Details</a>
-                  <a href="#" class="btn btn-sm btn-outline-secondary">Chat</a>
-                </div>
               </div>
             </div>
           </div>
@@ -89,10 +88,6 @@
                 <div>
                   <span class="badge bg-success">Delivered</span>
                   <small class="d-block text-muted">Delivered 2025-10-10</small>
-                </div>
-                <div class="order-actions">
-                  <a href="invoice.php?id=1002" class="btn btn-sm btn-outline-primary">Invoice</a>
-                  <a href="#" class="btn btn-sm btn-outline-secondary">Rate</a>
                 </div>
               </div>
             </div>
