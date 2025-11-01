@@ -35,7 +35,7 @@
   </head>
   <body>
     <div class="container orders-grid">
-      <?php require_once("assets/common/header.php"); ?>
+      <?php require_once("common/header.php"); ?>
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
           <h2 class="text-success mb-0">My Sales</h2>

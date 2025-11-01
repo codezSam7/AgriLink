@@ -1,3 +1,10 @@
+<?php  
+  session_start();
+  require_once("classes/Farmer.php");
+  $f = new Farmer;
+  $farmer = isset($_SESSION["farmer_online"]) ? $f->get_farmer_details($_SESSION["farmer_online"]) : [];
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -5,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="assets/fontawesome/css/all.css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <title>My Orders — Card Grid</title>
@@ -36,7 +44,7 @@
   </head>
   <body>
     <div class="container py-5 orders-grid">
-      <?php require_once("assets/common/header.php"); ?>
+      <?php require_once("outhead.php"); ?>
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
           <h2 class="text-success mb-0">My orders</h2>
@@ -45,7 +53,6 @@
       </div>
 
       <div class="row g-3">
-        <!-- Repeat this col in a PHP loop -->
         <div class="col-12 col-md-6 col-lg-4">
           <div class="card order-card h-100">
             <div class="card-body d-flex flex-column">
@@ -93,7 +100,6 @@
             </div>
           </div>
         </div>
-        <!-- /repeat -->
       </div>
     </div>
 

@@ -1,7 +1,7 @@
 <?php 
   session_start();
-  require_once("../classes/User.php");
-  $log = new User;
+  require_once("../classes/Farmer.php");
+  $f = new Farmer;
 
   if(isset($_POST["btn"])){
     $fullname = $_POST["fullname"];
@@ -10,11 +10,11 @@
 
     if(empty($fullname) || empty($email) || empty($password)){
       $_SESSION["errormsg"] = "All fields are required";
-      header("location:../login_farmer.php");
+      header("location:../farmers/login_farmer.php");
       exit;
     }
     
-    $response = $log->login_farmer($fullname,$email,$password);
+    $response = $f->login_farmer($fullname,$email,$password);
 
     if($response){
       $_SESSION["msg"] = "$fullname, You are logged in successfully";
@@ -22,13 +22,13 @@
       exit;
     }else{
       $_SESSION["errormsg"] = "Error occured, please try again";
-      header("location:../login_farmer.php");
+      header("location:../farmers/login_farmer.php");
       exit;
     }
 
   }else{
     $_SESSION["errormsg"] = "Please complete the form";
-    header("location:../login_farmer.php");
+    header("location:../farmers/login_farmer.php");
     exit;
   }
 

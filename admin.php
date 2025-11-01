@@ -29,7 +29,7 @@
       min-height: 100vh;
       padding-top: 80px;
     }
-    <?php include("assets/style.php"); ?>
+    <?php require_once("assets/style.php"); ?>
 
     /* Navbar */
     .glass-navbar{
@@ -57,7 +57,7 @@
 
     /* Sidebar */
     .admin-sidebar{
-      min-height: calc(100vh - 140px);
+      min-height: calc(100vh - 100px);
       background: var(--sidebar-bg);
       border-right: none;
       padding: 2rem 1.5rem;
@@ -132,11 +132,10 @@
       }
     }
 
-    <?php require_once("assets/style.php"); ?>
   </style>
 </head>
 <body>
-  <?php require_once("assets/common/header.php"); ?>
+  <?php require_once("outhead.php"); ?>
 
   <div class="container-fluid con">
     <div class="row">
@@ -151,19 +150,11 @@
 
         <ul class="nav flex-column mt-4">
           <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-house-door-fill"></i> Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-bag-fill"></i> Manage Products</a></li>
-          <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-people-fill"></i> Manage Farmers</a></li>
-          <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-list-check"></i> Orders</a></li>
-          <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-gear-fill"></i> Settings</a></li>
+          <li class="nav-item"><a class="nav-link" href="products.php"><i class="bi bi-bag-fill"></i> Manage Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="farmers.php"><i class="bi bi-people-fill"></i> Manage Farmers</a></li>
+          <li class="nav-item"><a class="nav-link" href="orders.php"><i class="bi bi-list-check"></i> Orders</a></li>
+          <li class="nav-item"><a class="nav-link" href="category.php"><i class="bi bi-list-check"></i>Manage Categories</a></li>
         </ul>
-
-        <div class="mt-5">
-          <h6 class="mb-2 text-center">Quick Stat</h6>
-            <div class="card card-ghost p-2 w-50 mx-auto">
-              <small class="text-muted text-center">Messages</small>
-              <div class="fw-bold text-center">24</div>
-            </div>
-        </div>
       </aside>
 
       <main class="col-md-9 p-4">
@@ -177,7 +168,7 @@
             <div class="card p-3 stat-card card-ghost">
               <div class="d-flex align-items-center justify-content-between">
                 <div>
-                  <div class="small">Total orders</div>
+                  <div>Total orders</div>
                   <div class="h4">1,230</div>
                 </div>
                 <div class="icon-circle"><i class="bi bi-cart-fill"></i></div>
@@ -189,7 +180,7 @@
             <div class="card p-3 stat-card card-ghost">
               <div class="d-flex align-items-center justify-content-between">
                 <div>
-                  <div class="small">Active farmers</div>
+                  <div>Active farmers</div>
                   <div class="h4">430</div>
                 </div>
                 <div class="icon-circle"><i class="bi bi-people-fill"></i></div>
@@ -201,7 +192,7 @@
             <div class="card p-3 stat-card card-ghost">
               <div class="d-flex align-items-center justify-content-between">
                 <div>
-                  <div class="small">Products listed</div>
+                  <div>Products listed</div>
                   <div class="h4">2,901</div>
                 </div>
                 <div class="icon-circle"><i class="bi bi-box-seam"></i></div>

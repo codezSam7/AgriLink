@@ -1,3 +1,10 @@
+<?php  
+  session_start();
+  require_once("classes/Farmer.php");
+  $f = new Farmer;
+  $farmer = isset($_SESSION["farmer_online"]) ? $f->get_farmer_details($_SESSION["farmer_online"]) : [];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +29,7 @@
   </style>
 </head>
 <body>
-  <?php require_once("assets/common/header.php"); ?>
+  <?php require_once("outhead.php"); ?>
 
 
   <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>

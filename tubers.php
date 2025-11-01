@@ -22,7 +22,7 @@
   </style>
 </head>
 <body>
-  <?php require_once("assets/common/header.php"); ?>
+  <?php require_once("outhead.php"); ?>
 
   <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>
 </body>

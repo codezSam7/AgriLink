@@ -1,3 +1,16 @@
+<?php
+  session_start(); 
+  require_once("classes/Farmer.php");
+  require_once("classes/Buyer.php");
+
+  $f = new Farmer;
+  $b = new Buyer;
+
+  $farmer = isset($_SESSION["farmer_online"]) ? $f->get_farmer_details($_SESSION["farmer_online"]) : [];
+  $buyer = isset($_SESSION["buyer_online"]) ? $b->get_buyer_details($_SESSION["buyer_online"]) : [];
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -28,10 +41,9 @@
         -webkit-font-smoothing:antialiased;
         -moz-osx-font-smoothing:grayscale;
         margin:0;
-        padding-bottom:4rem;
       }
 
-      <?php if (file_exists("assets/style.php")) { require_once("assets/style.php"); } ?>
+      <?php require_once("assets/style.php"); ?>
 
       .hero-header { font-weight:700; font-size: clamp(1.6rem, 4vw, 2.8rem); line-height:1.05; }
       .hero-para { font-size: clamp(1rem, 2.6vw, 1.25rem); color: #234; }
@@ -78,10 +90,22 @@
         }
       }
 
-      .small-muted { color: #6c757d; font-size:.9rem; }
-      .product-header { font-size: clamp(1.25rem, 2.6vw, 1.6rem); font-weight:700; }
-      .why-header { font-size: clamp(1.3rem, 3vw, 1.9rem); font-weight:700; }
-      .why-para { font-size: clamp(.95rem, 2.2vw, 1.05rem); color:#345; }
+      .small-muted { 
+        color: #6c757d; 
+        font-size:.9rem; 
+      }
+      .product-header { 
+        font-size: clamp(1.25rem, 2.6vw, 1.6rem); 
+        font-weight:700; 
+      }
+      .why-header { 
+        font-size: clamp(1.3rem, 3vw, 1.9rem); 
+        font-weight:700; 
+      }
+      .why-para { 
+        font-size: clamp(.95rem, 2.2vw, 1.05rem); 
+        color:#345; 
+      }
 
       .search-input .form-control {
         border-radius: 999px 0 0 999px;
@@ -116,7 +140,7 @@
   <body>
     <div class="container-fluid px-3 px-md-5">
       <!-- Navigation -->
-      <?php require_once("assets/common/header.php"); ?>
+      <?php require_once("outhead.php"); ?>
 
       <!-- HERO -->
       <section class="hero mx-auto" style="max-width:1200px;">
@@ -144,21 +168,27 @@
               </div>
             </form>
 
-            <div class="mt-3 d-flex gap-2 justify-content-center justify-content-lg-start">
-              <a href="register-farmer.php" class="btn btn-outline-success btn-lg">Register as Farmer</a>
-              <a href="register-consumer.php" class="btn btn-success btn-lg text-white">Register as Consumer</a>
-            </div>
+            <?php 
+              if(!isset($_SESSION["farmer_online"])){ 
+            ?> 
+              <div class="mt-3 d-flex gap-2 justify-content-center justify-content-lg-start">
+                <a href="farmers/sign_farmer.php" class="btn btn-outline-success btn-lg">Register as Farmer</a>
+                <a href="buyers/sign_buyer.php" class="btn btn-success btn-lg text-white">Register as Consumer</a>
+              </div>
+            <?php 
+              } 
+            ?>
           </div>
 
           <div class="col-lg-5 text-center">
             <img src="assets/images/hero-farm.png" alt="AgriLink hero image" class="img-fluid" style="max-height:260px; object-fit:contain;">
             <div class="mt-3 d-flex gap-2 justify-content-center flex-wrap">
-              <span class="category-pill">Vegetables</span>
-              <span class="category-pill">Fruits</span>
-              <span class="category-pill">Grains</span>
-              <span class="category-pill">Livestock</span>
-              <span class="category-pill">Dairy</span>
-              <span class="category-pill">Organic</span>
+              <a href="vegetables.php" class="category-pill">Vegetables</a>
+              <a href="fruits.php" class="category-pill">Fruits</a>
+              <a href="grains_legumes.php" class="category-pill">Grains</a>
+              <a href="livestock.php" class="category-pill">Livestock</a>
+              <a href="#" class="category-pill">Dairy</a>
+              <a href="#" class="category-pill">Organic</a>
             </div>
           </div>
         </div>
@@ -362,7 +392,9 @@
       </section>
 
       <!-- Footer  -->
-      <?php if(file_exists("assets/common/footer.php")) {include("assets/common/footer.php");} ?>
+      <div class="col-md-11 offset-md-1 py-5">
+        <?php require_once("common/footer.php") ?>
+      </div>
 
     </div>
 

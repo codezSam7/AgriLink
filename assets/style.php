@@ -18,3 +18,20 @@ box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   backdrop-filter: blur(5px);
 }
+.hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../assets/images/index.png");
+  background-size: cover;
+  background-position: center;
+  padding: 80px 0;
+  margin-top: 6%;
+}
+.card-style-1 .card-meta .image {
+  max-width: 40px;
+  width: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 12px;
+}
+.card-style-1 .card-meta .image img {
+  width: 100%;
+}

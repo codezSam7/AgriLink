@@ -38,6 +38,6 @@
     </div>
 
     <hr />
-    <div class="small text-muted">© Agrilink — All rights reserved</div>
+    <div class="small text-muted text-center">&copy; <?php echo date('Y') ?> Agrilink — All rights reserved</div>
   </div>
 </footer>
