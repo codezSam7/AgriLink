@@ -1,10 +1,14 @@
 <?php 
   session_start();
   require_once("../classes/Farmer.php");
+  require_once("../classes/Buyer.php");
 
   $f = new Farmer;
+  $b = new Buyer;
 
   $farmer = isset($_SESSION["farmer_online"]) ? $f->get_farmer_details($_SESSION["farmer_online"]) : [];
+  $buyer = isset($_SESSION["buyer_online"]) ? $b->get_buyer_details($_SESSION["buyer_online"]) : [];
+
   $states = $f->fetch_all_states(); 
 ?>
 
@@ -82,7 +86,7 @@
 
               <div class="col-6 col-md-auto">
                 <label for="state">State</label>
-                <select id="delvstate" name="delvstate" class="form-select form-select-lg state-select" aria-label="Filter by state">
+                <select id="delvstate" name="delvstate" class="form-select state-select" aria-label="Filter by state">
                   <option value="">All State</option>
                     <?php 
                       foreach($states as $state){ 
@@ -98,12 +102,12 @@
 
               <div class="col-6 col-md-auto">
                 <label for="lga">LGA</label>
-                <select id="delvlga" name="delvlga" class="form-select form-select-lg state-select" aria-label="Filter by local government">
+                <select id="delvlga" name="delvlga" class="form-select state-select" aria-label="Filter by local government">
                 </select>
               </div>
 
               <div class="col-md-12 d-grid">
-                <button class="btn btn-success btn-lg" type="submit">Search</button>
+                <button class="btn btn-success" name="btnsearch" type="submit">Search</button>
               </div>
 
               <div class="col-md-12">

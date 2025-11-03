@@ -27,7 +27,7 @@
 
     if(!$state_id || !$lga_id){
       $_SESSION["errormsg"] = "Please choose a state and LGA";
-      header("location:../buyers/sign_buyer.php"); 
+      header("location:../farmers/sign_farmer.php"); 
       exit;
     }
 

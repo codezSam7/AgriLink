@@ -169,7 +169,7 @@
             </form>
 
             <?php 
-              if(!isset($_SESSION["farmer_online"])){ 
+              if(!isset($_SESSION["farmer_online"]) && !isset($_SESSION["buyer_online"])){ 
             ?> 
               <div class="mt-3 d-flex gap-2 justify-content-center justify-content-lg-start">
                 <a href="farmers/sign_farmer.php" class="btn btn-outline-success btn-lg">Register as Farmer</a>

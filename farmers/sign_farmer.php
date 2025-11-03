@@ -69,7 +69,7 @@
                 </div>
 
                 <div class="col-md-12">
-                    <label class="form-label">Delivery address - state</label>
+                    <label class="form-label">Delivery state</label>
                     <select class="form-select" id="delvstate" name="delvstate">
                       <option value="">Select State</option>
                       <?php 
@@ -85,7 +85,7 @@
                   </div>
 
                   <div class="col-md-12">
-                    <label class="form-label">Delivery address - lga</label>
+                    <label class="form-label">Delivery lga</label>
                     <select class="form-select" name="delvlga" id="delvlga"></select>
                   </div>
 
@@ -133,7 +133,6 @@
     <script src="../assets/bootstrap/js/bootstrap.bundle.js"></script>
     <script src="../assets/jquery.js"></script>
     <script>
-      // jQuery
       $(document).ready(function(){
         $("#delvstate").change(function(){
         var state_id = $(this).val();

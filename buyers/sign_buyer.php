@@ -4,7 +4,8 @@
 
   $b = new Buyer;
 
-   $buyer = isset($_SESSION["buyer_online"]) ? $b->get_buyer_details($_SESSION["buyer_online"]) : [];
+  $buyer = isset($_SESSION["buyer_online"]) ? $b->get_buyer_details($_SESSION["buyer_online"]) : [];
+  $states = $b->fetch_all_states();
 ?>
 
 <!DOCTYPE html>
@@ -67,6 +68,27 @@
                   <input class="form-control" name="email" type="email" required />
                 </div>
 
+                <div class="col-md-12">
+                    <label class="form-label">Receiving state</label>
+                    <select class="form-select" id="delvstate" name="delvstate">
+                      <option value="">Select State</option>
+                      <?php 
+                        foreach($states as $state){ 
+                      ?>
+                        <option value="<?php echo $state['state_id'] ?>">
+                          <?php echo htmlspecialchars($state['state_name']) ?>
+                        </option>
+                      <?php 
+                        }; 
+                      ?>
+                    </select>
+                  </div>
+
+                  <div class="col-md-12">
+                    <label class="form-label">Receiving lga</label>
+                    <select class="form-select" name="delvlga" id="delvlga"></select>
+                  </div>
+
                 <div class="col-md-6">
                   <label class="form-label">Password</label>
                   <input class="form-control" name="password" type="password" required />
@@ -94,5 +116,13 @@
 
     <script src="../assets/bootstrap/js/bootstrap.bundle.js"></script>
     <script src="../assets/jquery.js"></script>
+    <script>
+      $(document).ready(function(){
+        $("#delvstate").change(function(){
+        var state_id = $(this).val();
+          $("#delvlga").load("../process/process_state_lga.php?id="+state_id);
+        })
+      })
+    </script>
   </body> 
 </html>

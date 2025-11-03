@@ -5,10 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-    rel="stylesheet"
-  />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.css" />
   <link rel="stylesheet" href="../assets/animate.min.css" />
   <link rel="stylesheet" href="../assets/fontawesome/css/all.css" />
@@ -32,9 +29,49 @@
     </div>
   </section>
 
-  <section>
+  <section class="container">
+      <div class="row con justify-content-center">
+        <div class="col-md-8">
+          <div class="p-4">
+            <p class="mb-3 text-muted text-center">
+              Continue with your buyer profile to view more produce and order more produce.
+            </p>
 
-  </section>
+            <?php require_once("../common/alert.php"); ?>
+
+            <form action="../process/process_login_buyer.php" method="post">
+              <div class="row g-5">
+                <div class="col-md-6">
+                  <label class="form-label">Full Name</label>
+                  <input class="form-control" type="text" name="fullname" required />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Email</label>
+                  <input class="form-control" type="email" name="email" />
+                </div>
+
+                <div class="col-md-6">
+                  <input class="form-control" type="password" name="password" placeholder="Password" required />
+                </div>
+                <div class="col-md-6">
+                  <input class="form-control" name="cpassword" type="password" placeholder="Confirm password" required />
+                </div>
+
+                <div class="col-12 d-grid">
+                  <button class="btn btn-success" name="btn">Login</button>
+                </div>
+              </div>
+            </form>
+
+            
+            <div class="text-center">
+              <p>Don't have an account? <a href="sign_buyer.php" class="text-success text-center">Register Here</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
   <script src="../assets/bootstrap/js/bootstrap.bundle.js"></script>
 </body>

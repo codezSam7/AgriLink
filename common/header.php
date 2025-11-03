@@ -46,61 +46,73 @@
   </div>
 
   
-    <div class="dropdown collapse navbar-collapse" id="navbarNavDropdown">
+    <div class="d-flex align-items-center ms-auto gap-2">
       <?php 
         if(isset($farmer["farmer_fullname"])){
           $fname = $farmer["farmer_fullname"];
           $name = explode(" ", $fname);
           $show = end($name);
       ?>
-        <a href="../profile.php" class="btn btn-light text-success me-2">
-          <i class="fas fa-user"></i> Farmer <?php echo $show ?>
+        <a href="../cart.php" class="btn btn-success rounded-circle">
+          <i class="fas fa-cart-plus text-light fs-5"></i>
         </a>
-        <a href="../process/process_logout.php" class="btn btn-danger"><i class="fas fa-power-off"></i> Logout</a>
+        <div class="dropdown">
+          <a href="../profile.php" class="btn btn-light text-success d-flex align-items-center gap-1 dropdown-toggle me-5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user fs-5"></i> 
+            <span>Farmer <?php echo $show ?></span>
+          </a>
+          <ul class="dropdown-menu">
+            <a href="../process/process_logout.php" class="btn btn-danger d-flex align-items-center gap-1 dropdown-item">
+              <i class="fas fa-power-off"></i> 
+              <span>Logout</span>
+            </a>
+          </ul>
+        </div>
+
       <?php 
-        }else{ 
+        } elseif(isset($buyer["buyer_fullname"])){ 
       ?>
-      <button
-        class="btn btn-success dropdown-toggle m-3"
-        type="button"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        Register
-      </button>
-      <ul class="dropdown-menu">
-        <li>
-          <a href="../farmers/sign_farmer.php" class="dropdown-item"
-            >As a farmer</a
-          >
-        </li>
-        <li>
-          <a href="../buyers/sign_buyer.php" class="dropdown-item"
-            >As a buyer</a
-          >
-        </li>
-      </ul>
-    </div>
-    <div class="dropdown collapse navbar-collapse" id="navbarNavDropdown">
-      <button
-        class="btn button btn-success dropdown-toggle m-3"
-        type="button"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        Login
-      </button>
-      <ul class="dropdown-menu">
-        <li>
-          <a href="../farmers/login_farmer.php" class="dropdown-item">As a farmer</a>
-        </li>
-        <li>
-          <a href="../buyers/login_buyer.php" class="dropdown-item">As a buyer</a>
-        </li>
-      </ul>
-        <?php
-          }
-        ?>
+        <a href="../cart.php" class="btn btn-success rounded-circle">
+          <i class="fas fa-cart-plus text-light fs-5"></i>
+        </a>
+        <div class="dropdown">
+          <a href="../profile.php" class="btn btn-light text-success d-flex align-items-center dropdown-toggle me-3 gap-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user"></i> 
+            <span>
+              <?php echo $buyer["buyer_fullname"] ?>
+            </span>
+          </a>
+          <ul class="dropdown-menu">
+            <a href="../process/process_logout.php" class="btn btn-danger d-flex align-items-center gap-1 dropdown-item">
+              <i class="fas fa-power-off"></i> 
+              <span>Logout</span>
+            </a>
+          </ul>
+        </div>
+
+      <?php 
+        } else { 
+      ?>
+        <div class="dropdown">
+          <button class="btn btn-success dropdown-toggle m-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Register
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="../farmers/sign_farmer.php" class="dropdown-item">As a farmer</a></li>
+            <li><a href="../buyers/sign_buyer.php" class="dropdown-item">As a buyer</a></li>
+          </ul>
+        </div>
+
+        <div class="dropdown">
+          <button class="btn btn-success dropdown-toggle m-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Login
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="../farmers/login_farmer.php" class="dropdown-item">As a farmer</a></li>
+            <li><a href="../buyers/login_buyer.php" class="dropdown-item">As a buyer</a></li>
+          </ul>
+        </div>
+      <?php } ?>
     </div>
   </div>
 </nav>

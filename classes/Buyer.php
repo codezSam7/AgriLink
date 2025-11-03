@@ -6,16 +6,57 @@
       $this->agconn = $this->connect();
     }
 
-    public function register_buyer($fulln, $phone, $email, $password){
+    public function fetch_all_states(){
+      $sql = "SELECT * FROM state";
+      $stmt = $this->agconn->prepare($sql);
+      $stmt->execute();
+      $rsp = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      return $rsp;
+    }
+
+    public function fetch_lga($state_id){
+      $sql = "SELECT * FROM lga WHERE state_id = ?";
+      $stmt = $this->agconn->prepare($sql);
+      $stmt->execute([$state_id]);
+      $rsp = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      return $rsp;
+    }
+
+    // small helper to validate existence
+    public function state_exists($state_id){
+      $stmt = $this->agconn->prepare("SELECT 1 FROM state WHERE state_id = ? LIMIT 1");
+      $stmt->execute([$state_id]);
+      $rsp = $stmt->fetchColumn();
+      return $rsp;
+    }
+
+    public function lga_exists_for_state($lga_id, $state_id){
+      $stmt = $this->agconn->prepare("SELECT 1 FROM lga WHERE lga_id = ? AND state_id = ? LIMIT 1");
+      $stmt->execute([$lga_id, $state_id]);
+      $rsp = $stmt->fetchColumn();
+      return $rsp;
+    }
+
+    public function register_buyer($fulln,$phone,$email,$password,$state_id, $lga_id){
       try{
-        $sql = "INSERT INTO buyers(buyer_fullname, buyer_phone, buyer_email, buyer_password_hash)VALUES(?, ?, ?, ?)";
+        // validate state and lga
+        if(!$this->state_exists($state_id)){
+          // invalid state
+          return false;
+        }
+        if(!$this->lga_exists_for_state($lga_id, $state_id)){
+          // invalid lga for that state
+          return false;
+        }
+
+        $sql = "INSERT INTO buyers(buyer_fullname, buyer_phone, buyer_email, buyer_password_hash,buyer_state_id,buyer_lga_id)VALUES(?, ?, ?, ?, ?, ?)";
         $stmt = $this->agconn->prepare($sql);
         $hashed = password_hash($password, PASSWORD_DEFAULT);
-        $stmt->execute([$fulln,$phone,$email,$hashed]);
-        $rsp = $this->agconn->lastInsertId();
-        return $rsp;
+        $stmt->execute([$fulln,$phone,$email,$hashed,$state_id,$lga_id]);
+        $regbuyer = $this->agconn->lastInsertId();
+        return $regbuyer;
       }catch(PDOException $e){
-        //echo $e->getMessage();
+        //echo $e->getMessage(); die();
         return false;
       }
     }
@@ -42,7 +83,7 @@
           return false;
         }
       }catch(PDOException $e){
-        //echo $e->getMessage(); die();
+        echo $e->getMessage(); die();
         return false;
       }
     }

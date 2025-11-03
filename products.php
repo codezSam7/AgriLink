@@ -2,11 +2,15 @@
   session_start();
   require_once("classes/Farmer.php");
   require_once("classes/Category.php");
+  require_once("classes/Buyer.php");
+
 
   $f = new Farmer;
+  $b = new Buyer;
   $c = new Category;
 
   $farmer = isset($_SESSION["farmer_online"]) ? $f->get_farmer_details($_SESSION["farmer_online"]) : [];
+  $buyer = isset($_SESSION["buyer_online"]) ? $b->get_buyer_details($_SESSION["buyer_online"]) : [];
   $products = $f->fetch_products();
   // echo "<pre>";
   //   print_r($products);
