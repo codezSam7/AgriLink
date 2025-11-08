@@ -138,12 +138,13 @@
   </head>
 
   <body>
-    <div class="container-fluid px-3 px-md-5">
+    <div class="container px-3 px-md-5">
       <!-- Navigation -->
       <?php require_once("outhead.php"); ?>
 
       <!-- HERO -->
       <section class="hero mx-auto" style="max-width:1200px;">
+        <?php require_once("common/alert.php") ?>
         <div class="row align-items-center">
           <div class="col-lg-7 text-center text-lg-start mb-3 mb-lg-0">
             <h1 class="hero-header">

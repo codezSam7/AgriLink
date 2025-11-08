@@ -13,11 +13,11 @@
 
     $newcat = $c->add_category($catname);
     if($newcat){
-      $_SESSION["msg"] = "A new category has been added";
+      $_SESSION["msg"] = "A new category has been added"."✨";
       header("location:../category.php");
       exit;
     }else{
-      $_SESSION["errormsg"] = "Error in adding category";
+      $_SESSION["errormsg"] = "Error in adding category"."😢";
       header("location:../category.php");
       exit;
     }

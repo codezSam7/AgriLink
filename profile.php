@@ -24,6 +24,8 @@
 <body>
   <?php require_once("outhead.php"); ?>
 
+  <?php require_once("common/alert.php") ?>
+
 
 
   <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>

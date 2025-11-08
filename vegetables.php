@@ -25,6 +25,8 @@
   <?php require_once("outhead.php"); ?>
 
 
+
+
   <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>
 </body>
 </html>

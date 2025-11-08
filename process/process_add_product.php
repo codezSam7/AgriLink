@@ -28,11 +28,11 @@
     }
     $rsp = $f->add_product($name,$_SESSION["farmer_online"],$category,$desc,$unit,$price,$qtyavail,$uploaded_file);
     if($rsp){
-      $_SESSION["msg"] = "Product added successfully";
+      $_SESSION["msg"] = "Product added successfully"."✔";
       header("location:../products.php");
       exit;
     }else{
-      $_SESSION["errormsg"] = "Error in adding product";
+      $_SESSION["errormsg"] = "Error in adding product"."😢";
       header("location:../products.php");
       exit;
     }

@@ -35,6 +35,8 @@
   </head>
   <body class="container">
     <?php require_once("outhead.php"); ?>
+
+    <?php require_once("common/alert.php") ?>
     
     <div class="container con">
       <div class="row">

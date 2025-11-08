@@ -17,11 +17,11 @@
     $response = $b->login_buyer($fullname,$email,$password);
 
     if($response){
-      $_SESSION["msg"] = "$fullname, You are logged in successfully";
+      $_SESSION["msg"] = "$fullname, You are logged in successfully"."✔";
       header("location:../index.php");
       exit;
     }else{
-      $_SESSION["errormsg"] = "Error occured, please try again";
+      $_SESSION["errormsg"] = "Error occured"."😢".","."try again";
       header("location:../buyers/login_buyer.php");
       exit;
     }

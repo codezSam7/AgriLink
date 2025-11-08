@@ -116,7 +116,7 @@
             </form>
           </div>
 
-          <?php if(!isset($_SESSION["farmer_online"])){ ?> 
+          <?php if(!isset($_SESSION["farmer_online"]) && !isset($_SESSION["buyer_online"])){ ?> 
             <div class="d-none d-md-flex">
               <a href="sign_farmer.php" class="btn btn-outline-success">Register as Farmer</a>
             </div>

@@ -11,10 +11,8 @@
 
   $farmer = isset($_SESSION["farmer_online"]) ? $f->get_farmer_details($_SESSION["farmer_online"]) : [];
   $buyer = isset($_SESSION["buyer_online"]) ? $b->get_buyer_details($_SESSION["buyer_online"]) : [];
+
   $products = $f->fetch_products();
-  // echo "<pre>";
-  //   print_r($products);
-  // echo "</pre>";
   $cats = $c->fetch_all_categories();
 ?>
 
@@ -109,7 +107,7 @@
                     <?php echo $cat["category_name"]; ?>
                   </option>
                 <?php  } ?>
-              </select>
+              </select> 
 
               <input type="text" name="desc" id="desc" class="form-control mb-3" placeholder="Product Description" required />
               <input type="text" name="unit" id="unit" class="form-control mb-3" placeholder="Product Unit e.g per bag, per kg, per crate, per bunch" required />
@@ -131,6 +129,7 @@
     ?>
 
     <section class="products py-5 my-5 mx-auto" style="max-width:1200px;">
+      <?php require_once("common/alert.php") ?>
       <div class="row g-4">
         <?php 
           foreach($products as $product){ 
@@ -149,12 +148,36 @@
             <div class="card product-card">
               <img src="uploads/<?php echo $image ?>" class="card-img-top" alt="Tomatoes — 1 crate" />
               <div class="card-body">
-                <h6 class="card-title mb-1"><?php echo $title ?></h6>
-                <p class="mb-1 text-success fw-bold">&#8358; <?php echo $price ?></p>
-                <p class="small-muted mb-2">From: <a href="pages/farmer_details.php" class="link-dark">Farmer <?php echo $show ?></a></p>
+                <h6 class="card-title mb-1">
+                  <?php echo $title ?>
+                </h6>
+                <p class="mb-1 text-success fw-bold">&#8358; 
+                  <?php echo $price ?>
+                </p>
+                <p class="small-muted mb-2">
+                  From: <a href="pages/farmer_details.php" class="link-dark">Farmer <?php echo $show ?>
+                  </a>
+                </p>
                 <div class="d-flex justify-content-between align-items-center">
-                  <div class="small-muted">In: <?php echo $state ?></div>
-                  <a class="btn btn-outline-success btn-sm" href="pages/product_details.php">View</a>
+                  <div class="small-muted">
+                    In: <?php echo $state ?>
+                  </div>
+                </div>
+                <div class="d-grid gap-1 mt-3">
+
+                  <?php 
+                    if(isset($_SESSION["buyer_online"])){ 
+                  ?>
+                    <a class="btn btn-success btn-sm" href="process/process_addtocart.php?id=<?php echo $product["product_id"]; ?>">
+                      Add To Cart
+                    </a>
+                  <?php 
+                    }
+                  ?>
+
+                  <a href="product_details.php?id=<?php echo $product['product_id']; ?>" class="btn btn-outline-success btn-sm">
+                    <i class="fas fa-eye sm"></i> View Details
+                  </a>
                 </div>
               </div>
             </div>

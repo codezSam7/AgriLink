@@ -50,6 +50,7 @@
   <body>
     <div class="container py-5 orders-grid">
       <?php require_once("outhead.php"); ?>
+      <?php require_once("common/alert.php") ?>
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
           <h2 class="text-success mb-0">My orders</h2>

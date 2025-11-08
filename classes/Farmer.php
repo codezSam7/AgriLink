@@ -99,7 +99,7 @@
 
     public function get_farmer_details($farmer_id){
       try{
-        $sql = "SELECT farmer_id, farmer_fullname, farmer_email FROM farmers WHERE farmer_id = ?";
+        $sql = "SELECT * FROM farmers WHERE farmer_id = ?";
         $stmt = $this->agconn->prepare($sql);
         $stmt->execute([$farmer_id]);
         $farmer = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -156,6 +156,19 @@
       }
     }
 
+    public function get_all_farmers(){
+      try{
+        $sql = "SELECT * FROM farmers";
+        $stmt = $this->agconn->prepare($sql);
+        $stmt->execute([$farmer_id]);
+        $farmer = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $farmer;
+      }catch(PDOException $e){
+        //echo $e->getMessage(); die();
+        return false;
+      }
+    }
+
     public function fetch_products(){
       try{
         $sql = "SELECT *,product_id as pid, product_description as pdesc FROM products JOIN categories ON product_category_id=category_id JOIN farmers ON product_farmer_id=farmer_id JOIN state ON farmer_state_id = state_id";
@@ -168,6 +181,32 @@
         return false;
       }
     }
+
+    public function get_product_by_id($id) {
+    try {
+        $sql = "SELECT 
+                    p.*, 
+                    f.farmer_fullname, 
+                    s.state_name 
+                FROM products p
+                JOIN farmers f ON p.product_farmer_id = f.farmer_id
+                JOIN state s ON f.farmer_state_id = s.state_id
+                WHERE p.product_id = ?";
+        
+        $stmt = $this->agconn->prepare($sql);
+        $stmt->execute([$id]);
+        $product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $product ? $product : false;
+
+    } catch (PDOException $e) {
+        // You can log this error to a file instead of echoing in production
+        //echo $e->getMessage(); die();
+        return false;
+    } 
+}
+
+
 
     public function logout(){
       session_unset();

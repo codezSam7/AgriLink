@@ -5,8 +5,8 @@
       try{
         $dsn= "mysql:host=".DBSERVER.";dbname=".DBNAME;
         $options=[PDO::ATTR_ERRMODE =>PDO::ERRMODE_EXCEPTION];
-        $conn = new PDO($dsn,DBUSER,DBPASS,$options);
-        return $conn;
+        $agconn = new PDO($dsn,DBUSER,DBPASS,$options);
+        return $agconn;
       }catch(PDOException $e){
         echo $e->getMessage();
         return false;

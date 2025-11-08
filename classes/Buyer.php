@@ -83,7 +83,20 @@
           return false;
         }
       }catch(PDOException $e){
-        echo $e->getMessage(); die();
+        //echo $e->getMessage(); die();
+        return false;
+      }
+    }
+
+    public function fetch_myproducts($buyer_id){
+      try{
+        $sql = "SELECT *,product_id as pid, product_description as product_desc FROM products JOIN categories ON products_category_id=category_id WHERE buyer_id = ?";
+        $stmt = $this->agconn->prepare($sql);
+        $stmt->execute([$buyer_id]);
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $products;
+      }catch(PDOException $e){
+        //echo $e->getMessage(); die();
         return false;
       }
     }
@@ -101,9 +114,41 @@
       }
     }
 
+    public function insert_order_details($items,$buyer_id){
+      //call a function that will insert into the orders table
+      try{
+        $sql1 = "INSERT INTO orders(order_buyerid) VALUES(?)";
+        $stmt1 = $this->agconn->prepare($sql1);
+        $stmt1->execute([$buyer_id]);
+        $order_id = $this->dbconn->lastInsertId();
+        //2.loop over the items and insert each of them into order_details table
+        $total = 0;
+        if($items){
+          foreach($items as $item){
+            $product = $item["product_id"];
+            $qty = $item["qty"];
+            $total = $total + ($item["qty"] * $item["product_price"]);
+            $sql2 = "INSERT INTO order_details(order_id,recipeid,detail_userid,detail_qty) VALUES(?,?,?,?)";
+            $stmt2 = $this->dbconn->prepare($sql2);
+            $stmt2->execute([$order_id,$recipe_id,$user_id,$qty]);
+          }
+          #sql3
+          $sql3 = "UPDATE orders SET order_totalamt=? WHERE order_id=?";
+          $stmt3 = $this->dbconn->prepare($sql3);
+          $stmt3->execute([$total,$order_id]);
+        }
+        return $order_id;
+      }catch(PDOException $e){
+        //echo $e->getMessage(); die();
+        return false;
+      }
+    }
+
     public function blogout(){
       session_unset();
       session_destroy();
     }
   }
+
+
 ?>
