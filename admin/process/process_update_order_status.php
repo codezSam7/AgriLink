@@ -24,3 +24,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('location: ../admin_view_orders.php');
     exit;
 }
+header('location: ../admin_view_orders.php');
+exit;

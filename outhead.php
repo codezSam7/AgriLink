@@ -40,13 +40,6 @@ if (isset($_SESSION['buyer_online'])) {
         <li class="nav-item"><a class="bar-link active" href="index.php">Home</a></li>
         <li class="nav-item"><a class="bar-link" href="farmers/farmers.php">Farmers</a></li>
         <li class="nav-item"><a class="bar-link" href="products.php">Products</a></li>
-        <?php
-          if (isset($_SESSION['buyer_online'])) {
-              ?>
-          <li class="nav-item"><a class="bar-link" href="orders.php">Orders</a></li>
-        <?php
-          }
-?>
         <li class="nav-item"><a class="bar-link" href="admin/ad_login.php">Admin</a></li>
         <li class="nav-item"><a class="bar-link" href="contact.php">Contact</a></li>
       </ul>
