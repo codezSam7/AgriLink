@@ -127,9 +127,71 @@ class Admin extends Db
     public function fetch_orders()
     {
         try {
+            $sql = 'SELECT 
+                    o.*,
+                    b.buyer_fullname,
+                    b.buyer_email,
+                    b.buyer_phone
+                FROM orders o
+                JOIN buyers b ON o.order_buyerid = b.buyer_id
+                ORDER BY o.order_date DESC';
 
+            $stmt = $this->agconn->prepare($sql);
+            $stmt->execute();
+
+            $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $orders;
         } catch (PDOException $e) {
-            // echo $e->getMessage(); die();
+            echo $e->getMessage();
+            exit();
+
+            return false;
+        }
+    }
+
+    public function update_order_status($order_id, $status)
+    {
+        try {
+            $sql = 'UPDATE orders SET pay_status = ? WHERE order_id = ?';
+            $stmt = $this->agconn->prepare($sql);
+            $stmt->execute([$status, $order_id]);
+
+            return true;
+        } catch (PDOException $e) {
+            // Optionally log the error
+            // error_log($e->getMessage());
+            return false;
+        }
+    }
+
+    public function fetch_logistics_providers()
+    {
+        try {
+            $sql = "SELECT * FROM logistics_providers WHERE status = 'active' ORDER BY name ASC";
+            $stmt = $this->agconn->prepare($sql);
+            $stmt->execute();
+
+            $providers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $providers ?: [];
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
+    public function assign_logistics($order_id, $logistics_id)
+    {
+        try {
+            $sql = "UPDATE orders 
+                SET logistics_id = ?, delivery_status = 'assigned' 
+                WHERE order_id = ?";
+            $stmt = $this->agconn->prepare($sql);
+            $stmt->execute([$logistics_id, $order_id]);
+
+            return true;
+        } catch (PDOException $e) {
+            // error_log($e->getMessage());
             return false;
         }
     }

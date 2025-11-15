@@ -1,13 +1,13 @@
-<?php  
-  session_start();
-  require_once("classes/Farmer.php");
-  require_once("classes/Buyer.php");
+<?php
+session_start();
+require_once 'classes/Farmer.php';
+require_once 'classes/Buyer.php';
 
-  $f = new Farmer;
-  $b = new Buyer;
+$f = new Farmer;
+$b = new Buyer;
 
-  $farmer = isset($_SESSION["farmer_online"]) ? $f->get_farmer_details($_SESSION["farmer_online"]) : [];
-  $buyer = isset($_SESSION["buyer_online"]) ? $b->get_buyer_details($_SESSION["buyer_online"]) : [];
+$farmer = isset($_SESSION['farmer_online']) ? $f->get_farmer_details($_SESSION['farmer_online']) : [];
+$buyer = isset($_SESSION['buyer_online']) ? $b->get_buyer_details($_SESSION['buyer_online']) : [];
 ?>
 
 <!doctype html>
@@ -44,13 +44,13 @@
       .order-actions a{
         margin-left:.35rem;
       }
-      <?php require_once("assets/style.php"); ?>
+      <?php require_once 'assets/style.php'; ?>
     </style>
   </head>
   <body>
     <div class="container py-5 orders-grid">
-      <?php require_once("outhead.php"); ?>
-      <?php require_once("common/alert.php") ?>
+      <?php require_once 'outhead.php'; ?>
+      <?php require_once 'common/alert.php'?>
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
           <h2 class="text-success mb-0">My orders</h2>

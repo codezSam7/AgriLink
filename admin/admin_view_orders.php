@@ -12,6 +12,9 @@ if (isset($_SESSION['admin_online'])) {
     exit();
 }
 
+$orders = $a->fetch_orders();
+$providers = $a->fetch_logistics_providers();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -255,6 +258,107 @@ if (isset($_SESSION['admin_online'])) {
             </button>
         </div>
     </aside>
+
+    <div class="admin-wrapper">
+    <h3 class="page-title">Manage Orders</h3>
+
+    <div class="row g-3">
+
+        <?php foreach ($orders as $order) {
+
+            // Extract
+            $order_id = $order['order_id'];
+            $price = number_format($order['order_totalamt'], 2);
+            $buyer = $order['buyer_fullname'];
+            $status = $order['pay_status'];
+            $date = date('M j, Y', strtotime($order['order_date']));
+            $delivery_status = $order['delivery_status'];
+
+            // Status badge color
+            switch ($status) {
+                case 'pending':
+                    $badge = 'bg-warning text-dark';
+                    break;
+                case 'rejected':
+                    $badge = 'bg-danger';
+                    break;
+                case 'paid':
+                    $badge = 'bg-success';
+                    break;
+                default:
+                    $badge = 'bg-secondary';
+            }
+
+            ?>
+<div class="col-12 col-md-6 col-lg-4">
+  <div class="card order-card h-100 shadow-sm" style="border-radius: 14px;">
+    <div class="card-body d-flex flex-column">
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <div>
+          <div class="order-hero fw-semibold">#<?php echo $order_id; ?></div>
+          <div class="small text-muted">
+            Buyer: <?php echo $buyer; ?>
+          </div>
+        </div>
+
+        <div class="text-end">
+          <div><strong>&#8358;<?php echo $price; ?></strong></div>
+        </div>
+      </div>
+
+      <div class="mt-auto">
+        <span class="badge <?php echo $badge; ?>"><?php echo $status; ?></span>
+        <small class="d-block text-muted">Placed on <?php echo $date; ?></small>
+        <small class="d-block text-muted">Delivery: <?php echo $delivery_status; ?></small>
+      </div>
+
+        <form method="POST" action="process/process_update_order_status.php" class="mt-3">
+          <input type="hidden" name="order_id" value="<?php echo $order_id; ?>">
+
+          <div class="input-group input-group-sm">
+            <select name="status" class="form-select">
+                <option value="pending" <?php if ($status == 'pending') {
+                    echo 'selected';
+                } ?>>Pending</option>
+                <option value="rejected" <?php if ($status == 'rejected') {
+                    echo 'selected';
+                } ?>>Rejected</option>
+                <option value="paid" <?php if ($status == 'paid') {
+                    echo 'selected';
+                } ?>>Paid</option>
+            </select>
+            <button class="btn btn-success" type="submit">Update</button>
+          </div>
+        </form>
+
+      <!-- Assign Logistics Form -->
+        <form method="POST" action="process/process_assign_logistics.php" class="mt-2">
+            <input type="hidden" name="order_id" value="<?php echo $order_id; ?>">
+
+            <div class="input-group input-group-sm">
+                <select name="logistics_id" class="form-select">
+                    <option value="">Select Rider</option>
+                    <?php foreach ($providers as $provider) { ?>
+                        <option value="<?php echo $provider['logistics_id']; ?>"
+                            <?php if ($order['logistics_id'] == $provider['logistics_id']) {
+                                echo 'selected';
+                            } ?>>
+                            <?php echo $provider['name']; ?>
+                        </option>
+                    <?php } ?>
+                </select>
+                <button class="btn btn-primary" type="submit">Assign</button>
+            </div>
+        </form>
+    </div>
+  </div>
+</div>
+<?php } ?>
+
+
+    </div>
+</div>
+
 
     
 
