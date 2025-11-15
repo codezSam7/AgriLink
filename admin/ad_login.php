@@ -1,5 +1,5 @@
 <?php
-  session_start();
+session_start();
 
 ?>
 
@@ -20,14 +20,14 @@
         background: linear-gradient(to left, #e8f5e9, #c8e6c9);
         font-family: "Poppins", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
       }
-      <?php require_once("../assets/style.php"); ?>
+      <?php require_once '../assets/style.php'; ?>
       .con {
         margin-top: 3%;
       }
     </style>
   </head>
   <body>
-    <?php require_once("../common/header.php"); ?>
+    <?php require_once '../common/header.php'; ?>
 
     <section class="hero bg-success text-white">
       <div class="container text-center">
@@ -42,7 +42,7 @@
             <form action="process/process_login_admin.php" method="post">
               <div class="row g-4">
                 <div class="col-md-8 offset-md-2">
-                  <?php require_once("../common/alert.php"); ?>
+                  <?php require_once '../common/alert.php'; ?>
                 </div>
 
                 <div class="col-md-8 offset-md-2">

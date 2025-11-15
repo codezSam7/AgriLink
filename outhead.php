@@ -1,16 +1,16 @@
 <?php
-  require_once("classes/Buyer.php");
-  require_once("classes/Cart.php");
+require_once 'classes/Buyer.php';
+require_once 'classes/Cart.php';
 
-  $b = new Buyer;
-  $c = new Cart;
+$b = new Buyer;
+$c = new Cart;
 
-  $buyer = isset($_SESSION["buyer_online"]) ? $b->get_buyer_details($_SESSION["buyer_online"]) : [];
-  $cart_count = 0;
+$buyer = isset($_SESSION['buyer_online']) ? $b->get_buyer_details($_SESSION['buyer_online']) : [];
+$cart_count = 0;
 
-  if (isset($_SESSION["buyer_online"])) {
-    $cart_count = $c->count_buyer_cart($_SESSION["buyer_online"]);
-  }
+if (isset($_SESSION['buyer_online'])) {
+    $cart_count = $c->count_buyer_cart($_SESSION['buyer_online']);
+}
 ?>
 
 
@@ -40,24 +40,24 @@
         <li class="nav-item"><a class="bar-link active" href="index.php">Home</a></li>
         <li class="nav-item"><a class="bar-link" href="farmers/farmers.php">Farmers</a></li>
         <li class="nav-item"><a class="bar-link" href="products.php">Products</a></li>
-        <?php 
-          if(isset($_SESSION["buyer_online"])){
-        ?>
+        <?php
+          if (isset($_SESSION['buyer_online'])) {
+              ?>
           <li class="nav-item"><a class="bar-link" href="orders.php">Orders</a></li>
-        <?php  
-          } 
-        ?>
+        <?php
+          }
+?>
         <li class="nav-item"><a class="bar-link" href="admin/ad_login.php">Admin</a></li>
         <li class="nav-item"><a class="bar-link" href="contact.php">Contact</a></li>
       </ul>
 
       <div class="d-flex gap-2">
-        <?php 
-          if(isset($farmer["farmer_fullname"])){
-            $fname = $farmer["farmer_fullname"];
-            $name = explode(" ", $fname);
-            $show = end($name);
-        ?>
+        <?php
+  if (isset($farmer['farmer_fullname'])) {
+      $fname = $farmer['farmer_fullname'];
+      $name = explode(' ', $fname);
+      $show = end($name);
+      ?>
         
           <div class="dropdown">
             <a href="profile.php" class="btn btn-light text-success d-flex align-items-center gap-1 dropdown-toggle me-md-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -69,20 +69,20 @@
                 <i class="fas fa-power-off"></i> 
                 <span> Logout</span>
               </a>
-              <a href="farmers/f_orders.php" class="btn btn-danger d-flex align-items-center gap-1 dropdown-item">
-                <i class="fas fa-list-check"></i>
-                <span> Ordered</span>
+              <a href="profile.php" class="btn btn-danger d-flex align-items-center gap-1 dropdown-item">
+                <i class="fas fa-user"></i>
+                <span> Profile</span>
               </a>
             </ul>
           </div>
-        <?php 
-          } elseif(isset($buyer["buyer_fullname"])){ 
-        ?>
+        <?php
+  } elseif (isset($buyer['buyer_fullname'])) {
+      ?>
     
           <div class="dropdown">
             <a href="profile.php" class="btn btn-light text-success d-flex align-items-center gap-1 dropdown-toggle me-md-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fas fa-user"></i> 
-              <span><?php echo $buyer["buyer_fullname"] ?></span>
+              <span><?php echo $buyer['buyer_fullname'] ?></span>
             </a>
             <ul class="dropdown-menu">
               <a href="process/process_logout.php" class="btn btn-danger d-flex align-items-center gap-1 dropdown-item">
@@ -92,7 +92,7 @@
             </ul>
           </div>
           
-          <?php if (isset($buyer["buyer_fullname"])) { ?>
+          <?php if (isset($buyer['buyer_fullname'])) { ?>
             <a href="cart.php" class="position-relative mt-2">
               <i class="fas fa-cart-plus text-success fs-5"></i>
               <?php if ($cart_count > 0) { ?>
@@ -104,9 +104,9 @@
           <?php } ?>
           
 
-        <?php 
-          } else { 
-        ?>
+        <?php
+  } else {
+      ?>
 
           <div class="dropdown">
             <button class="btn btn-success dropdown-toggle m-md-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">

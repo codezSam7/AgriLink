@@ -1,13 +1,16 @@
 <?php
-  session_start(); 
-  require_once("classes/Farmer.php");
-  require_once("classes/Buyer.php");
+session_start();
+require_once 'classes/Farmer.php';
+require_once 'classes/Buyer.php';
 
-  $f = new Farmer;
-  $b = new Buyer;
+$f = new Farmer;
+$b = new Buyer;
 
-  $farmer = isset($_SESSION["farmer_online"]) ? $f->get_farmer_details($_SESSION["farmer_online"]) : [];
-  $buyer = isset($_SESSION["buyer_online"]) ? $b->get_buyer_details($_SESSION["buyer_online"]) : [];
+$farmer = isset($_SESSION['farmer_online']) ? $f->get_farmer_details($_SESSION['farmer_online']) : [];
+$buyer = isset($_SESSION['buyer_online']) ? $b->get_buyer_details($_SESSION['buyer_online']) : [];
+
+$farmers = $f->fetch_farmers();
+$products = $f->fetch_products();
 ?>
 
 
@@ -43,7 +46,7 @@
         margin:0;
       }
 
-      <?php require_once("assets/style.php"); ?>
+      <?php require_once 'assets/style.php'; ?>
 
       .hero-header { font-weight:700; font-size: clamp(1.6rem, 4vw, 2.8rem); line-height:1.05; }
       .hero-para { font-size: clamp(1rem, 2.6vw, 1.25rem); color: #234; }
@@ -140,11 +143,11 @@
   <body>
     <div class="container px-3 px-md-5">
       <!-- Navigation -->
-      <?php require_once("outhead.php"); ?>
+      <?php require_once 'outhead.php'; ?>
 
       <!-- HERO -->
       <section class="hero mx-auto" style="max-width:1200px;">
-        <?php require_once("common/alert.php") ?>
+        <?php require_once 'common/alert.php'?>
         <div class="row align-items-center">
           <div class="col-lg-7 text-center text-lg-start mb-3 mb-lg-0">
             <h1 class="hero-header">
@@ -169,16 +172,16 @@
               </div>
             </form>
 
-            <?php 
-              if(!isset($_SESSION["farmer_online"]) && !isset($_SESSION["buyer_online"])){ 
-            ?> 
+            <?php
+              if (! isset($_SESSION['farmer_online']) && ! isset($_SESSION['buyer_online'])) {
+                  ?> 
               <div class="mt-3 d-flex gap-2 justify-content-center justify-content-lg-start">
                 <a href="farmers/sign_farmer.php" class="btn btn-outline-success btn-lg">Register as Farmer</a>
                 <a href="buyers/sign_buyer.php" class="btn btn-success btn-lg text-white">Register as Consumer</a>
               </div>
-            <?php 
-              } 
-            ?>
+            <?php
+              }
+?>
           </div>
 
           <div class="col-lg-5 text-center">
@@ -203,65 +206,33 @@
         </div>
 
         <div class="row g-4">
-          <div class="col-6 col-sm-6 col-md-4 col-lg-3">
-            <div class="card product-card">
-              <img src="assets/images/vegetables/tomato.png" class="card-img-top" alt="Tomatoes — 1 crate" />
-              <div class="card-body">
-                <h6 class="card-title mb-1">Tomato — 1 crate</h6>
-                <p class="mb-1 text-success fw-bold">&#8358;10,000</p>
-                <p class="small-muted mb-2">From: <a href="pages/farmer_details.php" class="link-dark">Farmer Ade</a></p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="small-muted">Kano</div>
-                  <a class="btn btn-outline-success btn-sm" href="pages/product_details.php">View</a>
+          <?php foreach ($products as $product) {
+              $image = $product['product_image'];
+              $title = $product['product_name'].' - '.$product['product_quantityavailable'];
+              $unit = $product['product_unit'];
+              $price = number_format($product['product_price']);
+              $fname = explode(' ', $product['farmer_fullname']);
+              $show = end($fname);
+              $state = $product['state_name'];
+              ?>
+            <div class="col-6 col-sm-6 col-md-4 col-lg-3">
+              <div class="card product-card">
+                <img src="uploads/<?php echo $image; ?>" class="card-img-top" alt="<?php echo $product['product_name'] ?>" />
+                <div class="card-body">
+                  <h6 class="card-title mb-1"><?php echo $title ?></h6>
+                  <p class="mb-1 text-success fw-bold">
+                    <span>&#8358; <?php echo $price ?></span>
+                    <span><span class="text-muted"> / <?php echo $unit; ?></span></span>
+                  </p>
+                  <p class="small-muted mb-2">From: <a href="pages/farmer_details.php" class="link-dark">Farmer <?php echo $show ?></a></p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="small-muted"><?php echo $state ?></div>
+                    <a class="btn btn-outline-success btn-sm" href="product_details.php">View</a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-
-          <div class="col-6 col-sm-6 col-md-4 col-lg-3">
-            <div class="card product-card">
-              <img src="assets/images/fruits/banana.png" class="card-img-top" alt="Banana — 25kg" />
-              <div class="card-body">
-                <h6 class="card-title mb-1">Banana — 25kg</h6>
-                <p class="mb-1 text-success fw-bold">&#8358;12,500</p>
-                <p class="small-muted mb-2">From: <a href="pages/farmer_details.php" class="link-dark">Mama Joy</a></p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="small-muted">Sokoto</div>
-                  <a class="btn btn-outline-success btn-sm" href="pages/product_details.php">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-6 col-sm-6 col-md-4 col-lg-3">
-            <div class="card product-card">
-              <img src="assets/images/roots/cotton.png" class="card-img-top" alt="Cotton — 50kg" />
-              <div class="card-body">
-                <h6 class="card-title mb-1">Cotton — 50kg</h6>
-                <p class="mb-1 text-success fw-bold">&#8358;25,000</p>
-                <p class="small-muted mb-2">From: <a href="pages/farmer_details.php" class="link-dark">FarmCo</a></p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="small-muted">Ibadan</div>
-                  <a class="btn btn-outline-success btn-sm" href="pages/product_details.php">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-6 col-sm-6 col-md-4 col-lg-3">
-            <div class="card product-card">
-              <img src="assets/images/grains_legumes/rice.png" class="card-img-top" alt="Local Rice — 50kg" />
-              <div class="card-body">
-                <h6 class="card-title mb-1">Local Rice — 50kg</h6>
-                <p class="mb-1 text-success fw-bold">&#8358;45,000</p>
-                <p class="small-muted mb-2">From: <a href="pages/farmer_details.php" class="link-dark">Greenfields</a></p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="small-muted">Lagos</div>
-                  <a class="btn btn-outline-success btn-sm" href="pages/product_details.php">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
+          <?php } ?>
         </div>
       </section>
 
@@ -273,56 +244,24 @@
         </div>
 
         <div class="row g-4">
-          <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-            <div class="card farmer-card">
-              <img src="" class="card-img-top" alt="Farmer Ade profile" />
-              <div class="card-body">
-                <h6 class="mb-1">Farmer Ade</h6>
-                <p class="small-muted">Location: Kano</p>
-                <p class="small-muted">Products: Tomatoes, Peppers, Okra</p>
-                <div class="d-flex justify-content-between align-items-center mt-2">
-                  <a href="pages/farmer_details.php" class="btn btn-outline-success btn-sm">View profile</a>
-                  <div class="small-muted">
-                    <i class="bi bi-star-fill text-warning" aria-hidden="true"></i> 4.6
+          <?php foreach ($farmers as $farmer) { ?>
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+              <div class="card farmer-card">
+                <img src="" class="card-img-top" alt="<?php echo $farmer['farmer_fullname'].' image' ?>" />
+                <div class="card-body">
+                  <h6 class="mb-1"><?php echo $farmer['farmer_fullname'] ?></h6>
+                  <p class="small">Location: <?php echo $farmer['state_name']; ?></p>
+                  <p class="small fw-bold text-success">Produces: <?php echo $farmer['farmer_primary_produce'] ?></p>
+                  <div class="d-flex justify-content-between align-items-center mt-2">
+                    <a href="pages/farmer_details.php" class="btn btn-outline-success btn-sm">View profile</a>
+                    <div class="small-muted">
+                      <i class="bi bi-star-fill text-warning" aria-hidden="true"></i> 4.6
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-            <div class="card farmer-card">
-              <img src="" class="card-img-top" alt="Mama Joy profile" />
-              <div class="card-body">
-                <h6 class="mb-1">Mama Joy</h6>
-                <p class="small-muted">Location: Sokoto</p>
-                <p class="small-muted">Products: Onions, Garri</p>
-                <div class="d-flex justify-content-between align-items-center mt-2">
-                  <a href="pages/farmer_details.php" class="btn btn-outline-success btn-sm">View profile</a>
-                  <div class="small-muted">
-                    <i class="bi bi-star-fill text-warning" aria-hidden="true"></i> 4.8
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-            <div class="card farmer-card">
-              <img src="" class="card-img-top" alt="FarmCo profile" />
-              <div class="card-body">
-                <h6 class="mb-1">FarmCo</h6>
-                <p class="small-muted">Location: Ibadan</p>
-                <p class="small-muted">Products: Garri, Yam</p>
-                <div class="d-flex justify-content-between align-items-center mt-2">
-                  <a href="pages/farmer_details.php" class="btn btn-outline-success btn-sm">View profile</a>
-                  <div class="small-muted">
-                    <i class="bi bi-star-fill text-warning" aria-hidden="true"></i> 4.4
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <?php } ?>
         </div>
       </section>
 
@@ -394,7 +333,7 @@
 
       <!-- Footer  -->
       <div class="col-md-11 offset-md-1 py-5">
-        <?php require_once("common/footer.php") ?>
+        <?php require_once 'common/footer.php'?>
       </div>
 
     </div>

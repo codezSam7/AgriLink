@@ -1,3 +1,15 @@
+<?php
+session_start();
+require_once 'classes/Farmer.php';
+// print_r($_SESSION);
+// put a user guard to protect the page
+// retrieve the details of a user
+$f = new Farmer;
+$farmer = $f->get_farmer_details($_SESSION['farmer_online']);
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,13 +30,144 @@
       background: linear-gradient(to left, #e8f5e9, #c8e6c9);
       font-family: "Poppins", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
     }
-    <?php require_once("assets/style.php"); ?>
+    <?php require_once 'assets/style.php'; ?>
+    .con{
+        margin-top: 5%;
+    }
   </style>
 </head>
-<body>
-  <?php require_once("outhead.php"); ?>
+<body class="con">
+  <?php require_once 'outhead.php'; ?>
 
-  <?php require_once("common/alert.php") ?>
+  <?php require_once 'common/alert.php'?>
+    <section class="py-5 my-5">
+        <div class="container my-2">
+            <div class="row g-4">
+
+                <div class="col-md-8 offset-md-2">
+                    <div class="card h-100 shadow-sm product-card">
+
+                        <!-- Header (Dashboard Nav) -->
+                        <div class="card-header bg-success border-bottom">
+                            <!-- <?php require_once 'common/nav.php'; ?> -->
+                        </div>
+
+                        <div class="card-body">
+
+                            <!-- Page Title -->
+                            <h3 class="text-center text-success pt-4 mb-4">Update Profile</h3>
+
+                            <!-- Display Picture -->
+                            <div class="text-center mb-4">
+                                <?php
+                                    $avatar = ! empty($farmer['farmer_avatarurl'])
+                                        ? 'uploads/'.$farmer['farmer_avatarurl']
+                                        : 'assets/images/default_dp.png';
+?>
+                                <img src="<?php echo $avatar; ?>" 
+                                    alt="Display Picture" 
+                                    class="profile-pic rounded-circle border">
+                            </div>
+
+                            <div class="row g-4 pb-5">
+
+                                <?php require_once 'common/alert.php'; ?>
+
+                                <form action="process/process_farmer_profile_update.php" 
+                                    method="post" 
+                                    enctype="multipart/form-data">
+
+                                    <!-- Fullname -->
+                                    <div class="mb-3">
+                                        <label for="fullname" class="form-label">Full Name</label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="fullname" 
+                                            name="fullname" 
+                                            value="<?php echo $farmer['farmer_fullname']; ?>" 
+                                            required
+                                        >
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="farmname" class="form-label">Farm Name</label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="farmname" 
+                                            name="farmname" 
+                                            value="<?php echo $farmer['farmer_farm_name']; ?>" 
+                                            required
+                                        >
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">Phone Number</label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="phone" 
+                                            name="phone" 
+                                            value="<?php echo $farmer['farmer_phone']; ?>" 
+                                            required
+                                        >
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="primary_produce" class="form-label">Primary Produce</label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="primary_produce" 
+                                            name="primary_produce" 
+                                            value="<?php echo $farmer['farmer_primary_produce']; ?>" 
+                                            required
+                                        >
+                                    </div>
+
+                                    <!-- Bio -->
+                                    <div class="mb-3">
+                                        <label for="status" class="form-label">Bio</label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="status" 
+                                            name="status" 
+                                            placeholder="Write something about yourself..."
+                                            value="<?php echo $farmer['farmer_bio'] ?? ''; ?>"
+                                        >
+                                    </div>
+
+                                    <!-- Display Picture Upload -->
+                                    <div class="mb-3">
+                                        <label for="cover" class="form-label">Change Display Picture</label>
+                                        <input 
+                                            type="file" 
+                                            class="form-control" 
+                                            id="cover" 
+                                            name="cover"
+                                        >
+                                    </div>
+
+                                    <!-- Submit -->
+                                    <button name="updateprofilebtn" 
+                                            class="btn btn-success w-100">
+                                        Update Profile
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
 
 
 

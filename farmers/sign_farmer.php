@@ -1,8 +1,8 @@
-<?php 
-  session_start();
-  require_once("../classes/Farmer.php");
-  $c = new Farmer;
-  $states = $c->fetch_all_states(); 
+<?php
+session_start();
+require_once '../classes/Farmer.php';
+$c = new Farmer;
+$states = $c->fetch_all_states();
 ?>
 
 <!DOCTYPE html>
@@ -22,14 +22,14 @@
         background: linear-gradient(to left, #e8f5e9, #c8e6c9);
         font-family: "Poppins", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
       }
-      <?php require_once("../assets/style.php"); ?>
+      <?php require_once '../assets/style.php'; ?>
       .con {
         margin-top: 3%;
       }
     </style>
   </head>
   <body>
-    <?php require_once("../common/header.php"); ?>
+    <?php require_once '../common/header.php'; ?>
 
     <section class="hero bg-success text-white">
       <div class="container text-center">
@@ -45,7 +45,7 @@
               Create your farmer profile to list produce and receive orders.
             </p>
 
-            <?php require_once("../common/alert.php"); ?>
+            <?php require_once '../common/alert.php'; ?>
 
             <form action="../process/process_sign_farmer.php" method="post">
               <div class="row g-3">
@@ -72,15 +72,15 @@
                     <label class="form-label">Delivery state</label>
                     <select class="form-select" id="delvstate" name="delvstate">
                       <option value="">Select State</option>
-                      <?php 
-                        foreach($states as $state){ 
-                      ?>
+                      <?php
+                        foreach ($states as $state) {
+                            ?>
                         <option value="<?php echo $state['state_id'] ?>">
                           <?php echo htmlspecialchars($state['state_name']) ?>
                         </option>
-                      <?php 
-                        }; 
-                      ?>
+                      <?php
+                        }
+?>
                     </select>
                   </div>
 
@@ -93,18 +93,13 @@
                   <label class="form-label">Primary produce</label>
                   <input
                     class="form-control"
-                    name="prip"
+                    name="primary_produce"
                     placeholder="e.g. Tomatoes, Maize"
                   />
                 </div>
 
-                <div class="col-md-6">
-                  <label class="form-label">Farm size (hectares)</label>
-                  <input class="form-control" type="number" name="farm_s" />
-                </div>
-
                 <div class="col-12">
-                  <textarea class="form-control" rows="3" name="message" placeholder="Short bio"></textarea>
+                  <textarea class="form-control" rows="3" name="bio" placeholder="Short bio"></textarea>
                 </div>
 
                 <div class="col-md-6">

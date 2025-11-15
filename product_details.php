@@ -1,28 +1,26 @@
 <?php
-  session_start();
-  require_once("classes/Farmer.php");
-  require_once("classes/Category.php");
-  require_once("classes/Buyer.php");
+session_start();
+require_once 'classes/Farmer.php';
+require_once 'classes/Buyer.php';
 
-  $f = new Farmer;
-  $b = new Buyer;
-  $c = new Category;
+$f = new Farmer;
+$b = new Buyer;
 
-  $farmer = isset($_SESSION["farmer_online"]) ? $f->get_farmer_details($_SESSION["farmer_online"]) : [];
-  $buyer = isset($_SESSION["buyer_online"]) ? $b->get_buyer_details($_SESSION["buyer_online"]) : [];
+$farmer = isset($_SESSION['farmer_online']) ? $f->get_farmer_details($_SESSION['farmer_online']) : [];
+$buyer = isset($_SESSION['buyer_online']) ? $b->get_buyer_details($_SESSION['buyer_online']) : [];
 
-  if(!isset($_GET["id"])){
-    header("location: index.php");
+if (! isset($_GET['id'])) {
+    header('location: index.php');
     exit;
-  }
+}
 
-  $product_id = $_GET["id"];
-  $product = $f->get_product_by_id($product_id);
+$product_id = $_GET['id'];
+$product = $f->get_product_by_id($product_id);
 
-  if(!$product){
-    header("location: index.php");
+if (! $product) {
+    header('location: index.php');
     exit;
-  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +33,7 @@
   <link rel="stylesheet" href="assets/fontawesome/css/all.css" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <title><?php echo $product["product_name"]; ?> - AgriLink</title>
+  <title><?php echo $product['product_name']; ?> - AgriLink</title>
   <style>
     body {
       background: linear-gradient(to left, #e8f5e9, #c8e6c9);
@@ -107,64 +105,64 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    <?php require_once("assets/style.php"); ?>
+    <?php require_once 'assets/style.php'; ?>
   </style>
 </head>
 <body>
-  <?php require_once("outhead.php"); ?>
+  <?php require_once 'outhead.php'; ?>
 
   <div class="container">
     <div class="product-detail-wrapper row g-0">
       <div class="col-md-5">
-        <img src="uploads/<?php echo $product["product_image"]; ?>" alt="<?php echo $product["product_name"]; ?>" class="product-detail-img">
+        <img src="uploads/<?php echo $product['product_image']; ?>" alt="<?php echo $product['product_name']; ?>" class="product-detail-img">
       </div>
       <div class="col-md-7">
         <div class="product-detail-content">
-          <h2 class="product-title"><?php echo $product["product_name"]; ?></h2>
+          <h2 class="product-title"><?php echo $product['product_name']; ?></h2>
 
           <div class="price-tag mb-2">
-            ₦<?php echo number_format($product["product_price"]); ?>
-            <span class="unit">/ <?php echo $product["product_unit"]; ?></span>
+            ₦<?php echo number_format($product['product_price']); ?>
+            <span class="unit">/ <?php echo $product['product_unit']; ?></span>
           </div>
 
           <p class="product-desc">
-            <?php echo nl2br($product["product_description"]); ?>
+            <?php echo $product['product_description']; ?>
           </p>
 
-          <p><strong>Available Quantity:</strong> <?php echo $product["product_quantityavailable"]; ?></p>
+          <p><strong>Available Quantity:</strong> <?php echo $product['product_quantityavailable']; ?></p>
 
           <div class="farmer-info">
             <p>
               <i class="fas fa-user text-success"></i>
               Sold by: 
               <a href="farmers/farmer_details.php?id=<?php echo $product['product_farmer_id']; ?>">
-                <?php echo $product["farmer_fullname"]; ?>
+                <?php echo $product['farmer_fullname']; ?>
               </a>
             </p>
-            <p><i class="fas fa-map-marker-alt text-success"></i> Located in: <?php echo $product["state_name"]; ?></p>
+            <p><i class="fas fa-map-marker-alt text-success"></i> Located in: <?php echo $product['state_name']; ?></p>
           </div>
 
           <div class="mt-4 d-flex gap-2">
-            <?php if(isset($_SESSION["buyer_online"])): ?>
-              <a href="process/process_addtocart.php?id=<?php echo $product["product_id"]; ?>" class="btn btn-success btn-lg">
+            <?php if (isset($_SESSION['buyer_online'])) { ?>
+              <a href="process/process_addtocart.php?id=<?php echo $product['product_id']; ?>" class="btn btn-success btn-lg">
                 <i class="fas fa-cart-plus"></i> Add to Cart
               </a>
-            <?php elseif(isset($_SESSION["farmer_online"])): ?>
+            <?php } elseif (isset($_SESSION['farmer_online'])) { ?>
               <a href="farmers/update_product.php?id=<?php echo $product['product_id']; ?>" class="btn btn-outline-success">
                 <i class="bi bi-pencil-square"></i> Update Product
               </a>
-            <?php else: ?>
+            <?php } else { ?>
               <a href="buyers/login_buyer.php" class="btn btn-outline-success btn-lg">
                 <i class="fas fa-user"></i> Login to Purchase
               </a>
-            <?php endif; ?>
+            <?php } ?>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <?php require_once("common/footer.php"); ?>
+  <?php require_once 'common/footer.php'; ?>
   <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>
 </body>
 </html>

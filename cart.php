@@ -24,7 +24,7 @@ $cart_items = isset($_SESSION['buyer_online']) ? $c->fetch_buyer_cart($_SESSION[
     <style>
       body {
         font-family: "Poppins", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-        background: #f5f5f5;
+        background: linear-gradient(90deg,#e8f5e9 0%, #c8e6c9 100%);
         color: #1b4332;
         margin: 0;
       }
@@ -93,64 +93,62 @@ $cart_items = isset($_SESSION['buyer_online']) ? $c->fetch_buyer_cart($_SESSION[
     <?php require_once 'outhead.php'; ?>
 
     <div class="row">
-      <div class="col-md-10 offset-md-1">
+        <div class="col-md-10 offset-md-1">
 
-        <?php if (! $cart_items || count($cart_items) === 0) { ?>
-          <div class="alert alert-info text-center fs-5">
-            Your cart is empty 😣
-          </div>
-        <?php } else { ?>
-          <h3 class="fw-bold mb-4 my-5">My Shopping Cart</h3>
+            <?php if (! $cart_items || count($cart_items) === 0) { ?>
+                <div class=" mt-2 alert alert-danger text-center fs-5">
+                    Your cart is empty 😣
+                </div>
+            <?php } else { ?>
+                <h3 class="fw-bold mb-4 my-5 text-success">My Shopping Cart</h3>
 
-          <?php
-            $total = 0;
-            foreach ($cart_items as $item) {
-                $pix = ! empty($item['product_image']) ? 'uploads/'.$item['product_image'] : 'assets/images/no-image.png';
-                $product = $item['product_name'];
-                $qty = $item['cart_qty'];
-                $price = $item['product_price'];
-                $subtotal = $qty * $price;
-                $total += $subtotal;
-                ?>
-          <div class="cart-item d-flex align-items-center justify-content-between flex-wrap">
-            <div class="d-flex align-items-center">
-              <img src="<?php echo $pix ?>" alt="<?php echo htmlspecialchars($product) ?>" class="cart-img me-3">
-              <div>
-                <h5 class="item-name mb-1"><?php echo htmlspecialchars($product) ?></h5>
-                <p class="mb-1">Price: <span class="item-price">&#8358;<?php echo number_format($price, 2) ?></span></p>
-                <p class="mb-1">Qty: <?php echo $qty ?></p>
-                <p class="subtotal mb-0">Subtotal: &#8358;<?php echo number_format($subtotal, 2) ?></p>
-              </div>
+            <?php require_once 'common/alert.php'; ?>
+            <?php
+                $total = 0;
+                foreach ($cart_items as $item) {
+                    $pix = ! empty($item['product_image']) ? 'uploads/'.$item['product_image'] : 'assets/images/no-image.png';
+                    $product = $item['product_name'];
+                    $qty = $item['cart_qty'];
+                    $price = $item['product_price'];
+                    $subtotal = $qty * $price;
+                    $total += $subtotal;
+                    ?>
+                <div class="cart-item d-flex align-items-center justify-content-between flex-wrap">
+                    <div class="d-flex align-items-center">
+                        <img src="<?php echo $pix ?>" alt="<?php echo $product ?>" class="cart-img me-3">
+                        <div>
+                            <h5 class="item-name mb-1"><?php echo $product ?></h5>
+                            <p class="mb-1">Price: <span class="item-price">&#8358;<?php echo number_format($price, 2) ?></span></p>
+                            <p class="mb-1">Qty: <?php echo $qty ?></p>
+                            <p class="subtotal mb-0">Subtotal: &#8358;<?php echo number_format($subtotal, 2) ?></p>
+                        </div>
+                    </div>
+
+                    <div class="text-end mt-3 mt-md-0">
+                        <a href="process/remove_from_cart.php?cid=<?php echo $item['cid'] ?>" class="btn btn-outline-danger btn-sm me-2">
+                            <i class="fas fa-trash"></i> Remove
+                        </a>
+                    </div>
+                </div>
+            <?php } ?>
+
+            <!-- CART SUMMARY -->
+            <div class="cart-summary mt-5">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold">Total:</h5>
+                    <h4 class="fw-bold text-success">&#8358;<?php echo number_format($total, 2) ?></h4>
+                </div>
+                <div class="text-end mt-3">
+                    <a href="checkout.php" class="btn btn-checkout btn-lg px-4">
+                        Proceed to Checkout
+                    </a>
+                </div>
             </div>
 
-            <div class="text-end mt-3 mt-md-0">
-              <a href="process/remove_from_cart.php?cid=<?php echo $item['cid'] ?>" class="btn btn-outline-danger btn-sm me-2">
-                <i class="fas fa-trash"></i> Remove
-              </a>
-              <a href="checkout.php" class="btn btn-success btn-sm">
-                <i class="fas fa-credit-card"></i> Checkout
-              </a>
-            </div>
-          </div>
-          <?php } ?>
+            <a href="process/empty_cart.php" class="btn btn-danger btn-lg mt-3">Empty Cart</a>
 
-          <!-- CART SUMMARY -->
-          <div class="cart-summary mt-5">
-            <div class="d-flex justify-content-between align-items-center">
-              <h5 class="fw-bold">Total:</h5>
-              <h4 class="fw-bold text-success">&#8358;<?php echo number_format($total, 2) ?></h4>
-            </div>
-            <div class="text-end mt-3">
-              <a href="checkout.php" class="btn btn-checkout btn-lg px-4">
-                Proceed to Checkout
-              </a>
-            </div>
-          </div>
-
-          <a href="process/empty_cart.php" class="btn btn-danger btn-lg mt-3">Empty Cart</a>
-
-        <?php } ?>
-      </div>
+            <?php } ?>
+        </div>
     </div>
 
   </body>

@@ -1,6 +1,8 @@
 <?php
 
-require_once 'Db.php';
+require_once dirname(__DIR__, 2).'/classes/config.php';
+require_once dirname(__DIR__, 2).'/classes/Db.php';
+
 class Admin extends Db
 {
     private $agconn;
@@ -53,6 +55,65 @@ class Admin extends Db
             return $rsp;
         } catch (PDOException $e) {
             // echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function fetch_products()
+    {
+        try {
+            $sql = 'SELECT *,product_id as pid, product_description as pdesc FROM products JOIN categories ON product_category_id=category_id JOIN farmers ON product_farmer_id=farmer_id JOIN state ON farmer_state_id = state_id';
+            $stmt = $this->agconn->prepare($sql);
+            $stmt->execute();
+            $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $products;
+        } catch (PDOException $e) {
+            // echo $e->getMessage(); die();
+            return false;
+        }
+    }
+
+    public function fetch_farmers()
+    {
+        try {
+            $sql = 'SELECT f.*, s.state_name 
+                    FROM farmers f 
+                    JOIN state s ON f.farmer_state_id = s.state_id';
+            $stmt = $this->agconn->prepare($sql);
+            $stmt->execute();
+            $farmers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $farmers;
+        } catch (PDOException $e) {
+            // echo $e->getMessage(); die();
+            return false;
+        }
+    }
+
+    public function fetch_buyers()
+    {
+        try {
+            $sql = 'SELECT b.*, s.state_name 
+                    FROM buyers b 
+                    JOIN state s ON b.buyer_state_id = s.state_id';
+            $stmt = $this->agconn->prepare($sql);
+            $stmt->execute();
+            $farmers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $farmers;
+        } catch (PDOException $e) {
+            // echo $e->getMessage(); die();
+            return false;
+        }
+    }
+
+    public function fetch_orders()
+    {
+        try {
+
+        } catch (PDOException $e) {
+            // echo $e->getMessage(); die();
             return false;
         }
     }
