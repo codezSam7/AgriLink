@@ -6,7 +6,7 @@ require_once 'classes/Cart.php';
 $b = new Buyer;
 $c = new Cart;
 
-$user = $b->get_buyer_details($_SESSION['buyer_online']);
+$buyer = $b->get_buyer_details($_SESSION['buyer_online']);
 
 if (isset($_SESSION['order_id'])) {
     $order_id = $_SESSION['order_id'];

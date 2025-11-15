@@ -252,6 +252,8 @@ $buyers = $a->fetch_buyers();
       </div>
     </div>
 
+    <?php require_once 'common/alert.php' ?>
+
     <div class="row g-4 mt-2" id="farmerContainer">
       <?php if (! empty($farmers)) { ?>
         <?php foreach ($farmers as $farmer) { ?>

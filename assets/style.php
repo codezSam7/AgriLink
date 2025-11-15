@@ -35,3 +35,8 @@ box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 .card-style-1 .card-meta .image img {
   width: 100%;
 }
+@keyframes fadeIn { 
+        from{opacity:0; 
+          transform:translateY(10px);} to{opacity:1; transform:translateY(0);
+        } 
+      }

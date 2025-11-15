@@ -103,6 +103,8 @@ body {
       <div class="small text-muted">Admin | Overview</div>
     </div>
 
+    <?php require_once 'common/alert.php' ?>
+    
     <div class="row g-3">
       <div class="col-md-4">
         <div class="card stat-card p-3">

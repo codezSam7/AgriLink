@@ -57,21 +57,14 @@ class Cart extends Db
     public function fetch_buyer_cart($buyer_id)
     {
         try {
-            $sql = 'SELECT c.*, 
-                    p.product_name, 
-                    p.product_price, 
-                    p.product_image,
-                    c.cart_id AS cid
-              FROM carts c 
-              JOIN products p 
-              ON c.cart_productid = p.product_id 
-              WHERE c.cart_buyerid = ?';
+            $sql = 'SELECT *,carts.cart_id as cid FROM carts JOIN products ON carts.cart_productid = products.product_id WHERE carts.cart_buyerid = ?';
             $stmt = $this->agconn->prepare($sql);
             $stmt->execute([$buyer_id]);
-            $bcart = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            return $bcart;
+            return $items;
         } catch (PDOException $e) {
+            // echo $e->getMessage(); die();
             return false;
         }
     }

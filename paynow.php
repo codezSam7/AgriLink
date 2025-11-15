@@ -5,7 +5,7 @@ require_once 'classes/Buyer.php';
 require_once 'classes/Payment.php';
 require_once 'classes/Utility.php';
 
-$u = new Buyer;
+$b = new Buyer;
 $p = new Payment;
 
 if (! isset($_SESSION['order_id'])) {
@@ -14,14 +14,14 @@ if (! isset($_SESSION['order_id'])) {
     exit;
 }
 
-$amt = $u->fetch_order_amount($_SESSION['order_id']);
+$amt = $b->fetch_order_amount($_SESSION['order_id']);
 $ref = Utility::generate_ref();
 // keep the ref in session
 $_SESSION['refno'] = $ref;
 // insert into the payment table
 $p->insert_payment($amt, $_SESSION['buyer_online'], $_SESSION['order_id'], $ref);
 // send to paystack
-$deets = $u->get_buyer_details($_SESSION['buyer_online']);
+$deets = $b->get_buyer_details($_SESSION['buyer_online']);
 $email = $deets['buyer_email'];
 $rsp = $p->initialize_paystack_step1($email, $amt, $ref);
 

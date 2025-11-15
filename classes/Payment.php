@@ -12,19 +12,11 @@ class Payment extends Db
 
     public function update_database($paystatus, $data, $ref)
     {
-        try {
+        $sql = 'UPDATE payments SET pay_status=?, pay_data=? WHERE pay_ref=?';
+        $stmt = $this->agconn->prepare($sql);
+        $stmt->execute([$paystatus, $data, $ref]);
 
-            $sql = 'UPDATE payments SET pay_status = ?, pay_data = ? WHERE pay_ref = ?';
-            $stmt = $this->agconn->prepare($sql);
-            $stmt->execute([$paystatus, $data, $ref]);
-
-            return true;
-        } catch (PDOException $e) {
-            // echo $e->getMessage();
-            // exit();
-
-            return false;
-        }
+        return true;
     }
 
     public function verify_paystack_step2($reference)
@@ -58,17 +50,24 @@ class Payment extends Db
 
             return $this->agconn->lastInsertId();
         } catch (PDOException $e) {
-            // echo $e->getMessage();
-            // exit();
+            echo $e->getMessage();
+            exit();
 
             return false;
         }
     }
 
+    public function update_order_paid($order_id)
+    {
+        $sql = "UPDATE orders SET pay_status='paid' WHERE order_id=?";
+        $stmt = $this->agconn->prepare($sql);
+        $stmt->execute([$order_id]);
+    }
+
     public function initialize_paystack_step1($email, $amount, $reference)
     {
         $url = 'https://api.paystack.co/transaction/initialize';
-        $postRequest = ['email' => $email, 'amount' => $amount * 100, 'reference' => $reference, 'callback_url' => 'http://localhost/agrilink/paydirect.php'];
+        $postRequest = ['email' => $email, 'amount' => $amount * 100, 'reference' => $reference, 'callback_url' => 'http://localhost/agrilink/paydirect.php?reference='.$reference];
         $headers = ['Content-Type: application/json', 'Authorization:Bearer sk_test_138e6315fff181d1a7e444e5f00e09d7f175215d'];
 
         // initialize curl

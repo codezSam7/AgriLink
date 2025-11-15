@@ -2,8 +2,10 @@
 session_start();
 require_once 'admin_guard.php';
 require_once 'classes/Admin.php';
+require_once '../classes/Farmer.php';
 
 $a = new Admin;
+$f = new Farmer;
 
 if (isset($_SESSION['admin_online'])) {
     $admin = $a->get_admin_details($_SESSION['admin_online']);
@@ -12,7 +14,7 @@ if (isset($_SESSION['admin_online'])) {
     exit();
 }
 
-$products = $a->fetch_products();
+$products = $f->fetch_products();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -259,29 +261,34 @@ $products = $a->fetch_products();
 
     <div class="admin-wrapper">
         <h3 class="page-title">Manage Products</h3>
+        <?php require_once 'common/alert.php' ?>
         <section class="products-grid">
             <?php foreach ($products as $product) {
                 $image = $product['product_image'];
-                $title = $product['product_name'].' - '.$product['product_quantityavailable'].$product['product_unit'];
+                $pname = $product['product_name'];
+                $avail = $product['product_quantityavailable'];
+                $unit = $product['product_unit'];
                 $price = number_format($product['product_price']);
-                $fname = explode(' ', $product['farmer_fullname']);
-                $show = end($fname);
+                $fname = $product['farmer_fullname'];
+                $name = explode(' ', $fname);
+                $show = end($name);
                 $state = $product['state_name'];
                 ?>
             <div class="product-card">
-                <img src="uploads/<?php echo $image; ?>" alt="<?php echo $title; ?>">
+                <img src="../uploads/<?php echo $image; ?>" alt="<?php echo $pname ?>" />
                 <div class="card-body">
-                <h6><?php echo $title; ?></h6>
-                <p class="text-success fw-bold">&#8358; <?php echo $price; ?></p>
-                <p class="small text-muted">From: Farmer <?php echo $show; ?></p>
-                <p class="small text-muted">In: <?php echo $state; ?></p>
-                <div class="admin-actions">
-                    <a class="btn btn-outline-danger btn-sm" href="process/process_delete_product.php?id=<?php echo $product['product_id']; ?>" onclick="return confirm('Are you sure you want to delete this product?');">
-                    <i class="fas fa-trash"></i> Delete
-                    </a>
-                    <a class="btn btn-outline-success btn-sm" href="product_details.php?id=<?php echo $product['product_id']; ?>">
-                    <i class="fas fa-eye"></i> View
-                    </a>
+                    <h6><?php echo $pname; ?></h6>
+                    <p class="text-success fw-bold">&#8358; <?php echo $price; ?></p>
+                    <p class="small text-muted">From: Farmer <?php echo $show; ?></p>
+                    <p class="small text-muted">In: <?php echo $state; ?></p>
+                    <div class="admin-actions">
+                        <a class="btn btn-outline-danger btn-sm" href="process/process_delete_product.php?id=<?php echo $product['product_id']; ?>" onclick="return confirm('Are you sure you want to delete this product?');">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                        <a class="btn btn-outline-success btn-sm" href="product_details.php?id=<?php echo $product['product_id']; ?>">
+                        <i class="fas fa-eye"></i> View
+                        </a>
+                    </div>
                 </div>
             </div>
             <?php } ?>

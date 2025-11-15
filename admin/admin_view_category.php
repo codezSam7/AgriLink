@@ -116,9 +116,10 @@ $cats = $c->fetch_all_categories();
     }
 
     @keyframes fadeIn { 
-        from{opacity:0; 
-            transform:translateY(10px);} to{opacity:1; transform:translateY(0);} 
-        }
+      from{opacity:0; 
+        transform:translateY(10px);} to{opacity:1; transform:translateY(0);
+      } 
+    }
 
     h2 { 
         font-weight:700; 
@@ -259,9 +260,10 @@ $cats = $c->fetch_all_categories();
       <h2>Add New Category</h2>
 
       <form action="process/process_category.php" method="post">
+        <?php require_once 'common/alert.php' ?>
         <div class="mb-4">
           <label for="cat_name" class="form-label">Category Name</label>
-          <input type="text" id="cat_name" name="cat_name" class="form-control" placeholder="e.g. Vegetables, Grains, Fruits" required>
+          <input type="text" id="cat_name" name="cat_name" class="form-control" placeholder="e.g. Vegetables, Grains, Fruits">
         </div>
 
         <div class="d-grid mb-4">

@@ -74,6 +74,22 @@ class Admin extends Db
         }
     }
 
+    public function delete_from_products($product_id)
+    {
+        try {
+            $sql = 'DELETE FROM products WHERE product_id = ?';
+            $stmt = $this->agconn->prepare($sql);
+            $stmt->execute([$product_id]);
+
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            exit();
+
+            return false;
+        }
+    }
+
     public function fetch_farmers()
     {
         try {
