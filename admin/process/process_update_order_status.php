@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $updated = $a->update_order_status($order_id, $status);
 
         if ($updated) {
-            $_SESSION['msg'] = "Order #$order_id status updated to '. $status .' successfully!";
+            $_SESSION['msg'] = "Order #$order_id status updated to '".$status."' successfully!";
         } else {
             $_SESSION['errormsg'] = 'Failed to update order status.';
         }
@@ -21,8 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['errormsg'] = 'Invalid input.';
     }
 } else {
-    $_SESSION['errormsg'] = 'Invalid request method.';
+    header('location: ../admin_view_orders.php');
+    exit;
 }
-
-header('Location: ../admin_view_orders.php');
-exit;

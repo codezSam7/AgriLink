@@ -20,7 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         $_SESSION['errormsg'] = 'Please select a rider.';
     }
+} else {
+    header('location: ../admin_view_orders.php');
+    exit;
 }
-
 header('location: ../admin_view_orders.php');
 exit;
