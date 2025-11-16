@@ -111,11 +111,26 @@
     </div>
 
     <ul class="nav flex-column w-100">
-      <li class="nav-item"><a class="nav-link active" href="admin.php"><i class="fas fa-home"></i> Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link" href="admin_manage_products.php"><i class="fas fa-box"></i> Manage Products</a></li>
-        <li class="nav-item"><a class="nav-link" href="admin_view_users.php"><i class="fas fa-users"></i> Manage Users</a></li>
-        <li class="nav-item"><a class="nav-link" href="admin_view_orders.php"><i class="fas fa-shopping-cart"></i> Manage Orders</a></li>
-        <li class="nav-item"><a class="nav-link" href="admin_view_category.php"><i class="fas fa-layer-group"></i> Manage Categories</a></li>
+      <li class="nav-item">
+        <a class="nav-link active" href="admin.php">
+        <i class="fas fa-home"></i> Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="admin_manage_products.php">
+        <i class="fas fa-box"></i> Manage Products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="admin_manage_users.php">
+        <i class="fas fa-users"></i> Manage Users</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="admin_manage_orders.php"><i class="fas fa-shopping-cart">
+        </i> Manage Orders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="admin_manage_category.php">
+        <i class="fas fa-layer-group"></i> Manage Categories</a>
+      </li>
     </ul>
     <button class="btn btn-green logout-btn">
         <a href="process/process_logout_admin.php"> Logout</a>

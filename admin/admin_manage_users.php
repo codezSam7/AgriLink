@@ -224,15 +224,15 @@ $buyers = $a->fetch_buyers();
             <i class="fas fa-box"></i> Manage Products</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="admin_view_users.php">
+            <a class="nav-link" href="admin_manage_users.php">
             <i class="fas fa-users"></i> Manage Users</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="admin_view_orders.php">
+            <a class="nav-link" href="admin_manage_orders.php">
             <i class="fas fa-shopping-cart"></i> Manage Orders</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="admin_view_category.php">
+            <a class="nav-link" href="admin_manage_category.php">
             <i class="fas fa-layer-group"></i> Manage Categories</a>
         </li>
       </ul>

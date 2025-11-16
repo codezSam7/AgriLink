@@ -21,8 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['errormsg'] = 'Invalid input.';
     }
 } else {
-    header('location: ../admin_view_orders.php');
+    header('location: ../admin_manage_orders.php');
     exit;
 }
-header('location: ../admin_view_orders.php');
+header('location: ../admin_manage_orders.php');
 exit;

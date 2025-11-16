@@ -11,5 +11,5 @@ if ($cat_id) {
     $c->delete_from_category($cat_id);
 }
 $_SESSION['msg'] = 'Category deleted successfully';
-header('location: ../admin_view_category.php');
+header('location: ../admin_manage_category.php');
 exit;

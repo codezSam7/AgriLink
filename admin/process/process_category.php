@@ -8,21 +8,21 @@ if (isset($_POST['add'])) {
 
     if (empty($catname)) {
         $_SESSION['errormsg'] = 'Please, enter a category';
-        header('location:../admin_view_category.php');
+        header('location:../admin_manage_category.php');
         exit;
     }
 
     $newcat = $c->add_category($catname);
     if ($newcat) {
         $_SESSION['msg'] = 'A new category has been added'.'✨';
-        header('location:../admin_view_category.php');
+        header('location:../admin_manage_category.php');
         exit;
     } else {
         $_SESSION['errormsg'] = 'Error in adding category'.'😢';
-        header('location:../admin_view_category.php');
+        header('location:../admin_manage_category.php');
         exit;
     }
 } else {
-    header('location:../admin_view_category.php');
+    header('location:../admin_manage_category.php');
     exit;
 }

@@ -8,6 +8,12 @@ $admin = isset($_SESSION['admin_online']) ? $a->get_admin_details($_SESSION['adm
 
 $product_count = $a->fetch_products();
 $farmer_count = $a->fetch_farmers();
+$order_count = $a->fetch_orders();
+
+// echo '<pre>';
+// print_r($order_count);
+// echo '<pre>';
+
 ?>
 
 <!DOCTYPE html>
@@ -111,7 +117,7 @@ body {
           <div class="d-flex align-items-center justify-content-between">
             <div>
               <div>Total orders</div>
-              <div class="h4">1,230</div>
+              <div class="h4"><?php echo count($order_count) ?></div>
             </div>
             <div class="icon-circle"><i class="bi bi-cart-fill"></i></div>
           </div>
@@ -150,30 +156,35 @@ body {
           <thead>
             <tr>
               <th>Order</th>
-              <th>Product</th>
-              <th>Farmer</th>
+              <th>Buyer</th>
               <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>#1003</td>
-              <td>Garri</td>
-              <td>FarmCo</td>
-              <td><span class="badge badge-status" style="background:#fff3cd;color:#856404;border:1px solid rgba(0,0,0,0.05)">Pending</span></td>
-            </tr>
-            <tr>
-              <td>#1002</td>
-              <td>Rice</td>
-              <td>Greenfields</td>
-              <td><span class="badge badge-status" style="background:#d4edda;color:#155724">Delivered</span></td>
-            </tr>
-            <tr>
-              <td>#1001</td>
-              <td>Tomatoes</td>
-              <td>Sunny Farm</td>
-              <td><span class="badge badge-status" style="background:#cce5ff;color:#003366">Canceled</span></td>
-            </tr>
+            <?php
+              foreach ($order_count as $order) {
+                  $status = $order['delivery_status'];
+
+                  if ($status === 'pending') {
+                      $badgeStyle = 'background:#fff3cd; color:#856404;border:1px solid rgba(0,0,0,0.1)';
+                  } elseif ($status === 'assigned') {
+                      $badgeStyle = 'background:#d4edda; color:#155724;border:1px solid rgba(0,0,0,0.1)';
+                  } elseif ($status === 'picked-up') {
+                      $badgeStyle = 'background:#f8d7da; color:#721c24;border:1px solid rgba(0,0,0,0.1)';
+                  } else {
+                      $badgeStyle = 'background:#e2e3e5; color:#383d41;border:1px solid rgba(0,0,0,0.1)';
+                  }
+                  ?>
+              <tr>
+                <td>#<?php echo $order['order_id'] ?></td>
+                <td><?php echo $order['buyer_fullname'] ?></td>
+                <td>
+                  <span class="badge badge-status" 
+                  style="<?php echo $badgeStyle ?>">
+                  <?php echo $status ?></span>
+                </td>
+              </tr>
+            <?php } ?>
           </tbody>
         </table>
       </div>

@@ -1,18 +1,18 @@
-<?php 
-  session_start();
-  require_once("../classes/Farmer.php");
-  require_once("../classes/Buyer.php");
+<?php
 
-  $f = new Farmer;
-  $b = new Buyer;
+session_start();
+require_once '../classes/Farmer.php';
+require_once '../classes/Buyer.php';
+require_once '../classes/Logistics.php';
 
-  $f->logout();
-  $b->blogout();
+$f = new Farmer;
+$b = new Buyer;
+$l = new Logistics;
 
-  $_SESSION["msg"] = "You have logged out successfully";
-  header("location:../index.php");
-  exit;
+$f->logout();
+$b->blogout();
+$l->llogout();
 
-
-
-?>
+$_SESSION['msg'] = 'You have logged out successfully';
+header('location:../index.php');
+exit;
