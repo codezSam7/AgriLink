@@ -44,7 +44,7 @@ if (! isset($logistic)) {
       
       <ul class="navbar-nav mx-auto gap-4">
         <li class="nav-item"><a class="bar-link active" href="../index.php">Home</a></li>
-        <li class="nav-item"><a class="bar-link" href="../farmers.php">Farmers</a></li>
+        <li class="nav-item"><a class="bar-link" href="../farmers/farmers.php">Farmers</a></li>
         <li class="nav-item"><a class="bar-link" href="../products.php">Products</a></li>
         <li class="nav-item"><a class="bar-link" href="../logistics.php">Logistics</a></li>
         <li class="nav-item"><a class="bar-link" href="../admin/ad_login.php">Admin</a></li>

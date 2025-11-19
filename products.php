@@ -225,3 +225,6 @@ $cats = $c->fetch_all_categories();
     <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>
   </body>
 </html>
+
+
+

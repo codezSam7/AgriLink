@@ -1,15 +1,15 @@
-<?php 
-  session_start();
-  require_once("../classes/Farmer.php");
-  require_once("../classes/Buyer.php");
+<?php
+session_start();
+require_once '../classes/Farmer.php';
+require_once '../classes/Buyer.php';
 
-  $f = new Farmer;
-  $b = new Buyer;
+$f = new Farmer;
+$b = new Buyer;
 
-  $farmer = isset($_SESSION["farmer_online"]) ? $f->get_farmer_details($_SESSION["farmer_online"]) : [];
-  $buyer = isset($_SESSION["buyer_online"]) ? $b->get_buyer_details($_SESSION["buyer_online"]) : [];
+$farmer = isset($_SESSION['farmer_online']) ? $f->get_farmer_details($_SESSION['farmer_online']) : [];
+$buyer = isset($_SESSION['buyer_online']) ? $b->get_buyer_details($_SESSION['buyer_online']) : [];
 
-  $states = $f->fetch_all_states(); 
+$states = $f->fetch_all_states();
 ?>
 
 <!DOCTYPE html>
@@ -41,7 +41,7 @@
         padding-top: 76px;
       }
 
-      <?php require_once("../assets/style.php"); ?>
+      <?php require_once '../assets/style.php'; ?>
 
       .hero {
         background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.80));
@@ -70,7 +70,7 @@
   </head>
 
   <body>
-    <?php require_once("../common/header.php"); ?>
+    <?php require_once '../common/header.php'; ?>
     <main class="container">
       <section class="hero mb-4">
         <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 w-100">
@@ -78,7 +78,7 @@
             <h1 class="h4 mb-1" style="color:var(--brand);">Find farmers & produce near you</h1>
             <p class="lead small mb-2">Search by farmer name, produce, or filter by state and LGA.</p>
 
-            <form class="row g-2 align-items-center search-row" method="get" action="" role="search" aria-label="Search farmers or produce">
+            <form id="searchForm" class="row g-2 align-items-center search-row" method="get" action="" role="search" aria-label="Search farmers or produce">
               <div class="col-12 col-md">
                 <label for="search">Search</label>
                 <input id="search" name="search" type="search" class="form-control form-control-lg" placeholder="e.g. Tomato, Rice, Farmer Samuel" />
@@ -88,15 +88,15 @@
                 <label for="state">State</label>
                 <select id="delvstate" name="delvstate" class="form-select state-select" aria-label="Filter by state">
                   <option value="">All State</option>
-                    <?php 
-                      foreach($states as $state){ 
-                    ?>
+                    <?php
+                      foreach ($states as $state) {
+                          ?>
                       <option value="<?php echo $state['state_id'] ?>">
                         <?php echo $state['state_name'] ?>
                       </option>
-                    <?php 
-                      }; 
-                    ?>
+                    <?php
+                      }
+?>
                 </select>
               </div>
 
@@ -109,14 +109,10 @@
               <div class="col-md-12 d-grid">
                 <button class="btn btn-success" name="btnsearch" type="submit">Search</button>
               </div>
-
-              <div class="col-md-12">
-                <small class="text-muted">choose a state to narrow results — the LGA list updates automatically.</small>
-              </div>
             </form>
           </div>
 
-          <?php if(!isset($_SESSION["farmer_online"]) && !isset($_SESSION["buyer_online"])){ ?> 
+          <?php if (! isset($_SESSION['farmer_online']) && ! isset($_SESSION['buyer_online'])) { ?> 
             <div class="d-none d-md-flex">
               <a href="sign_farmer.php" class="btn btn-outline-success">Register as Farmer</a>
             </div>
@@ -125,11 +121,10 @@
       </section>
 
       <section>
-        <div class="row g-3">
+        <div class="row g-3" id="searchResults">
           <div class="col-12">
             <div class="d-flex align-items-center justify-content-between">
               <h2 class="h6 mb-0 text-muted">Featured farmers</h2>
-              <small class="text-muted">Showing top picks</small>
             </div>
           </div>
 
@@ -154,8 +149,7 @@
                     <small class="text-muted d-block">Delivery: 2-3 days</small>
                   </div>
                   <div>
-                    <a class="btn btn-sm btn-outline-secondary" href="">View profile</a>
-                    <a class="btn btn-sm btn-success ms-2" href="">Order</a>
+                    <a class="btn btn-sm btn-outline-secondary" href="farmer_profile_view.php">View profile</a>
                   </div>
                 </div>
               </div>
@@ -165,15 +159,41 @@
       </section>
     </main>
     
-      <?php //require_once("assets/common/footer.php") ?>
+      <?php // require_once("assets/common/footer.php")?>
 
+    <!-- jQuery (required for the AJAX search and .load usage) -->
+    <script src="../assets/jquery.js"></script>
     <script src="../assets/bootstrap/js/bootstrap.bundle.js"></script>
+
     <script>
       $(document).ready(function(){
+        // Keep existing LGA load behavior
         $("#delvstate").change(function(){
-        var state_id = $(this).val();
-          $("#delvlga").load("../process/process_state_lga.php?id="+state_id);
-        })
+          var state_id = $(this).val();
+          $("#delvlga").load("../process/process_state_lga.php?id="+encodeURIComponent(state_id));
+        });
+
+        // AJAX search: intercept form submit and request server for results
+        $("#searchForm").on("submit", function(e){
+          e.preventDefault();
+          var $form = $(this);
+          var $btn = $form.find('button[type="submit"]');
+          var data = $form.serialize();
+
+          // simple UI feedback
+          $btn.prop('disabled', true).text('Searching...');
+          $("#searchResults").html('<div class="text-center p-4"><div class="spinner-border text-success" role="status" aria-hidden="true"></div><div class="mt-2 small text-muted">Loading results...</div></div>');
+
+          // Ensure the server-side script is implemented correctly to handle search parameters
+          $.get("../process/process_search.php", data, function(response){
+            // Expect HTML snippet from server — inject into page
+            $("#searchResults").html(response);
+          }).fail(function(){
+            $("#searchResults").html('<div class="alert alert-danger">Unable to fetch results. Please try again.</div>');
+          }).always(function(){
+            $btn.prop('disabled', false).text('Search');
+          });
+        });
       })
     </script>
   </body>

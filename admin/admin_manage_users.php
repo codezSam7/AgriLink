@@ -277,7 +277,7 @@ $buyers = $a->fetch_buyers();
                   </select>
                   <button type="submit" class="btn btn-sm btn-success ms-1">Update</button>
                 </form>
-                <a href="../profile.php" class="btn btn-success btn-sm px-3"><i class="fas fa-eye"></i> View Details</a>
+                <a href="admin_view_profile.php?id=<?php echo $farmer['farmer_id']; ?>" class="btn btn-success btn-sm px-3"><i class="fas fa-eye"></i> View Details</a>
               </div>
             </div>
           </div>

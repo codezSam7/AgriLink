@@ -239,6 +239,69 @@ class Farmer extends Db
         }
     }
 
+    public function search_farmers($search = '', $state_id = null, $lga_id = null)
+    {
+        try {
+            $sql = 'SELECT f.*, s.state_name
+                    FROM farmers f
+                    JOIN state s ON f.farmer_state_id = s.state_id';
+            $where = [];
+            $params = [];
+
+            // Search term
+            if (! empty($search)) {
+                $like = '%'.$search.'%';
+                $where[] = '(f.farmer_fullname LIKE ? OR f.farmer_farm_name LIKE ? OR f.farmer_primary_produce LIKE ? OR f.farmer_phone LIKE ? OR f.farmer_email LIKE ?)';
+                // push the same like placeholder for each field
+                $params[] = $like;
+                $params[] = $like;
+                $params[] = $like;
+                $params[] = $like;
+                $params[] = $like;
+            }
+
+            // State filter (validate if provided)
+            if (! empty($state_id)) {
+                if (! $this->state_exists($state_id)) {
+                    return []; // invalid state => no results
+                }
+                $where[] = 'f.farmer_state_id = ?';
+                $params[] = $state_id;
+            }
+
+            // LGA filter (validate if provided)
+            if (! empty($lga_id)) {
+                if (! empty($state_id)) {
+                    // validate lga belongs to state
+                    if (! $this->lga_exists_for_state($lga_id, $state_id)) {
+                        return []; // invalid lga for the given state
+                    }
+                } else {
+                    // validate lga exists (no state provided)
+                    $chk = $this->agconn->prepare('SELECT 1 FROM lga WHERE lga_id = ? LIMIT 1');
+                    $chk->execute([$lga_id]);
+                    if (! $chk->fetchColumn()) {
+                        return []; // invalid lga
+                    }
+                }
+                $where[] = 'f.farmer_lga_id = ?';
+                $params[] = $lga_id;
+            }
+
+            if (! empty($where)) {
+                $sql .= ' WHERE '.implode(' AND ', $where);
+            }
+
+            $stmt = $this->agconn->prepare($sql);
+            $stmt->execute($params);
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $results;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
     public function get_product_by_id($id)
     {
         try {

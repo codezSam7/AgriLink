@@ -107,6 +107,23 @@ class Admin extends Db
         }
     }
 
+    public function fetch_farmers_by_id($farmer_id)
+    {
+        try {
+            $sql = 'SELECT f.*, s.state_name 
+                    FROM farmers f 
+                    JOIN state s ON f.farmer_state_id = s.state_id';
+            $stmt = $this->agconn->prepare($sql);
+            $stmt->execute();
+            $farmers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $farmers;
+        } catch (PDOException $e) {
+            // echo $e->getMessage(); die();
+            return false;
+        }
+    }
+
     public function fetch_buyers()
     {
         try {

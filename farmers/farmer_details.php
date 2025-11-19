@@ -1,9 +1,9 @@
-<?php  
-  session_start();
-  require_once("../classes/Farmer.php");
+<?php
+session_start();
+require_once '../classes/Farmer.php';
 
-  $f = new Farmer;
-  $farmer = isset($_SESSION["farmer_online"]) ? $f->get_farmer_details($_SESSION["farmer_online"]) : [];
+$f = new Farmer;
+$farmer = isset($_SESSION['farmer_online']) ? $f->get_farmer_details($_SESSION['farmer_online']) : [];
 ?>
 
 <!DOCTYPE html>
@@ -105,27 +105,27 @@
       padding: 8px 20px;
     }
 
-    <?php require_once("../assets/style.php"); ?>
+    <?php require_once '../assets/style.php'; ?>
   </style>
 </head>
 <body>
 
-  <?php require_once("../common/header.php"); ?>
+  <?php require_once '../common/header.php'; ?>
 
   <div class="container d-flex justify-content-center align-items-center">
     <div class="profile-container">
       <div class="profile-header">
-        <?php  
-          if(isset($farmer["farmer_online"])){
-        ?>
+        <?php
+          if (isset($farmer['farmer_online'])) {
+              ?>
           <h3 class="fw-bold mb-0">
             <?php echo $farmer['farmer_fullname']; ?>
           </h3>
           <p class="mb-0"><?php echo $farmer['farm_name']; ?></p>
         </div>
-        <?php 
+        <?php
           }
-        ?>
+?>
 
       <form id="farmerForm" class="profile-details">
         <div class="row">
@@ -164,48 +164,5 @@
   </div>
 
   <script src="../assets/bootstrap/js/bootstrap.bundle.js"></script>
-
-  <!-- <script>
-    const editBtn = document.getElementById("editBtn");
-    const saveBtn = document.getElementById("saveBtn");
-    const cancelBtn = document.getElementById("cancelBtn");
-    const inputs = document.querySelectorAll("#farmerForm input");
-    const paragraphs = document.querySelectorAll("#farmerForm p");
-
-    editBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      editBtn.style.display = "none";
-      saveBtn.style.display = "inline-block";
-      cancelBtn.style.display = "inline-block";
-      inputs.forEach((input, i) => {
-        input.style.display = "block";
-        paragraphs[i].style.display = "none";
-      });
-    });
-
-    cancelBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      editBtn.style.display = "inline-block";
-      saveBtn.style.display = "none";
-      cancelBtn.style.display = "none";
-      inputs.forEach((input, i) => {
-        input.style.display = "none";
-        paragraphs[i].style.display = "block";
-      });
-    });
-
-    saveBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      alert("✅ Changes saved successfully (AJAX logic can be added here).");
-      editBtn.style.display = "inline-block";
-      saveBtn.style.display = "none";
-      cancelBtn.style.display = "none";
-      inputs.forEach((input, i) => {
-        paragraphs[i].innerText = input.value;
-        input.style.display = "none";
-        paragraphs[i].style.display = "block";
-      });
-    });
-  </script> -->
 </body>
 </html>
