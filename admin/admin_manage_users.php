@@ -2,14 +2,15 @@
 session_start();
 require_once 'admin_guard.php';
 require_once 'classes/Admin.php';
+require_once '../config/constants.php';
 
 $a = new Admin;
 
 if (isset($_SESSION['admin_online'])) {
-    $admin = $a->get_admin_details($_SESSION['admin_online']);
+  $admin = $a->get_admin_details($_SESSION['admin_online']);
 } else {
-    header('Location: login.php');
-    exit();
+  header('Location: login.php');
+  exit();
 }
 
 $farmers = $a->fetch_farmers();
@@ -17,18 +18,19 @@ $buyers = $a->fetch_buyers();
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Manage Farmers | AgriLink Admin</title>
-  <link rel="icon" href="../assets/images/logo.png" />
-  <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.css" />
-  <link rel="stylesheet" href="../assets/fontawesome/css/all.css" />
+  <link rel="icon" href="<?= BASE_URL ?>assets/images/logo.png" />
+  <link rel="stylesheet" href="<?= BASE_URL ?>assets/bootstrap/css/bootstrap.css" />
+  <link rel="stylesheet" href="<?= BASE_URL ?>assets/fontawesome/css/all.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
       --brand-green: #1fa97a;
-      --light-green: rgba(31,169,122,0.08);
+      --light-green: rgba(31, 169, 122, 0.08);
     }
 
     body {
@@ -45,8 +47,8 @@ $buyers = $a->fetch_buyers();
       left: 0;
       height: 100vh;
       width: 260px;
-      background: linear-gradient(180deg,#f3fff8 0%, #e6fff2 100%);
-      box-shadow: 4px 0 20px rgba(0,0,0,0.05);
+      background: linear-gradient(180deg, #f3fff8 0%, #e6fff2 100%);
+      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.05);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -150,27 +152,30 @@ $buyers = $a->fetch_buyers();
     }
 
     .btn-green {
-      background-color: var(--brand-green); 
-      border:none; 
-      border-radius:12px;
-      padding:0.65rem; 
-      font-weight:600; 
+      background-color: var(--brand-green);
+      border: none;
+      border-radius: 12px;
+      padding: 0.65rem;
+      font-weight: 600;
       transition: all 0.3s ease;
     }
-    .btn-green:hover { 
-      background-color:#188e66; 
-      transform:translateY(-2px); 
+
+    .btn-green:hover {
+      background-color: #188e66;
+      transform: translateY(-2px);
     }
-    .logout-btn { 
-      width:100%; 
-      margin-top:2rem; 
+
+    .logout-btn {
+      width: 100%;
+      margin-top: 2rem;
     }
-    .logout-btn a { 
-      text-decoration:none; 
-      color: #fff; 
-      display:block; 
-      text-align:center; 
-      font-weight:600; 
+
+    .logout-btn a {
+      text-decoration: none;
+      color: #fff;
+      display: block;
+      text-align: center;
+      font-weight: 600;
     }
 
 
@@ -182,6 +187,7 @@ $buyers = $a->fetch_buyers();
       body {
         flex-direction: column;
       }
+
       .admin-sidebar {
         position: relative;
         width: 100%;
@@ -189,10 +195,12 @@ $buyers = $a->fetch_buyers();
         flex-direction: row;
         justify-content: space-around;
       }
+
       .page-content {
         margin-left: 0;
         width: 100%;
       }
+
       .nav {
         flex-direction: row;
         flex-wrap: wrap;
@@ -201,6 +209,7 @@ $buyers = $a->fetch_buyers();
     }
   </style>
 </head>
+
 <body>
 
   <!-- Sidebar -->
@@ -220,24 +229,24 @@ $buyers = $a->fetch_buyers();
             <i class="fas fa-home"></i> Dashboard</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="admin_manage_products.php">
+          <a class="nav-link" href="admin_manage_products.php">
             <i class="fas fa-box"></i> Manage Products</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="admin_manage_users.php">
+          <a class="nav-link" href="admin_manage_users.php">
             <i class="fas fa-users"></i> Manage Users</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="admin_manage_orders.php">
+          <a class="nav-link" href="admin_manage_orders.php">
             <i class="fas fa-shopping-cart"></i> Manage Orders</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="admin_manage_category.php">
+          <a class="nav-link" href="admin_manage_category.php">
             <i class="fas fa-layer-group"></i> Manage Categories</a>
         </li>
       </ul>
       <button class="btn btn-green logout-btn">
-          <a href="process/process_logout_admin.php"> Logout</a>
+        <a href="process/process_logout_admin.php"> Logout</a>
       </button>
     </div>
   </aside>
@@ -252,7 +261,7 @@ $buyers = $a->fetch_buyers();
       </div>
     </div>
 
-    <?php require_once 'common/alert.php' ?>
+    <?php require_once ROOT_PATH . "common/alert.php"; ?>
 
     <div class="row g-4 mt-2" id="farmerContainer">
       <?php if (! empty($farmers)) { ?>
@@ -261,11 +270,11 @@ $buyers = $a->fetch_buyers();
             <div class="farmer-card text-center p-3">
               <div class="farmer-info">
                 <?php
-                    $avatar = ! empty($farmer['farmer_avatarurl'])
-                              ? '../uploads/'.$farmer['farmer_avatarurl']
-                              : '../assets/images/default_dp.png';
-            ?>
-                  <img src="<?= $avatar ?>" alt="Farmer Avatar" class="rounded-circle mb-2" style="width:80px;height:80px;object-fit:cover;">
+                $avatar = ! empty($farmer['farmer_avatarurl'])
+                  ? ROOT_PATH . 'uploads/' . $farmer['farmer_avatarurl']
+                  : ROOT_PATH . 'assets/images/default_dp.png';
+                ?>
+                <img src="<?= $avatar ?>" alt="Farmer Avatar" class="rounded-circle mb-2" style="width:80px;height:80px;object-fit:cover;">
                 <h6 class="text-success fw-semibold mb-2"><?= $farmer['farmer_fullname']; ?></h6>
                 <p class="mb-1"><i class="fas fa-map-marker-alt me-1 text-muted"></i> <?php echo $farmer['state_name']; ?></p>
                 <p class="mb-1"><i class="fas fa-envelope me-1 text-muted"></i> <?php echo $farmer['farmer_email']; ?></p>
@@ -334,4 +343,5 @@ $buyers = $a->fetch_buyers();
     }
   </script>
 </body>
+
 </html>

@@ -3,228 +3,257 @@ session_start();
 require_once 'classes/Farmer.php';
 require_once 'admin/classes/Category.php';
 require_once 'classes/Buyer.php';
+require_once 'config/constants.php';
 
-$f = new Farmer;
-$b = new Buyer;
-$c = new Category;
+$f = new Farmer();
+$b = new Buyer();
+$c = new Category();
 
 $farmer = isset($_SESSION['farmer_online']) ? $f->get_farmer_details($_SESSION['farmer_online']) : [];
-$buyer = isset($_SESSION['buyer_online']) ? $b->get_buyer_details($_SESSION['buyer_online']) : [];
+$buyer  = isset($_SESSION['buyer_online']) ? $b->get_buyer_details($_SESSION['buyer_online']) : [];
 
 $products = $f->fetch_products();
-$cats = $c->fetch_all_categories();
+$cats     = $c->fetch_all_categories();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="assets/images/logo.png" />
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="assets/animate.min.css" />
-    <link rel="stylesheet" href="assets/fontawesome/css/all.css" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <title>AgriLink - Farmers to Consumers</title>
-    <style>
-      body {
-        background: linear-gradient(to left, #e8f5e9, #c8e6c9);
-        font-family: "Poppins", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-      }
-      
-      /* Product card styling */
-.product-card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
 
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="assets/images/logo.png" />
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css" />
+  <link rel="stylesheet" href="assets/animate.min.css" />
+  <link rel="stylesheet" href="assets/fontawesome/css/all.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-.product-card img {
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  object-fit: cover;
-  height: 180px;
-  width: 100%;
-}
+  <title>All Products - AgriLink</title>
 
-.product-card .card-body {
-  padding: 0.75rem 1rem 1rem 1rem;
-}
+  <style>
+    :root {
+      --brand: #1fa97a;
+      --brand-dark: #0f5132;
+    }
 
-.product-card h6 {
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-  font-size: 0.95rem;
-}
+    body {
+      font-family: 'Poppins', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f8faf9 0%, #e8f5e9 100%);
+      padding-top: 90px;
+      min-height: 100vh;
+    }
 
-.product-card p {
-  font-size: 0.875rem;
-  margin-bottom: 0.25rem;
-}
+    .page-header {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(15, 81, 50, 0.08);
+      padding: 2rem;
+      margin-bottom: 3rem;
+    }
 
-.product-card .btn {
-  font-size: 0.85rem;
-  padding: 0.35rem 0.5rem;
-}
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      color: var(--brand-dark);
+      font-size: 2.4rem;
+      margin-bottom: 1.5rem;
+    }
 
-.product-card .btn + .btn {
-  margin-left: 0.25rem;
-}
+    /* Product Card */
+    .product-card {
+      border: none;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(15, 81, 50, 0.08);
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      height: 100%;
+    }
 
-/* Responsive tweaks */
-@media (max-width: 768px) {
-  .product-card img {
-    height: 140px;
-  }
-}
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
+    .product-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(15, 81, 50, 0.15);
+    }
 
-      h2 {
-        font-weight: 600;
-        color: #1fa97a;
-        margin-bottom: 1.5rem;
-        text-align: center;
-      }
+    .product-card img {
+      height: 210px;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
 
-      .form-label {
-        font-weight: 500;
-        color: #333;
-      }
+    .product-card:hover img {
+      transform: scale(1.05);
+    }
 
-      @media (min-width: 992px){
-        .hero {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 2rem 2.25rem;
-        }
-      }
-      <?php require_once 'assets/style.php'; ?>
-    </style>
-  </head>
-  <body class="container con">
-    <?php require_once 'outhead.php'; ?>
+    .product-card .card-body {
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+    }
 
-    <?php
-      if (isset($_SESSION['farmer_online'])) {
-          ?> 
-      <div class="admin-wrapper py-5 mt-5 col-md-10 offset-md-1">
-        <div class="admin-card">
-          <h2>Add New Product</h2>
+    .product-card .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      line-height: 1.3;
+    }
 
-          <form action="process/process_add_product.php" method="post" enctype="multipart/form-data">
-            <div class="mb-3">
-              <?php require_once 'common/alert.php'; ?>
-              <input type="text" id="name" name="name" class="form-control mb-3" placeholder="Product Name" required/>
+    .product-price {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #0c7a52;
+    }
 
-              <select name="category" id="category" class="form-select mb-3">
-                <option value="">Select Category</option>
-                <?php foreach ($cats as $cat) { ?>
-                  <option value="<?php echo $cat['category_id']; ?>">
-                    <?php echo $cat['category_name']; ?>
-                  </option>
-                <?php } ?>
-              </select> 
+    .unit {
+      font-size: 0.95rem;
+      color: #666;
+    }
 
-              <input type="text" name="desc" id="desc" class="form-control mb-3" placeholder="Product Description" required />
-              <input type="text" name="unit" id="unit" class="form-control mb-3" placeholder="Product Unit e.g per bag, per kg, per crate, per bunch" required />
-              <input type="number" name="price" id="price" class="form-control mb-3" placeholder="Product Price" required />
-              <input type="number" name="qtyavail" id="qtyavail" class="form-control mb-3" placeholder="Product Quantity Available" required />
-              <input type="file" name="file" id="file" class="form-control mb-3" placeholder="Choose an image for your product" />
-            </div>
+    .badge-available {
+      font-size: 0.8rem;
+      padding: 0.35em 0.75em;
+    }
 
-            <div class="d-grid">
-              <button class="btn btn-success btn-lg mb-3" name="add">
-                + Add Product
-              </button>
-            </div>
-          </form>
-        </div>
+    .add-to-cart-btn {
+      background: var(--brand);
+      border: none;
+      font-weight: 600;
+    }
+
+    .add-to-cart-btn:hover {
+      background: #1a8f66;
+    }
+  </style>
+</head>
+
+<body>
+
+  <?php require_once ROOT_PATH . 'outhead.php'; ?>
+
+  <div class="container">
+
+    <!-- Farmer Add Product Section -->
+    <?php if (isset($_SESSION['farmer_online'])): ?>
+      <div class="page-header">
+        <h2 class="section-title text-center mb-4">Add New Product</h2>
+
+        <?php require_once ROOT_PATH . 'common/alert.php'; ?>
+
+        <form action="<?= BASE_URL ?>process/process_add_product.php" method="post" enctype="multipart/form-data" class="row g-3">
+          <div class="col-md-6">
+            <input type="text" name="name" class="form-control" placeholder="Product Name (e.g. Fresh Tomatoes)" required />
+          </div>
+          <div class="col-md-6">
+            <select name="category" class="form-select" required>
+              <option value="">Select Category</option>
+              <?php foreach ($cats as $cat): ?>
+                <option value="<?= htmlspecialchars($cat['category_id']) ?>">
+                  <?= htmlspecialchars($cat['category_name']) ?>
+                </option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+
+          <div class="col-12">
+            <textarea name="desc" class="form-control" rows="2" placeholder="Product Description" required></textarea>
+          </div>
+
+          <div class="col-md-4">
+            <input type="text" name="unit" class="form-control" placeholder="Unit (e.g. kg, bunch, crate)" required />
+          </div>
+          <div class="col-md-4">
+            <input type="number" name="price" class="form-control" placeholder="Price (₦)" step="0.01" required />
+          </div>
+          <div class="col-md-4">
+            <input type="number" name="qtyavail" class="form-control" placeholder="Quantity Available" required />
+          </div>
+
+          <div class="col-12">
+            <input type="file" name="file" class="form-control" accept="image/*" />
+            <small class="text-muted">Upload product image (optional)</small>
+          </div>
+
+          <div class="col-12 d-grid">
+            <button type="submit" name="add" class="btn btn-success btn-lg">
+              <i class="fas fa-plus me-2"></i> Add Product to Marketplace
+            </button>
+          </div>
+        </form>
       </div>
-    <?php
-      }
-?>
+    <?php endif; ?>
 
-    <section class="products py-5 my-5 mx-auto" style="max-width:1200px;">
-        <?php require_once 'common/alert.php'?>
-            <div class="row g-4">
-                <?php
-                foreach ($products as $product) {
-                    $image = $product['product_image'];
-                    $pname = $product['product_name'];
-                    $avail = $product['product_quantityavailable'];
-                    $unit = $product['product_unit'];
-                    $price = number_format($product['product_price']);
-                    $fname = $product['farmer_fullname'];
-                    $name = explode(' ', $fname);
-                    $show = end($name);
-                    $state = $product['state_name'];
-                    ?>  
-                    <div class="col-6 col-sm-6 col-md-4 col-lg-3">
-                        <div class="card product-card h-100">
-                            <img src="uploads/<?php echo $image ?>" class="card-img-top" alt="<?php echo $pname; ?>" />
+    <!-- Products Grid -->
+    <section class="py-4">
+      <h2 class="section-title text-center">All Fresh Products</h2>
 
-                            <div class="card-body d-flex flex-column justify-content-between">
-                                <!-- Product Name -->
-                                <h5 class="card-title fw-bold mb-2"><?php echo $pname; ?></h5>
+      <?php require_once ROOT_PATH . 'common/alert.php'; ?>
 
-                                <!-- Farmer & Location -->
-                                <p class="text-muted small mb-2">
-                                From: <a href="pages/farmer_details.php" class="link-dark">Farmer <?php echo $show; ?></a><br>
-                                Location: <?php echo $state; ?>
-                                </p>
+      <?php if (empty($products)): ?>
+        <div class="text-center py-5">
+          <i class="fas fa-box-open fa-4x text-muted mb-3"></i>
+          <p class="text-muted">No products available at the moment.</p>
+        </div>
+      <?php else: ?>
+        <div class="row g-4">
+          <?php foreach ($products as $product):
+            $image = $product['product_image'] ?? 'placeholder.jpg';
+            $pname = htmlspecialchars($product['product_name']);
+            $price = number_format($product['product_price']);
+            $unit  = htmlspecialchars($product['product_unit'] ?? 'unit');
+            $avail = $product['product_quantityavailable'];
+            $fname = explode(' ', $product['farmer_fullname'] ?? 'Farmer');
+            $farmer_name = end($fname);
+            $state = htmlspecialchars($product['state_name'] ?? 'Nigeria');
+          ?>
+            <div class="col-6 col-sm-6 col-md-4 col-lg-3">
+              <div class="card product-card h-100">
+                <img src="<?= BASE_URL ?>uploads/<?= htmlspecialchars($image) ?>"
+                  class="card-img-top"
+                  alt="<?= $pname ?>">
 
-                                <!-- Availability & Unit -->
-                                <p class="mb-2">
-                                    <span class="badge bg-success">Available: <?php echo $avail; ?></span>
-                                </p>
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title"><?= $pname ?></h5>
 
-                                <!-- Price -->
-                                <p class="text-success fw-bold mb-3">
-                                    <span>&#8358; <?php echo $price; ?></span>
-                                    <span class="text-muted"> / <?php echo $unit; ?></span>
-                                </p>
+                  <p class="text-muted small mb-2">
+                    By Farmer <?= htmlspecialchars($farmer_name) ?><br>
+                    <?= $state ?>
+                  </p>
 
-                                <!-- Action Buttons -->
-                                <div class="d-flex gap-2 mt-auto">
-                                    <?php if (isset($_SESSION['buyer_online'])) { ?>
-                                        <a href="process/process_addtocart.php?id=<?php echo $product['product_id']; ?>" class="btn btn-success btn-sm flex-grow-1">
-                                        Add To Cart
-                                        </a>
-                                    <?php } ?>
-                                    <a href="product_details.php?id=<?php echo $product['product_id']; ?>" class="btn btn-outline-success btn-sm flex-grow-1">
-                                        <i class="fas fa-eye"></i> View Details
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                  <p class="mb-2">
+                    <span class="badge bg-success badge-available">
+                      <?= $avail ?> available
+                    </span>
+                  </p>
+
+                  <div class="mt-auto">
+                    <p class="product-price mb-1">
+                      ₦<?= $price ?>
+                      <span class="unit">/ <?= $unit ?></span>
+                    </p>
+
+                    <div class="d-flex gap-2 mt-3">
+                      <?php if (isset($_SESSION['buyer_online'])): ?>
+                        <a href="<?= BASE_URL ?>process/process_addtocart.php?id=<?= $product['product_id'] ?>"
+                          class="btn add-to-cart-btn btn-sm flex-grow-1 text-white">
+                          <i class="fas fa-cart-plus"></i> Add
+                        </a>
+                      <?php endif; ?>
+
+                      <a href="<?= BASE_URL ?>product_details.php?id=<?= $product['product_id'] ?>"
+                        class="btn btn-outline-success btn-sm flex-grow-1">
+                        <i class="fas fa-eye"></i> View
+                      </a>
                     </div>
-                <?php } ?>
+                  </div>
+                </div>
+              </div>
             </div>
-        </section>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
+    </section>
+  </div>
 
+  <?php require_once ROOT_PATH . 'footer.php'; ?>
 
-     <?php require_once 'common/footer.php'; ?>
-    
-    <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>
-  </body>
+  <script src="<?= BASE_URL ?>assets/bootstrap/js/bootstrap.bundle.js"></script>
+</body>
+
 </html>
-
-
-

@@ -86,12 +86,12 @@ class Farmer extends Db
         }
     }
 
-    public function login_farmer($fulln, $email, $password)
+    public function login_farmer($email, $password)
     {
         try {
-            $sql = 'SELECT * FROM farmers WHERE farmer_fullname = ? AND farmer_email = ?';
+            $sql = 'SELECT * FROM farmers WHERE farmer_email = ?';
             $stmt = $this->agconn->prepare($sql);
-            $stmt->execute([$fulln, $email]);
+            $stmt->execute([$email]);
             $frecord = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($frecord) {
                 $saved_hash = $frecord['farmer_password_hash'];
@@ -136,17 +136,12 @@ class Farmer extends Db
 
     public function get_farmer_details($farmer_id)
     {
-        try {
-            $sql = 'SELECT * FROM farmers WHERE farmer_id = ?';
-            $stmt = $this->agconn->prepare($sql);
-            $stmt->execute([$farmer_id]);
-            $farmer = $stmt->fetch(PDO::FETCH_ASSOC);
+        $sql = "SELECT * FROM farmers WHERE farmer_id = :id";
+        $stmt = $this->agconn->prepare($sql);
+        $stmt->bindValue(':id', $farmer_id);
+        $stmt->execute();
 
-            return $farmer;
-        } catch (PDOException $e) {
-            // echo $e->getMessage(); die();
-            return false;
-        }
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function add_product($pname, $farmer_id, $category_id, $pdesc, $punit, $pprice, $pqtyav, $pimage)
@@ -192,7 +187,7 @@ class Farmer extends Db
                 return false;
             }
             // generating a uniq filename for the file
-            $unique_filename = 'agri'.'_'.time().'_'.uniqid().".$user_ext";
+            $unique_filename = 'agri' . '_' . time() . '_' . uniqid() . ".$user_ext";
             // upload it: move it from tmp location to permanent space
             $response = move_uploaded_file($filetmp, "../uploads/$unique_filename");
 
@@ -239,6 +234,21 @@ class Farmer extends Db
         }
     }
 
+    public function fetch_farmer_products($farmer_id)
+    {
+        $sql = "SELECT p.*, f.farmer_fullname 
+            FROM products p 
+            JOIN farmers f ON p.product_farmer_id = f.farmer_id 
+            WHERE p.product_farmer_id = ? 
+            ORDER BY p.product_id DESC";
+
+        $stmt = $this->agconn->prepare($sql);
+        $stmt->execute([$farmer_id]);
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $products;
+    }
+
     public function search_farmers($search = '', $state_id = null, $lga_id = null)
     {
         try {
@@ -250,7 +260,7 @@ class Farmer extends Db
 
             // Search term
             if (! empty($search)) {
-                $like = '%'.$search.'%';
+                $like = '%' . $search . '%';
                 $where[] = '(f.farmer_fullname LIKE ? OR f.farmer_farm_name LIKE ? OR f.farmer_primary_produce LIKE ? OR f.farmer_phone LIKE ? OR f.farmer_email LIKE ?)';
                 // push the same like placeholder for each field
                 $params[] = $like;
@@ -289,7 +299,7 @@ class Farmer extends Db
             }
 
             if (! empty($where)) {
-                $sql .= ' WHERE '.implode(' AND ', $where);
+                $sql .= ' WHERE ' . implode(' AND ', $where);
             }
 
             $stmt = $this->agconn->prepare($sql);
@@ -319,7 +329,6 @@ class Farmer extends Db
             $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
             return $product ? $product : false;
-
         } catch (PDOException $e) {
             // You can log this error to a file instead of echoing in production
             // echo $e->getMessage(); die();

@@ -16,3 +16,5 @@ $l->llogout();
 $_SESSION['msg'] = 'You have logged out successfully';
 header('location:../index.php');
 exit;
+
+// stdtgvillhtkxbts

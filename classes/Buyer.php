@@ -75,12 +75,12 @@ class Buyer extends Db
         }
     }
 
-    public function login_buyer($fulln, $email, $password)
+    public function login_buyer($email, $password)
     {
         try {
-            $sql = 'SELECT * FROM buyers WHERE buyer_fullname = ? AND buyer_email = ?';
+            $sql = 'SELECT * FROM buyers WHERE buyer_email = ?';
             $stmt = $this->agconn->prepare($sql);
-            $stmt->execute([$fulln, $email]);
+            $stmt->execute([$email]);
             $brecord = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($brecord) {
                 $saved_hash = $brecord['buyer_password_hash'];
@@ -138,13 +138,11 @@ class Buyer extends Db
 
     public function insert_order_details($items, $buyer_id)
     {
-        // call a function that will insert into the orders table
         try {
             $sql1 = 'INSERT INTO orders(order_buyerid) VALUES(?)';
             $stmt1 = $this->agconn->prepare($sql1);
             $stmt1->execute([$buyer_id]);
             $order_id = $this->agconn->lastInsertId();
-            // 2.loop over the items and insert each of them into order_details table
             $total = 0;
             if ($items) {
                 foreach ($items as $item) {
@@ -161,6 +159,7 @@ class Buyer extends Db
                 $stmt3->execute([$total, $order_id]);
             }
 
+            $order_id = $this->agconn->lastInsertId();
             return $order_id;
         } catch (PDOException $e) {
             // echo $e->getMessage(); die();
@@ -168,23 +167,35 @@ class Buyer extends Db
         }
     }
 
+    public function get_buyer_orders($buyer_id)
+    {
+        $sql = "SELECT * FROM orders WHERE order_buyerid = :buyer_id ORDER BY order_date DESC";
+        $stmt = $this->agconn->prepare($sql);
+        $stmt->bindValue(':buyer_id', $buyer_id);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function fetch_order($order_id)
     {
-        try {
-            $sql = 'SELECT order_details.*, products.product_name, products.product_image, products.product_price 
-                FROM order_details 
-                JOIN products ON order_details.detail_productid = products.product_id 
-                WHERE order_details.detail_orderid = ?';
+        $sql = "SELECT 
+                od.*, 
+                p.product_name, 
+                p.product_image, 
+                p.product_price,
+                o.delivery_status,
+                o.pay_status
+            FROM order_details od
+            JOIN products p ON od.detail_productid = p.product_id
+            LEFT JOIN orders o ON od.detail_orderid = o.order_id
+            WHERE od.detail_orderid = :order_id";
 
-            $stmt = $this->agconn->prepare($sql);
-            $stmt->execute([$order_id]);
-            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $this->agconn->prepare($sql);
+        $stmt->bindValue(':order_id', $order_id);
+        $stmt->execute();
 
-            return $records ?: false; // return false if no result
-        } catch (PDOException $e) {
-            // echo $e->getMessage();
-            return false;
-        }
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function fetch_order_amount($order_id)

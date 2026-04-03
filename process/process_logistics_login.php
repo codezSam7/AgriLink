@@ -5,20 +5,19 @@ require_once '../classes/Logistics.php';
 $l = new Logistics;
 
 if (isset($_POST['btn'])) {
-    $fullname = $_POST['fullname'];
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    if (empty($fullname) || empty($email) || empty($password)) {
+    if (empty($email) || empty($password)) {
         $_SESSION['errormsg'] = 'All fields are required';
         header('location:../logistics_login.php');
         exit;
     }
 
-    $response = $l->login_logistics($fullname, $email, $password);
+    $response = $l->login_logistics($email, $password);
 
     if ($response) {
-        $_SESSION['msg'] = "$fullname, You are logged in successfully";
+        $_SESSION['msg'] = "You are logged in successfully";
         header('location:../logistics.php');
         exit;
     } else {

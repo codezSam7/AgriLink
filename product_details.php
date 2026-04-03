@@ -2,28 +2,30 @@
 session_start();
 require_once 'classes/Farmer.php';
 require_once 'classes/Buyer.php';
+require_once 'config/constants.php';
 
-$f = new Farmer;
-$b = new Buyer;
+$f = new Farmer();
+$b = new Buyer();
 
 $farmer = isset($_SESSION['farmer_online']) ? $f->get_farmer_details($_SESSION['farmer_online']) : [];
-$buyer = isset($_SESSION['buyer_online']) ? $b->get_buyer_details($_SESSION['buyer_online']) : [];
+$buyer  = isset($_SESSION['buyer_online']) ? $b->get_buyer_details($_SESSION['buyer_online']) : [];
 
-if (! isset($_GET['id'])) {
-    header('location: index.php');
-    exit;
+if (!isset($_GET['id'])) {
+  header('location: index.php');
+  exit;
 }
 
 $product_id = $_GET['id'];
 $product = $f->get_product_by_id($product_id);
 
-if (! $product) {
-    header('location: index.php');
-    exit;
+if (!$product) {
+  header('location: index.php');
+  exit;
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,138 +33,158 @@ if (! $product) {
   <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css" />
   <link rel="stylesheet" href="assets/animate.min.css" />
   <link rel="stylesheet" href="assets/fontawesome/css/all.css" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <title><?php echo $product['product_name']; ?> - AgriLink</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <title><?= htmlspecialchars($product['product_name']) ?> - AgriLink</title>
+
   <style>
+    :root {
+      --brand: #1fa97a;
+    }
+
     body {
-      background: linear-gradient(to left, #e8f5e9, #c8e6c9);
-      font-family: "Poppins", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-      padding-top: 80px;
+      font-family: 'Poppins', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f8faf9 0%, #e8f5e9 100%);
+      padding-top: 90px;
+      min-height: 100vh;
     }
 
-    .product-detail-wrapper {
+    .product-wrapper {
       max-width: 1100px;
-      margin: 3rem auto;
-      background: #fff;
-      border-radius: 18px;
-      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+      margin: 2.5rem auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(15, 81, 50, 0.10);
       overflow: hidden;
-      animation: fadeIn 0.5s ease-in-out;
     }
 
-    .product-detail-img {
+    .product-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 18px 0 0 18px;
     }
 
-    .product-detail-content {
-      padding: 2rem 2.5rem;
+    .product-content {
+      padding: 2.8rem 3rem;
     }
 
     .product-title {
-      font-size: 1.7rem;
-      font-weight: 600;
-      color: #1fa97a;
-      margin-bottom: .8rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.1rem;
+      color: var(--brand);
+      margin-bottom: 0.6rem;
     }
 
-    .product-desc {
-      color: #333;
-      font-size: 0.95rem;
-      margin-bottom: 1.5rem;
-      line-height: 1.6;
-    }
-
-    .price-tag {
-      font-size: 1.5rem;
+    .price {
+      font-size: 1.75rem;
+      font-weight: 700;
       color: #0c7a52;
-      font-weight: 600;
     }
 
     .unit {
-      color: #555;
-      font-size: .9rem;
+      color: #666;
+      font-size: 1rem;
+      font-weight: 400;
     }
 
     .farmer-info {
-      margin-top: 1.5rem;
-      border-top: 1px solid rgba(0,0,0,0.05);
-      padding-top: 1rem;
-      color: #333;
+      background: #f8faf9;
+      padding: 1.25rem;
+      border-radius: 12px;
+      margin-top: 2rem;
     }
 
-    .farmer-info a {
-      color: #1fa97a;
-      text-decoration: none;
-      font-weight: 500;
+    .btn-add-cart {
+      background: var(--brand);
+      border: none;
+      padding: 0.85rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 600;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .btn-add-cart:hover {
+      background: #1a8f66;
+      transform: translateY(-2px);
     }
-
-    <?php require_once 'assets/style.php'; ?>
   </style>
 </head>
+
 <body>
-  <?php require_once 'outhead.php'; ?>
+
+  <?php require_once ROOT_PATH . 'outhead.php'; ?>
 
   <div class="container">
-    <div class="product-detail-wrapper row g-0">
-      <div class="col-md-5">
-        <img src="uploads/<?php echo $product['product_image']; ?>" alt="<?php echo $product['product_name']; ?>" class="product-detail-img">
+    <div class="product-wrapper row g-0">
+      <!-- Image Side -->
+      <div class="col-lg-5">
+        <img src="<?= BASE_URL ?>uploads/<?= htmlspecialchars($product['product_image']) ?>"
+          alt="<?= htmlspecialchars($product['product_name']) ?>"
+          class="product-img">
       </div>
-      <div class="col-md-7">
-        <div class="product-detail-content">
-          <h2 class="product-title"><?php echo $product['product_name']; ?></h2>
 
-          <div class="price-tag mb-2">
-            ₦<?php echo number_format($product['product_price']); ?>
-            <span class="unit">/ <?php echo $product['product_unit']; ?></span>
+      <!-- Content Side -->
+      <div class="col-lg-7">
+        <div class="product-content">
+          <h1 class="product-title"><?= htmlspecialchars($product['product_name']) ?></h1>
+
+          <div class="mb-4">
+            <span class="price">₦<?= number_format($product['product_price']) ?></span>
+            <span class="unit">/ <?= htmlspecialchars($product['product_unit'] ?? 'unit') ?></span>
           </div>
 
-          <p class="product-desc">
-            <?php echo $product['product_description']; ?>
+          <p class="lead text-muted">
+            <?= nl2br(htmlspecialchars($product['product_description'] ?? 'No description available.')) ?>
           </p>
 
-          <p><strong>Available Quantity:</strong> <?php echo $product['product_quantityavailable']; ?></p>
-
-          <div class="farmer-info">
-            <p>
-              <i class="fas fa-user text-success"></i>
-              Sold by: 
-              <a href="farmers/farmer_details.php?id=<?php echo $product['product_farmer_id']; ?>">
-                <?php echo $product['farmer_fullname']; ?>
-              </a>
-            </p>
-            <p><i class="fas fa-map-marker-alt text-success"></i> Located in: <?php echo $product['state_name']; ?></p>
+          <div class="row">
+            <div class="col-sm-6">
+              <p><strong>Available Quantity:</strong><br>
+                <?= htmlspecialchars($product['product_quantityavailable'] ?? 'N/A') ?></p>
+            </div>
           </div>
 
-          <div class="mt-4 d-flex gap-2">
-            <?php if (isset($_SESSION['buyer_online'])) { ?>
-              <a href="process/process_addtocart.php?id=<?php echo $product['product_id']; ?>" class="btn btn-success btn-lg">
-                <i class="fas fa-cart-plus"></i> Add to Cart
+          <!-- Farmer Info -->
+          <div class="farmer-info">
+            <p class="mb-2">
+              <i class="fas fa-user text-success"></i>
+              Sold by:
+              <a href="<?= BASE_URL ?>farmers/farmer_profile_view.php?id=<?= $product['product_farmer_id'] ?>"
+                class="text-success fw-medium">
+                <?= htmlspecialchars($product['farmer_fullname']) ?>
               </a>
-            <?php } elseif (isset($_SESSION['farmer_online'])) { ?>
-              <a href="farmers/update_product.php?id=<?php echo $product['product_id']; ?>" class="btn btn-outline-success">
-                <i class="bi bi-pencil-square"></i> Update Product
+            </p>
+            <p>
+              <i class="fas fa-map-marker-alt text-success"></i>
+              Location: <?= htmlspecialchars($product['state_name'] ?? 'Nigeria') ?>
+            </p>
+          </div>
+
+          <div class="mt-5">
+            <?php if (isset($_SESSION['buyer_online'])): ?>
+              <a href="<?= BASE_URL ?>process/process_addtocart.php?id=<?= $product['product_id'] ?>"
+                class="btn btn-add-cart btn-lg text-white">
+                <i class="fas fa-cart-plus me-2"></i> Add to Cart
               </a>
-            <?php } else { ?>
-              <a href="buyers/login_buyer.php" class="btn btn-outline-success btn-lg">
-                <i class="fas fa-user"></i> Login to Purchase
+            <?php elseif (isset($_SESSION['farmer_online'])): ?>
+              <a href="<?= BASE_URL ?>farmers/update_product.php?id=<?= $product['product_id'] ?>"
+                class="btn btn-outline-success btn-lg">
+                <i class="fas fa-edit me-2"></i> Update This Product
               </a>
-            <?php } ?>
+            <?php else: ?>
+              <a href="<?= BASE_URL ?>buyers/login_buyer.php"
+                class="btn btn-outline-success btn-lg">
+                <i class="fas fa-user me-2"></i> Login to Buy
+              </a>
+            <?php endif; ?>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <?php require_once 'common/footer.php'; ?>
-  <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>
+  <?php require_once ROOT_PATH . 'footer.php'; ?>
+
+  <script src="<?= BASE_URL ?>assets/bootstrap/js/bootstrap.bundle.js"></script>
 </body>
+
 </html>

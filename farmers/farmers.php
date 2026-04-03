@@ -1,200 +1,241 @@
 <?php
 session_start();
+require_once '../config/constants.php';
 require_once '../classes/Farmer.php';
 require_once '../classes/Buyer.php';
 
-$f = new Farmer;
-$b = new Buyer;
+$f = new Farmer();
+$b = new Buyer();
 
-$farmer = isset($_SESSION['farmer_online']) ? $f->get_farmer_details($_SESSION['farmer_online']) : [];
-$buyer = isset($_SESSION['buyer_online']) ? $b->get_buyer_details($_SESSION['buyer_online']) : [];
+$logged_farmer = isset($_SESSION['farmer_online']) ? $f->get_farmer_details($_SESSION['farmer_online']) : [];
+$buyer         = isset($_SESSION['buyer_online']) ? $b->get_buyer_details($_SESSION['buyer_online']) : [];
 
+// Fetch all states for filter
 $states = $f->fetch_all_states();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="../assets/images/logo.png" />
-    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="../assets/fontawesome/css/all.css" />
-    <link rel="stylesheet" href="../assets/animate.min.css" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <title>AgriLink - Farmers to Consumers</title>
 
-    <style>
-      :root{
-        --brand: #1fa97a;
-        --hero-height: 220px;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="<?= BASE_URL ?>assets/images/logo.png" />
+  <link rel="stylesheet" href="<?= BASE_URL ?>assets/bootstrap/css/bootstrap.css" />
+  <link rel="stylesheet" href="<?= BASE_URL ?>assets/fontawesome/css/all.css" />
+  <link rel="stylesheet" href="<?= BASE_URL ?>assets/animate.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-      html,
-      body{
-        height:100%;
-      }
-      body {
-        background: linear-gradient(90deg, #eef9f0 0%, #e8f5e9 100%);
-        font-family: "Poppins", system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-        padding-top: 76px;
-      }
+  <title>AgriLink - Find Farmers & Fresh Produce</title>
 
-      <?php require_once '../assets/style.php'; ?>
+  <style>
+    :root {
+      --brand: #1fa97a;
+      --brand-dark: #0f5132;
+    }
 
-      .hero {
-        background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.80));
-        border-radius: 14px;
-        padding: 1.5rem;
-        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
-      }
+    body {
+      font-family: 'Poppins', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f8faf9 0%, #eef9f0 100%);
+      min-height: 100vh;
+      padding-top: 90px;
+      color: #1a2e1f;
+    }
 
-      .hero .lead {
-        color: rgba(0,0,0,0.7);
-      }
+    .hero {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 35px rgba(15, 81, 50, 0.08);
+      padding: 2rem 1.75rem;
+      margin-bottom: 3rem;
+    }
 
-      .search-row {
-        gap: .75rem;
-      }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.85rem;
+      color: var(--brand-dark);
+      margin-bottom: 0.5rem;
+    }
 
-      .state-select {
-        min-width: 180px;
-      }
+    .search-row .form-control,
+    .search-row .form-select {
+      border-radius: 12px;
+      border: 1.5px solid #e0e7e0;
+      padding: 0.75rem 1rem;
+      font-size: 1.02rem;
+    }
 
-      .btn-ghost {
-        background: transparent;
-        border: 1px solid rgba(0,0,0,0.06);
-      }
-    </style>
-  </head>
+    .search-row .form-control:focus,
+    .search-row .form-select:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(31, 169, 122, 0.15);
+    }
 
-  <body>
-    <?php require_once '../common/header.php'; ?>
-    <main class="container">
-      <section class="hero mb-4">
-        <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 w-100">
-          <div class="flex-grow-1">
-            <h1 class="h4 mb-1" style="color:var(--brand);">Find farmers & produce near you</h1>
-            <p class="lead small mb-2">Search by farmer name, produce, or filter by state and LGA.</p>
+    .btn-search {
+      background: var(--brand);
+      border: none;
+      font-weight: 600;
+      padding: 0.85rem 2rem;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
 
-            <form id="searchForm" class="row g-2 align-items-center search-row" method="get" action="" role="search" aria-label="Search farmers or produce">
-              <div class="col-12 col-md">
-                <label for="search">Search</label>
-                <input id="search" name="search" type="search" class="form-control form-control-lg" placeholder="e.g. Tomato, Rice, Farmer Samuel" />
-              </div>
+    .btn-search:hover {
+      background: #1a8f66;
+      transform: translateY(-2px);
+    }
 
-              <div class="col-6 col-md-auto">
-                <label for="state">State</label>
-                <select id="delvstate" name="delvstate" class="form-select state-select" aria-label="Filter by state">
-                  <option value="">All State</option>
-                    <?php
-                      foreach ($states as $state) {
-                          ?>
-                      <option value="<?php echo $state['state_id'] ?>">
-                        <?php echo $state['state_name'] ?>
-                      </option>
-                    <?php
-                      }
-?>
-                </select>
-              </div>
+    .card-farmer {
+      border: none;
+      border-radius: 18px;
+      overflow: hidden;
+      transition: all 0.35s ease;
+      box-shadow: 0 8px 25px rgba(15, 81, 50, 0.07);
+    }
 
-              <div class="col-6 col-md-auto">
-                <label for="lga">LGA</label>
-                <select id="delvlga" name="delvlga" class="form-select state-select" aria-label="Filter by local government">
-                </select>
-              </div>
+    .card-farmer:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(15, 81, 50, 0.15);
+    }
 
-              <div class="col-md-12 d-grid">
-                <button class="btn btn-success" name="btnsearch" type="submit">Search</button>
-              </div>
-            </form>
-          </div>
+    .avatar {
+      width: 62px;
+      height: 62px;
+      border-radius: 14px;
+      background: #e8f5e9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--brand);
+      border: 3px solid #fff;
+      box-shadow: 0 4px 12px rgba(31, 169, 122, 0.2);
+    }
 
-          <?php if (! isset($_SESSION['farmer_online']) && ! isset($_SESSION['buyer_online'])) { ?> 
-            <div class="d-none d-md-flex">
-              <a href="sign_farmer.php" class="btn btn-outline-success">Register as Farmer</a>
+    .section-header {
+      font-size: 1.35rem;
+      color: var(--brand-dark);
+      margin-bottom: 1.25rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <?php require_once ROOT_PATH . 'outhead.php'; ?>
+
+  <main class="container py-4">
+    <!-- Hero Search Section -->
+    <section class="hero animate__animated animate__fadeIn">
+      <div class="d-flex flex-column flex-md-row align-items-md-center gap-4">
+        <div class="flex-grow-1">
+          <h1>Find Farmers & Fresh Produce Near You</h1>
+          <p class="lead small text-muted mb-4">
+            Search by farmer name, produce type, or filter by state and LGA.
+          </p>
+
+          <form id="searchForm" class="row g-3 align-items-end search-row" method="get" action="">
+            <div class="col-12 col-lg-5">
+              <label for="search" class="form-label fw-medium small">What are you looking for?</label>
+              <input id="search" name="search" type="search"
+                class="form-control form-control-lg"
+                placeholder="e.g. Tomatoes, Rice, Farmer Ade..." />
             </div>
-          <?php } ?>
-        </div>
-      </section>
 
-      <section>
-        <div class="row g-3" id="searchResults">
-          <div class="col-12">
-            <div class="d-flex align-items-center justify-content-between">
-              <h2 class="h6 mb-0 text-muted">Featured farmers</h2>
+            <div class="col-6 col-lg-3">
+              <label for="delvstate" class="form-label fw-medium small">State</label>
+              <select id="delvstate" name="delvstate" class="form-select">
+                <option value="">All States</option>
+                <?php foreach ($states as $state): ?>
+                  <option value="<?= htmlspecialchars($state['state_id']) ?>">
+                    <?= htmlspecialchars($state['state_name']) ?>
+                  </option>
+                <?php endforeach; ?>
+              </select>
             </div>
-          </div>
 
-          <div class="col-12 col-md-6 col-lg-4">
-            <article class="card h-100 shadow-sm border-0">
-              <div class="card-body d-flex flex-column">
-                <div class="d-flex align-items-center gap-3 mb-3">
-                  <div style="width:56px;height:56px;border-radius:10px;background:#f3fbf7;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--brand);">
-                    F
-                  </div>
-                  <div>
-                    <div class="fw-semibold">Farmer Ade</div>
-                    <div class="small text-muted">Tomatoes . Lagos, Ikeja</div>
-                  </div>
-                </div>
+            <div class="col-6 col-lg-3">
+              <label for="delvlga" class="form-label fw-medium small">LGA</label>
+              <select id="delvlga" name="delvlga" class="form-select">
+                <option value="">All LGAs</option>
+              </select>
+            </div>
 
-                <p class="small text-muted mb-3">Supplying fresh tomatoes and assorted vegetables directly from farm to your kitchen.</p>
-
-                <div class="mt-auto d-flex justify-content-between align-items-center">
-                  <div>
-                    <span class="badge bg-success">Available</span>
-                    <small class="text-muted d-block">Delivery: 2-3 days</small>
-                  </div>
-                  <div>
-                    <a class="btn btn-sm btn-outline-secondary" href="farmer_profile_view.php">View profile</a>
-                  </div>
-                </div>
-              </div>
-            </article>
-          </div>
+            <div class="col-12 col-lg-auto d-grid">
+              <button class="btn btn-search text-white" type="submit">
+                <i class="fas fa-search me-2"></i> Search
+              </button>
+            </div>
+          </form>
         </div>
-      </section>
-    </main>
-    
-      <?php // require_once("assets/common/footer.php")?>
 
-    <!-- jQuery (required for the AJAX search and .load usage) -->
-    <script src="../assets/jquery.js"></script>
-    <script src="../assets/bootstrap/js/bootstrap.bundle.js"></script>
+        <?php if (!isset($_SESSION['farmer_online']) && !isset($_SESSION['buyer_online'])): ?>
+          <div class="d-none d-md-block">
+            <a href="<?= BASE_URL ?>farmers/sign_farmer.php" class="btn btn-outline-success px-4 py-2">
+              <i class="fas fa-user-plus me-2"></i> Register as Farmer
+            </a>
+          </div>
+        <?php endif; ?>
+      </div>
+    </section>
 
-    <script>
-      $(document).ready(function(){
-        // Keep existing LGA load behavior
-        $("#delvstate").change(function(){
-          var state_id = $(this).val();
-          $("#delvlga").load("../process/process_state_lga.php?id="+encodeURIComponent(state_id));
+    <section>
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <h2 class="section-header mb-0" id="resultsTitle">Featured Farmers</h2>
+        <small class="text-muted" id="resultCount"></small>
+      </div>
+
+      <div class="row g-4" id="searchResults">
+        <div class="col-12 text-center py-5 text-muted">
+          <i class="fas fa-users fa-3x mb-3"></i>
+          <p>Use the search above to find farmers near you.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Scripts -->
+  <script src="<?= BASE_URL ?>assets/jquery.js"></script>
+  <script src="<?= BASE_URL ?>assets/bootstrap/js/bootstrap.bundle.js"></script>
+  <script>
+    $(document).ready(function() {
+      $("#delvstate").change(function() {
+        const state_id = $(this).val();
+        if (state_id) {
+          $("#delvlga").html('<option value="">Loading LGAs...</option>');
+          $("#delvlga").load("<?= BASE_URL ?>process/process_state_lga.php?id=" + encodeURIComponent(state_id));
+        } else {
+          $("#delvlga").html('<option value="">All LGAs</option>');
+        }
+      });
+
+      $("#searchForm").on("submit", function(e) {
+        e.preventDefault();
+
+        const $form = $(this);
+        const $btn = $form.find('button[type="submit"]');
+        const data = $form.serialize();
+
+        $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i> Searching...');
+
+        $("#searchResults").html(`
+                    <div class="col-12 text-center py-5">
+                        <div class="spinner-border text-success" role="status"></div>
+                        <p class="mt-3 text-muted">Finding the best farmers for you...</p>
+                    </div>
+                `);
+
+        $.get("<?= BASE_URL ?>process/process_search.php", data, function(response) {
+          $("#searchResults").html(response ||
+            '<div class="col-12"><div class="alert alert-info">No results found.</div></div>');
+        }).fail(function() {
+          $("#searchResults").html('<div class="col-12"><div class="alert alert-danger">Failed to load results. Please try again.</div></div>');
+        }).always(function() {
+          $btn.prop('disabled', false).html('<i class="fas fa-search me-2"></i> Search');
         });
+      });
+    });
+  </script>
+</body>
 
-        // AJAX search: intercept form submit and request server for results
-        $("#searchForm").on("submit", function(e){
-          e.preventDefault();
-          var $form = $(this);
-          var $btn = $form.find('button[type="submit"]');
-          var data = $form.serialize();
-
-          // simple UI feedback
-          $btn.prop('disabled', true).text('Searching...');
-          $("#searchResults").html('<div class="text-center p-4"><div class="spinner-border text-success" role="status" aria-hidden="true"></div><div class="mt-2 small text-muted">Loading results...</div></div>');
-
-          // Ensure the server-side script is implemented correctly to handle search parameters
-          $.get("../process/process_search.php", data, function(response){
-            // Expect HTML snippet from server — inject into page
-            $("#searchResults").html(response);
-          }).fail(function(){
-            $("#searchResults").html('<div class="alert alert-danger">Unable to fetch results. Please try again.</div>');
-          }).always(function(){
-            $btn.prop('disabled', false).text('Search');
-          });
-        });
-      })
-    </script>
-  </body>
 </html>

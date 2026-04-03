@@ -2,339 +2,333 @@
 session_start();
 require_once 'classes/Farmer.php';
 require_once 'classes/Buyer.php';
-
-$f = new Farmer;
-$b = new Buyer;
-
-$farmer = isset($_SESSION['farmer_online']) ? $f->get_farmer_details($_SESSION['farmer_online']) : [];
-$buyer = isset($_SESSION['buyer_online']) ? $b->get_buyer_details($_SESSION['buyer_online']) : [];
-
-$farmers = $f->fetch_farmers();
-$products = $f->fetch_products();
+require_once 'config/constants.php';
+$f = new Farmer();
+$b = new Buyer();
+$farmer_online = $_SESSION['farmer_online'] ?? null;
+$buyer_online  = $_SESSION['buyer_online'] ?? null;
+$current_farmer = $farmer_online ? $f->get_farmer_details($farmer_online) : [];
+$current_buyer  = $buyer_online  ? $b->get_buyer_details($buyer_online)  : [];
+$featured_farmers = $f->fetch_farmers(8);
+$featured_products = $f->fetch_products(12);
 ?>
-
-
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="assets/images/logo.png" />
-    <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/fontawesome/css/all.css" />
-    <link rel="stylesheet" href="../assets/animate.min.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <title>AgriLink - Farmers to Consumers</title>
+<html lang="en" class="h-100">
 
-    <style>
-      :root{
-        --accent: #0f5132;
-        --accent-2: #1fa97a;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgriLink - Fresh From Farm to You</title>
+  <link rel="icon" href="<?= BASE_URL ?>assets/images/logo.png" type="image/png" />
 
-      html,
-      body{
-        height:100%
-      }
+  <!-- Bootstrap 5 + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="assets/fontawesome/css/all.min.css" />
+
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent: #0f5132;
+      --accent-2: #1fa97a;
+      --accent-light: #e8f5e9;
+      --text-dark: #1a2e1f;
+      --text-muted: #5c6b5e;
+      --bg-light: #f8faf9;
+    }
+
+    body {
+      font-family: 'Poppins', system-ui, sans-serif;
+      color: var(--text-dark);
+      background: var(--bg-light);
+      line-height: 1.6;
+      padding-top: 90px;
+    }
+
+    h1,
+    h2,
+    h3,
+    .display-4 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(rgba(15, 81, 50, 0.72), rgba(31, 169, 122, 0.55)),
+        url('assets/images/index.png') center/cover no-repeat;
+      color: white;
+      min-height: 88vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.5));
+    }
+
+    .hero h1 {
+      font-size: clamp(2.6rem, 8vw, 4.8rem);
+      line-height: 1.05;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+    }
+
+    .hero p.lead {
+      font-size: clamp(1.15rem, 3.5vw, 1.55rem);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+    }
+
+    .search-input .form-control {
+      border-radius: 50rem 0 0 50rem;
+      border: none;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .search-input .btn {
+      border-radius: 0 50rem 50rem 0;
+      padding: 0 2.2rem;
+      font-weight: 600;
+    }
+
+    /* Cards */
+    .product-card,
+    .farmer-card {
+      border: none;
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 8px 25px rgba(15, 81, 50, 0.08);
+    }
+
+    .product-card:hover,
+    .farmer-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 25px 50px rgba(15, 81, 50, 0.18);
+    }
+
+    .product-img {
+      height: 235px;
+      object-fit: cover;
+    }
+
+    .category-chip {
+      background: rgba(31, 169, 122, 0.12);
+      color: var(--accent-2);
+      border-radius: 9999px;
+      padding: 0.55rem 1.2rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.25s ease;
+    }
+
+    .category-chip:hover {
+      background: var(--accent-2);
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      position: relative;
+      display: inline-block;
+      margin-bottom: 2.8rem;
+    }
+
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 85px;
+      height: 5px;
+      background: var(--accent-2);
+      border-radius: 3px;
+    }
+
+    /* Mobile Optimizations */
+    @media (max-width: 767px) {
       body {
-        font-family: "Poppins", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-        background: linear-gradient(90deg,#e8f5e9 0%, #c8e6c9 100%);
+        padding-top: 78px;
       }
-
-      <?php require_once 'assets/style.php'; ?>
-
-      .hero-header { font-weight:700; font-size: clamp(1.6rem, 4vw, 2.8rem); line-height:1.05; }
-      .hero-para { font-size: clamp(1rem, 2.6vw, 1.25rem); color: #234; }
 
       .hero {
-        margin-top: 3rem;
-        padding: 3rem 1rem;
-        background: rgba(255,255,255,0.35);
-        border-radius: 12px;
-        box-shadow: 0 6px 18px rgba(31, 169, 122, 0.06);
-      }
-      .category-pill {
-        background: rgba(31, 169, 122, 0.12);
-        color: var(--accent);
-        border-radius: 999px;
-        padding: 0.35rem 0.75rem;
-        display:inline-block;
-        font-weight:600;
-        margin: 0.25rem 0.35rem;
-        white-space:nowrap;
-        font-size: .9rem;
+        min-height: 75vh;
+        padding-top: 4rem;
       }
 
-      .product-card, 
-      .farmer-card { 
-        border: none; 
-        border-radius: 12px; 
-        overflow: hidden; 
-        transition: transform .18s ease, box-shadow .18s ease; 
-      }
-      .product-card:hover, 
-      .farmer-card:hover { 
-        transform: translateY(-6px); 
-        box-shadow: 0 12px 30px rgba(20, 80, 50, 0.08); 
-      }
-      .card-img-top {
-        width:100%;
-        height:190px;
-        object-fit:cover;
-      }
-      @media(min-width:992px){
-        .card-img-top { 
-          height:160px; 
-        }
+      .product-img {
+        height: 190px;
       }
 
-      .small-muted { 
-        color: #6c757d; 
-        font-size:.9rem; 
+      .section-title {
+        font-size: 2.1rem;
       }
-      .product-header { 
-        font-size: clamp(1.25rem, 2.6vw, 1.6rem); 
-        font-weight:700; 
-      }
-      .why-header { 
-        font-size: clamp(1.3rem, 3vw, 1.9rem); 
-        font-weight:700; 
-      }
-      .why-para { 
-        font-size: clamp(.95rem, 2.2vw, 1.05rem); 
-        color:#345; 
-      }
+    }
 
-      .search-input .form-control {
-        border-radius: 999px 0 0 999px;
-        min-height:48px;
-      }
-      .search-input .btn {
-        border-radius: 0 999px 999px 0;
-        min-height:48px;
-      }
+    .btn-accent {
+      background: var(--accent-2);
+      border: none;
+      font-weight: 600;
+      box-shadow: 0 6px 20px rgba(31, 169, 122, 0.3);
+    }
 
-      footer { 
-        margin-top: 3.5rem; 
-        padding-top:1.5rem; 
-      }
+    .btn-accent:hover {
+      background: #1a8f66;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
 
-      .btn-outline-success { 
-        border-color: rgba(31,169,122,.9); 
-      }
-      .text-success { 
-        color: var(--accent-2) !important; 
-      }
+<body class="d-flex flex-column min-vh-100">
 
-      .hero .gap-2 { 
-        display:flex; 
-        flex-wrap:wrap; 
-        gap:.5rem; 
-        justify-content:center; 
-      }
-    </style>
-  </head>
+  <?php require_once ROOT_PATH . 'outhead.php'; ?>
 
-  <body>
-    <div class="container px-3 px-md-5">
-      <!-- Navigation -->
-      <?php require_once 'outhead.php'; ?>
+  <!-- HERO -->
+  <section class="hero text-center text-white animate__animated animate__fadeIn">
+    <div class="hero-overlay"></div>
+    <div class="container position-relative z-3">
+      <div class="row justify-content-center">
+        <div class="col-xl-10 col-lg-9">
+          <h1 class="fw-bold mb-4 animate__animated animate__delay-1s">
+            Fresh Farm Goodness<br>Direct to Your Door
+          </h1>
+          <p class="lead mb-5 opacity-90 animate__animated animate__delay-1s">
+            Connecting passionate farmers with families who value real, traceable food.
+          </p>
 
-      <!-- HERO -->
-      <section class="hero mx-auto" style="max-width:1200px;">
-        <?php require_once 'common/alert.php'?>
-        <div class="row align-items-center">
-          <div class="col-lg-7 text-center text-lg-start mb-3 mb-lg-0">
-            <h1 class="hero-header">
-              Connecting <span class="text-success">Farmers & Consumers</span> Seamlessly
-            </h1>
-            <p class="hero-para mb-3">
-              Empowering <span class="text-success">agriculture</span> through digital innovation
-            </p>
-
-            <!-- Search Input -->
-            <form class="row g-2 align-items-center justify-content-center justify-content-lg-start" role="search" aria-label="Search products">
-              <div class="col-12 col-md-9 col-lg-8 search-input">
-                <div class="input-group">
-                  <span class="input-group-text bg-white border-0" id="search-icon" style="border-radius:999px 0 0 999px;">
-                    <i class="bi bi-search" aria-hidden="true"></i>
-                  </span>
-                  <input type="search" class="form-control" placeholder="Search products, farmers, locations..." aria-label="Search" aria-describedby="search-icon">
-                  <button class="btn btn-success d-none d-md-inline" type="submit">Search</button>
-                  <!-- on very small screens show icon-only button -->
-                  <button class="btn btn-success d-md-none" type="submit" aria-label="Search"><i class="bi bi-search"></i></button>
-                </div>
-              </div>
-            </form>
-
-            <?php
-              if (! isset($_SESSION['farmer_online']) && ! isset($_SESSION['buyer_online'])) {
-                  ?> 
-              <div class="mt-3 d-flex gap-2 justify-content-center justify-content-lg-start">
-                <a href="farmers/sign_farmer.php" class="btn btn-outline-success btn-lg">Register as Farmer</a>
-                <a href="buyers/sign_buyer.php" class="btn btn-success btn-lg text-white">Register as Consumer</a>
-              </div>
-            <?php
-              }
-?>
-          </div>
-
-          <div class="col-lg-5 text-center">
-            <img src="assets/images/hero-farm.png" alt="AgriLink hero image" class="img-fluid" style="max-height:260px; object-fit:contain;">
-            <div class="mt-3 d-flex gap-2 justify-content-center flex-wrap">
-              <a href="vegetables.php" class="category-pill">Vegetables</a>
-              <a href="fruits.php" class="category-pill">Fruits</a>
-              <a href="grains_legumes.php" class="category-pill">Grains</a>
-              <a href="livestock.php" class="category-pill">Livestock</a>
-              <a href="#" class="category-pill">Dairy</a>
-              <a href="#" class="category-pill">Organic</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Popular products -->
-      <section class="products mt-5 mx-auto" style="max-width:1200px;">
-        <div class="d-flex align-items-center justify-content-between mb-3">
-          <h2 class="mb-0 product-header">Popular products</h2>
-          <a href="products.php" class="link-success">See all</a>
-        </div>
-
-        <div class="row g-4">
-          <?php foreach ($products as $product) {
-              $image = $product['product_image'];
-              $title = $product['product_name'].' - '.$product['product_quantityavailable'];
-              $unit = $product['product_unit'];
-              $price = number_format($product['product_price']);
-              $fname = explode(' ', $product['farmer_fullname']);
-              $show = end($fname);
-              $state = $product['state_name'];
-              ?>
-            <div class="col-6 col-sm-6 col-md-4 col-lg-3">
-              <div class="card product-card">
-                <img src="uploads/<?php echo $image; ?>" class="card-img-top" alt="<?php echo $product['product_name'] ?>" />
-                <div class="card-body">
-                  <h6 class="card-title mb-1"><?php echo $title ?></h6>
-                  <p class="mb-1 text-success fw-bold">
-                    <span>&#8358; <?php echo $price ?></span>
-                    <span><span class="text-muted"> / <?php echo $unit; ?></span></span>
-                  </p>
-                  <p class="small-muted mb-2">From: <a href="pages/farmer_details.php" class="link-dark">Farmer <?php echo $show ?></a></p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="small-muted"><?php echo $state ?></div>
-                    <a class="btn btn-outline-success btn-sm" href="product_details.php">View</a>
-                  </div>
-                </div>
+          <!-- Search -->
+          <div class="row justify-content-center mb-4 mb-md-5">
+            <div class="col-11 col-sm-10 col-md-9 col-lg-7 search-input">
+              <div class="input-group input-group-lg">
+                <input type="search" class="form-control" placeholder="Search vegetables, fruits, farmers..." aria-label="Search">
+                <button class="btn btn-accent" type="button">
+                  <i class="bi bi-search me-2"></i>Find
+                </button>
               </div>
             </div>
-          <?php } ?>
-        </div>
-      </section>
+          </div>
 
-      <!-- Top farmers -->
-      <section class="mt-5 mx-auto" style="max-width:1200px;">
-        <div class="d-flex align-items-center justify-content-between mb-3">
-          <h3 class="mb-0">Top farmers</h3>
-          <a href="farmers.php" class="link-success">Explore farmers</a>
-        </div>
-
-        <div class="row g-4">
-          <?php foreach ($farmers as $farmer) { ?>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-              <div class="card farmer-card">
-                <img src="" class="card-img-top" alt="<?php echo $farmer['farmer_fullname'].' image' ?>" />
-                <div class="card-body">
-                  <h6 class="mb-1"><?php echo $farmer['farmer_fullname'] ?></h6>
-                  <p class="small">Location: <?php echo $farmer['state_name']; ?></p>
-                  <p class="small fw-bold text-success">Produces: <?php echo $farmer['farmer_primary_produce'] ?></p>
-                  <div class="d-flex justify-content-between align-items-center mt-2">
-                    <a href="pages/farmer_details.php" class="btn btn-outline-success btn-sm">View profile</a>
-                    <div class="small-muted">
-                      <i class="bi bi-star-fill text-warning" aria-hidden="true"></i> 4.6
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <?php if (!$farmer_online && !$buyer_online): ?>
+            <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center animate__animated animate__delay-2s mb-5">
+              <a href="<?= BASE_URL ?>farmers/sign_farmer.php" class="btn btn-outline-light btn-lg px-5 py-3">Become a Farmer</a>
+              <a href="<?= BASE_URL ?>buyers/sign_buyer.php" class="btn btn-accent btn-lg px-5 py-3 shadow">Shop Fresh Now</a>
             </div>
-          <?php } ?>
-        </div>
-      </section>
+          <?php endif; ?>
 
-      <!-- How AgriLink works -->
-      <section class="mt-5 mx-auto text-center" style="max-width:1100px;">
-        <h2 class="product-header mb-4">How <span class="text-success">AgriLink</span> Works</h2>
-        <div class="row g-4">
-          <div class="col-12 col-md-4">
-            <i class="fa-solid fa-user-plus fa-3x text-success" aria-hidden="true"></i>
-            <h5 class="mt-3">1. Register</h5>
-            <p>Create an account as a farmer or buyer.</p>
-          </div>
-          <div class="col-12 col-md-4">
-            <i class="fa-solid fa-box-open fa-3x text-success" aria-hidden="true"></i>
-            <h5 class="mt-3">2. List or browse products</h5>
-            <p>Farmers upload available produce, buyers explore fresh items.</p>
-          </div>
-          <div class="col-12 col-md-4">
-            <i class="fa-solid fa-truck fa-3x text-success" aria-hidden="true"></i>
-            <h5 class="mt-3">3. Order & Get Delivery</h5>
-            <p>Make orders and get farm-fresh goods delivered fast.</p>
+          <!-- Category Pills -->
+          <div class="d-flex flex-wrap gap-2 gap-sm-3 justify-content-center">
+            <a href="<?= BASE_URL ?>vegetables.php" class="category-chip">Vegetables</a>
+            <a href="<?= BASE_URL ?>fruits.php" class="category-chip">Fruits</a>
+            <a href="<?= BASE_URL ?>grains_legumes.php" class="category-chip">Grains & Legumes</a>
+            <a href="<?= BASE_URL ?>livestock.php" class="category-chip">Poultry & Meat</a>
+            <a href="#" class="category-chip">Organic Picks</a>
+            <a href="#" class="category-chip">Seasonal</a>
           </div>
         </div>
-      </section>
-
-      <!-- Why choose us -->
-      <section class="mt-5 mx-auto text-center" style="max-width:1100px;">
-        <h2 class="why-header">Why <span class="text-success">Choose Us</span></h2>
-        <p class="why-para mb-4">Empowering farmers, connecting buyers, and delivering fresh produce the smart way.</p>
-
-        <div class="row g-4">
-          <div class="col-12 col-md-4">
-            <i class="fa-solid fa-hand-holding-dollar fa-3x mb-3 text-success" aria-hidden="true"></i>
-            <h5 class="fw-bold">Fair Prices</h5>
-            <p>Farmers earn more while buyers pay less with transparent pricing.</p>
-          </div>
-
-          <div class="col-12 col-md-4">
-            <i class="fa-solid fa-leaf fa-3x mb-3 text-success" aria-hidden="true"></i>
-            <h5 class="fw-bold">Fresh & Organic</h5>
-            <p>All produce comes directly from trusted, verified farms.</p>
-          </div>
-
-          <div class="col-12 col-md-4">
-            <i class="fa-solid fa-truck-fast fa-3x mb-3 text-success" aria-hidden="true"></i>
-            <h5 class="fw-bold">Fast Delivery</h5>
-            <p>With integrated logistics, we ensure your order arrives quickly and safely.</p>
-          </div>
-
-          <div class="col-12 col-md-4">
-            <i class="fa-solid fa-users fa-3x mb-3 text-success" aria-hidden="true"></i>
-            <h5 class="fw-bold">Farmer Empowerment</h5>
-            <p>We connect farmers directly to national markets.</p>
-          </div>
-
-          <div class="col-12 col-md-4">
-            <i class="fa-solid fa-lock fa-3x mb-3 text-success" aria-hidden="true"></i>
-            <h5 class="fw-bold">Secure Transactions</h5>
-            <p>Your data and payments are protected by secure systems.</p>
-          </div>
-
-          <div class="col-12 col-md-4">
-            <i class="fa-solid fa-globe fa-3x mb-3 text-success" aria-hidden="true"></i>
-            <h5 class="fw-bold">Nationwide Reach</h5>
-            <p>Connecting farmers and buyers across regions with ease and trust.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Footer  -->
-      <div class="col-md-11 offset-md-1 py-5">
-        <?php require_once 'common/footer.php'?>
       </div>
-
     </div>
+  </section>
 
-    <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
-  </body>
+  <!-- Featured Products -->
+  <section class="py-5 bg-white">
+    <div class="container">
+      <h2 class="section-title text-center mx-auto">Popular Fresh Picks</h2>
+      <div class="row g-4">
+        <?php foreach (array_slice($featured_products, 0, 8) as $p):
+          $price = number_format($p['product_price'] ?? 0);
+          $unit  = $p['product_unit'] ?? 'kg';
+          $img   = $p['product_image'] ?? 'placeholder.jpg';
+          $name  = $p['product_name'] ?? 'Fresh Produce';
+          $farmer_name = explode(' ', $p['farmer_fullname'] ?? 'Farmer')[0];
+        ?>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="card product-card h-100">
+              <img src="<?= BASE_URL ?>uploads/<?= htmlspecialchars($img) ?>" class="product-img card-img-top" alt="<?= htmlspecialchars($name) ?>">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title mb-2"><?= htmlspecialchars($name) ?></h5>
+                <div class="mt-auto">
+                  <p class="fs-5 fw-bold text-success mb-1">₦<?= $price ?> <small class="text-muted">/ <?= $unit ?></small></p>
+                  <p class="small text-muted mb-3">By <?= htmlspecialchars($farmer_name) ?></p>
+                  <a href="<?= BASE_URL ?>product_details.php?id=<?= $p['id'] ?? '' ?>" class="btn btn-outline-accent btn-sm w-100">View Details</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+      <div class="text-center mt-5">
+        <a href="<?= BASE_URL ?>products.php" class="btn btn-outline-accent btn-lg px-5">View All Products</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Top Farmers -->
+  <section class="py-5 bg-light">
+    <div class="container">
+      <h2 class="section-title text-center mx-auto">Meet Our Top Farmers</h2>
+      <div class="row g-4">
+        <?php foreach (array_slice($featured_farmers, 0, 6) as $farmer): ?>
+          <div class="col-md-6 col-lg-4">
+            <div class="card farmer-card h-100 text-center">
+              <div class="card-body">
+                <div class="mb-4">
+                  <img src="<?= BASE_URL ?>assets/images/farmer-placeholder.jpg" alt="<?= htmlspecialchars($farmer['farmer_fullname']) ?>"
+                    class="rounded-circle" width="100" height="100"
+                    style="object-fit:cover; border:5px solid var(--accent-light)">
+                </div>
+                <h5 class="mb-2"><?= htmlspecialchars($farmer['farmer_fullname']) ?></h5>
+                <p class="small text-muted mb-2"><?= htmlspecialchars($farmer['state_name'] ?? 'Nigeria') ?></p>
+                <p class="fw-medium text-success mb-4">
+                  Specializes in <?= htmlspecialchars($farmer['farmer_primary_produce'] ?? 'Various crops') ?>
+                </p>
+                <a href="<?= BASE_URL ?>farmers/farmer_details.php?id=<?= $farmer['id'] ?? '' ?>" class="btn btn-outline-accent btn-sm px-4">View Profile</a>
+              </div>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+      <div class="text-center mt-5">
+        <a href="<?= BASE_URL ?>farmers/farmers.php" class="btn btn-outline-accent btn-lg px-5">Discover More Farmers</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="py-5 bg-white text-center">
+    <div class="container" style="max-width: 1100px;">
+      <h2 class="section-title mx-auto">How AgriLink Works</h2>
+      <div class="row g-5 mt-3">
+        <div class="col-md-4 animate__animated animate__fadeIn">
+          <i class="bi bi-person-plus-fill display-1 text-accent-2 mb-4"></i>
+          <h4 class="mb-3">1. Sign Up</h4>
+          <p class="text-muted px-3">Create your free account as a farmer or buyer in minutes.</p>
+        </div>
+        <div class="col-md-4 animate__animated animate__fadeIn animate__delay-1s">
+          <i class="bi bi-basket-fill display-1 text-accent-2 mb-4"></i>
+          <h4 class="mb-3">2. List or Shop</h4>
+          <p class="text-muted px-3">Farmers list fresh produce • Buyers discover & order directly.</p>
+        </div>
+        <div class="col-md-4 animate__animated animate__fadeIn animate__delay-2s">
+          <i class="bi bi-truck display-1 text-accent-2 mb-4"></i>
+          <h4 class="mb-3">3. Deliver & Enjoy</h4>
+          <p class="text-muted px-3">Secure payment • Reliable delivery • Farm-fresh to your table.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <?php require_once ROOT_PATH . '/footer.php'; ?>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
 </html>

@@ -1,168 +1,191 @@
 <?php
 session_start();
+require_once '../config/constants.php';
 require_once '../classes/Farmer.php';
 
-$f = new Farmer;
-$farmer = isset($_SESSION['farmer_online']) ? $f->get_farmer_details($_SESSION['farmer_online']) : [];
-?>
+$f = new Farmer();
 
+$farmer = $f->get_farmer_details($_SESSION['farmer_online']);
+
+if (!isset($_SESSION['farmer_online'])) {
+  $_SESSION['errormsg'] = "Please login to access your profile.";
+  header('location: login_farmer.php');
+  exit;
+}
+
+if (!$farmer) {
+  $_SESSION['errormsg'] = "Profile could not be loaded. Please try logging in again.";
+  header('location: login_farmer.php');
+  exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
-  <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.css" />
-  <link rel="stylesheet" href="../assets/animate.min.css" />
-  <link rel="stylesheet" href="../assets/fontawesome/css/all.css" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <title>AgriLink - Farmer Details</title>
+  <link rel="icon" href="<?= BASE_URL ?>assets/images/logo.png" />
+  <link rel="stylesheet" href="<?= BASE_URL ?>assets/bootstrap/css/bootstrap.css" />
+  <link rel="stylesheet" href="<?= BASE_URL ?>assets/animate.min.css" />
+  <link rel="stylesheet" href="<?= BASE_URL ?>assets/fontawesome/css/all.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <title>My Profile - <?= htmlspecialchars($farmer['farmer_fullname']) ?> | AgriLink</title>
 
   <style>
+    :root {
+      --brand: #1fa97a;
+      --brand-dark: #0f5132;
+    }
+
     body {
-      background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
-      font-family: "Poppins", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      font-family: 'Poppins', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f8faf9 0%, #e8f5e9 100%);
       min-height: 100vh;
-      margin: 0;
-      padding: 0;
+      padding-top: 90px;
     }
 
     .profile-container {
-      margin-top: 6rem;
-      background: #fff;
+      max-width: 820px;
+      margin: 2rem auto;
+      background: white;
       border-radius: 20px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      box-shadow: 0 15px 40px rgba(15, 81, 50, 0.10);
       overflow: hidden;
-      max-width: 900px;
-      transition: 0.3s;
     }
 
     .profile-header {
-      background: #1fa97a;
-      color: #fff;
+      background: linear-gradient(135deg, var(--brand), #1a8f66);
+      color: white;
       text-align: center;
-      padding: 50px 20px;
-      position: relative;
+      padding: 3rem 2rem 2rem;
     }
 
-    .profile-header img {
-      width: 120px;
-      height: 120px;
+    .profile-pic {
+      width: 130px;
+      height: 130px;
       object-fit: cover;
-      border-radius: 50%;
-      border: 4px solid #fff;
-      margin-bottom: 15px;
-    }
-
-    .profile-header h3 {
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
-
-    .profile-header p {
-      font-weight: 400;
-      opacity: 0.9;
+      border: 5px solid white;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     }
 
     .profile-details {
-      padding: 40px;
+      padding: 2.5rem 2.5rem 3rem;
     }
 
     .detail-item {
-      margin-bottom: 25px;
+      margin-bottom: 1.8rem;
     }
 
     .detail-item label {
-      color: #388e3c;
+      color: var(--brand);
       font-weight: 600;
-      margin-bottom: 5px;
       display: block;
+      margin-bottom: 6px;
     }
 
-    .detail-item p, .detail-item input {
+    .detail-item p {
+      font-size: 1.05rem;
       color: #1b4332;
-      font-size: 15px;
+      background: #f8faf9;
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin: 0;
     }
 
-    .detail-item input {
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 6px 10px;
-      width: 100%;
-      display: none;
+    .btn-edit {
+      background: var(--brand);
+      border: none;
+      font-weight: 600;
+      padding: 0.9rem 2.5rem;
+      border-radius: 50px;
     }
 
-    .card-footer {
-      background: #f1f8f4;
-      border-top: 1px solid #dcedc8;
-      text-align: center;
-      padding: 20px;
+    .btn-edit:hover {
+      background: #1a8f66;
+      transform: translateY(-2px);
     }
-
-    .card-footer button {
-      border-radius: 25px;
-      padding: 8px 20px;
-    }
-
-    <?php require_once '../assets/style.php'; ?>
   </style>
 </head>
+
 <body>
 
-  <?php require_once '../common/header.php'; ?>
+  <?php require_once ROOT_PATH . "outhead.php"; ?>
+  <?php require_once ROOT_PATH . "common/alert.php"; ?>
 
-  <div class="container d-flex justify-content-center align-items-center">
+  <div class="container">
     <div class="profile-container">
+
+      <!-- Profile Header -->
       <div class="profile-header">
-        <?php
-          if (isset($farmer['farmer_online'])) {
-              ?>
-          <h3 class="fw-bold mb-0">
-            <?php echo $farmer['farmer_fullname']; ?>
-          </h3>
-          <p class="mb-0"><?php echo $farmer['farm_name']; ?></p>
-        </div>
-        <?php
-          }
-?>
+        <img src="<?= !empty($farmer['farmer_avatarurl'])
+                    ? BASE_URL . 'uploads/' . htmlspecialchars($farmer['farmer_avatarurl'])
+                    : BASE_URL . 'assets/images/default_dp.png' ?>"
+          alt="Profile Picture"
+          class="profile-pic rounded-circle mb-3">
 
-      <form id="farmerForm" class="profile-details">
-        <div class="row">
-          <div class="col-md-6 detail-item">
-            <label><i class="bi bi-envelope"></i> Email</label>
-            <p><?php echo $farmer['farmer_email']; ?></p>
-            <input type="email" name="farmer_email" value="<?php echo $farmer['farmer_email']; ?>">
+        <h2 class="fw-bold mb-1"><?= htmlspecialchars($farmer['farmer_fullname']) ?></h2>
+        <p class="mb-0 fs-5"><?= htmlspecialchars($farmer['farmer_farm_name'] ?? 'Farm Owner') ?></p>
+      </div>
+
+      <!-- Profile Details -->
+      <div class="profile-details">
+        <form id="farmerForm" action="<?= BASE_URL ?>process/process_farmer_profile_update.php" method="post" enctype="multipart/form-data">
+
+          <div class="row g-4">
+            <div class="col-md-6 detail-item">
+              <label><i class="bi bi-person-fill"></i> Full Name</label>
+              <p><?= htmlspecialchars($farmer['farmer_fullname'] ?? 'N/A') ?></p>
+            </div>
+
+            <div class="col-md-6 detail-item">
+              <label><i class="bi bi-shop"></i> Farm Name</label>
+              <p><?= htmlspecialchars($farmer['farmer_farm_name'] ?? 'N/A') ?></p>
+            </div>
+
+            <div class="col-md-6 detail-item">
+              <label><i class="bi bi-telephone-fill"></i> Phone Number</label>
+              <p><?= htmlspecialchars($farmer['farmer_phone'] ?? 'N/A') ?></p>
+            </div>
+
+            <div class="col-md-6 detail-item">
+              <label><i class="bi bi-envelope-fill"></i> Email</label>
+              <p><?= htmlspecialchars($farmer['farmer_email'] ?? 'N/A') ?></p>
+            </div>
+
+            <div class="col-md-6 detail-item">
+              <label><i class="bi bi-geo-alt-fill"></i> State</label>
+              <p><?= htmlspecialchars($farmer['state_name'] ?? $farmer['farmer_state'] ?? 'N/A') ?></p>
+            </div>
+
+            <div class="col-md-6 detail-item">
+              <label><i class="bi bi-house-door-fill"></i> Address</label>
+              <p><?= htmlspecialchars($farmer['farmer_address'] ?? 'N/A') ?></p>
+            </div>
+
+            <div class="col-12 detail-item">
+              <label><i class="bi bi-seedling"></i> Primary Produce</label>
+              <p><?= htmlspecialchars($farmer['farmer_primary_produce'] ?? 'Not specified') ?></p>
+            </div>
+
+            <div class="col-12 detail-item">
+              <label><i class="bi bi-card-text"></i> Bio</label>
+              <p><?= nl2br(htmlspecialchars($farmer['farmer_bio'] ?? 'No bio added yet.')) ?></p>
+            </div>
           </div>
 
-          <div class="col-md-6 detail-item">
-            <label><i class="bi bi-telephone"></i> Phone</label>
-            <p><?php echo $farmer['farmer_phone']; ?></p>
-            <input type="text" name="farmer_phone" value="<?php echo $farmer['farmer_phone']; ?>">
+          <div class="text-center mt-5">
+            <a href="update_profile.php" class="btn btn-edit btn-success">
+              <i class="bi bi-pencil-square me-2"></i> Update Profile
+            </a>
           </div>
-
-          <div class="col-md-6 detail-item">
-            <label><i class="bi bi-geo-alt"></i> State</label>
-            <p><?php echo $farmer['farmer_state']; ?></p>
-            <input type="text" name="farmer_state" value="<?php echo $farmer['farmer_state']; ?>">
-          </div>
-
-          <div class="col-md-6 detail-item">
-            <label><i class="bi bi-house"></i> Address</label>
-            <p><?php echo $farmer['farmer_address']; ?></p>
-            <input type="text" name="farmer_address" value="<?php echo $farmer['farmer_address']; ?>">
-          </div>
-        </div>
-      </form>
-
-      <div class="card-footer">
-        <button id="editBtn" class="btn btn-outline-success btn-sm">
-          <i class="bi bi-pencil-square"></i> Update Profile
-        </button>
+        </form>
       </div>
     </div>
   </div>
 
-  <script src="../assets/bootstrap/js/bootstrap.bundle.js"></script>
+  <script src="<?= BASE_URL ?>assets/bootstrap/js/bootstrap.bundle.js"></script>
 </body>
+
 </html>

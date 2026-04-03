@@ -30,7 +30,7 @@ if ($rsp->status == true) {
     header("location:$auth_url");
     exit;
 } else {
-    $_SESSION['errormsg'] = 'We could not connect to Paystack'.$rsp->message;
+    $_SESSION['errormsg'] = 'We could not connect to Paystack' . $rsp->message;
     header('location:cart.php');
     exit;
 }

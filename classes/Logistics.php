@@ -27,12 +27,12 @@ class Logistics extends Db
         }
     }
 
-    public function login_logistics($fulln, $email, $password)
+    public function login_logistics($email, $password)
     {
         try {
-            $sql = 'SELECT * FROM logistics_providers WHERE `name` = ? AND email = ?';
+            $sql = 'SELECT * FROM logistics_providers WHERE email = ?';
             $stmt = $this->agconn->prepare($sql);
-            $stmt->execute([$fulln, $email]);
+            $stmt->execute([$email]);
             $record = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($record) {
                 $saved_hash = $record['password'];
