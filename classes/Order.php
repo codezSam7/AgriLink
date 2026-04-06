@@ -22,4 +22,14 @@ class Order extends Db
             return false;
         }
     }
+
+    public function update_payment_status($order_id, $status)
+    {
+        $sql = "UPDATE orders SET pay_status = :status WHERE order_id = :id";
+        $stmt = $this->agconn->prepare($sql);
+        return $stmt->execute([
+            ':status' => $status,
+            ':id' => $order_id
+        ]);
+    }
 }

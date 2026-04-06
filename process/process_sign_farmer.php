@@ -16,7 +16,6 @@ if (isset($_POST['btn'])) {
     $state_id = isset($_POST['delvstate']) ? (int) $_POST['delvstate'] : 0;
     $lga_id = isset($_POST['delvlga']) ? (int) $_POST['delvlga'] : 0;
 
-    // validate
     if (empty($fullname) || empty($email) || empty($password) || empty($farmname) || empty($phone) || empty($primary_produce) || empty($bio)) {
         $_SESSION['errormsg'] = 'All the fields are required';
         header('location:../farmers/sign_farmer.php');

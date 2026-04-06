@@ -183,4 +183,11 @@ class Cart extends Db
 
         return $order_id; // Return the new order ID
     }
+
+    public function clear_cart($buyer_id)
+    {
+        $sql = "DELETE FROM carts WHERE cart_buyerid = :buyer_id";
+        $stmt = $this->agconn->prepare($sql);
+        return $stmt->execute([':buyer_id' => $buyer_id]);
+    }
 }

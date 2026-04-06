@@ -25,7 +25,6 @@ if (isset($_POST['btn'])) {
         header('location:../logistics_login.php');
         exit;
     }
-
 } else {
     $_SESSION['errormsg'] = 'Please complete the form';
     header('location:../logsitics_login.php');

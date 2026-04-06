@@ -136,7 +136,6 @@ $orders = $l->fetch_assigned_orders($logistics_id);
                                 <p class="mb-2"><strong>Buyer:</strong> <?= htmlspecialchars($buyer) ?></p>
                                 <p class="mb-3"><strong>Placed:</strong> <?= $date ?></p>
 
-                                <!-- Update Status Form -->
                                 <form method="POST" action="process/process_update_delivery_status.php">
                                     <input type="hidden" name="order_id" value="<?= htmlspecialchars($order_id) ?>">
 

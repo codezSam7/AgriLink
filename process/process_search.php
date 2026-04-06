@@ -13,9 +13,8 @@ $results = $f->search_farmers($search, $state_id, $lga_id);
 
 if (!empty($results)) {
     foreach ($results as $farmer) {
-        $farmer_id = (int)($farmer['farmer_id'] ?? 0);   // Safe casting
+        $farmer_id = (int)($farmer['farmer_id'] ?? 0);
 
-        // Skip if no valid ID
         if ($farmer_id <= 0) continue;
 ?>
         <div class="col-12 col-md-6 col-lg-4">

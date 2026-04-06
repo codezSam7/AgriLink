@@ -1,7 +1,7 @@
 <?php
 
-require_once dirname(__DIR__, 2).'/classes/config.php';
-require_once dirname(__DIR__, 2).'/classes/Db.php';
+require_once dirname(__DIR__, 2) . '/classes/config.php';
+require_once dirname(__DIR__, 2) . '/classes/Db.php';
 
 class Admin extends Db
 {
@@ -43,7 +43,6 @@ class Admin extends Db
         }
     }
 
-    // create a method that accepts user_id and returns all the details of the user so as for them to keep them logged whenever they go from page to page
     public function get_admin_details($admin_id)
     {
         try {
@@ -112,12 +111,12 @@ class Admin extends Db
         try {
             $sql = 'SELECT f.*, s.state_name 
                     FROM farmers f 
-                    JOIN state s ON f.farmer_state_id = s.state_id';
+                    JOIN state s ON f.farmer_state_id = s.state_id WHERE f.farmer_id = ?';
             $stmt = $this->agconn->prepare($sql);
-            $stmt->execute();
-            $farmers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt->execute([$farmer_id]);
+            $farmer = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            return $farmers;
+            return $farmer;
         } catch (PDOException $e) {
             // echo $e->getMessage(); die();
             return false;
@@ -176,8 +175,8 @@ class Admin extends Db
 
             return true;
         } catch (PDOException $e) {
-            // Optionally log the error
-            // error_log($e->getMessage());
+            //echo $e->getMessage();
+            //exit();
             return false;
         }
     }
@@ -208,7 +207,8 @@ class Admin extends Db
 
             return true;
         } catch (PDOException $e) {
-            // error_log($e->getMessage());
+            //echo $e->getMessage();
+            //exit();
             return false;
         }
     }

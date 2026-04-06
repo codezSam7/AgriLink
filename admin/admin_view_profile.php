@@ -19,7 +19,7 @@
         exit();
     }
 
-    $farmerRecord = $a->fetch_farmers($farmer_id);
+    $farmerRecord = $a->fetch_farmers_by_id($farmer_id);
 
     $farmer = null;
     if (is_array($farmerRecord)) {
@@ -213,8 +213,6 @@
     </head>
 
     <body>
-
-        <!-- Sidebar -->
         <aside class="admin-sidebar">
             <div class="sidebar-content">
                 <div class="brand-header">
@@ -238,7 +236,6 @@
             </div>
         </aside>
 
-        <!-- Main Page Content -->
         <main class="page-content">
             <div class="container-fluid">
                 <div class="d-flex justify-content-between align-items-center mb-4">

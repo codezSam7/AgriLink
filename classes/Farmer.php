@@ -219,19 +219,48 @@ class Farmer extends Db
         }
     }
 
-    public function fetch_products()
+    public function fetch_products($search = '', $category = '', $state = '', $limit = 6, $offset = 0)
     {
-        try {
-            $sql = 'SELECT *,product_id as pid, product_description as pdesc FROM products JOIN categories ON product_category_id=category_id JOIN farmers ON product_farmer_id=farmer_id JOIN state ON farmer_state_id = state_id';
-            $stmt = $this->agconn->prepare($sql);
-            $stmt->execute();
-            $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $sql = "SELECT 
+                p.*, 
+                c.category_name, 
+                s.state_name,
+                f.farmer_fullname,
+                l.lga_name
+            FROM products p
+            JOIN categories c ON p.product_category_id = c.category_id
+            JOIN farmers f ON p.product_farmer_id = f.farmer_id
+            JOIN state s ON f.farmer_state_id = s.state_id
+            JOIN lga l ON f.farmer_lga_id = l.lga_id
+            WHERE 1";
 
-            return $products;
-        } catch (PDOException $e) {
-            // echo $e->getMessage(); die();
-            return false;
+        $params = [];
+
+        if (!empty($search)) {
+            $sql .= " AND p.product_name LIKE ?";
+            $params[] = "%$search%";
         }
+
+        if (!empty($category)) {
+            $sql .= " AND p.product_category_id = ?";
+            $params[] = $category;
+        }
+
+        if (!empty($state)) {
+            $sql .= " AND f.farmer_state_id = ?";
+            $params[] = $state;
+        }
+
+        // ✅ FIX HERE (NO PLACEHOLDERS)
+        $limit = (int)$limit;
+        $offset = (int)$offset;
+
+        $sql .= " ORDER BY p.product_id DESC LIMIT $limit OFFSET $offset";
+
+        $stmt = $this->agconn->prepare($sql);
+        $stmt->execute($params);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function fetch_farmer_products($farmer_id)
@@ -247,6 +276,36 @@ class Farmer extends Db
         $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         return $products;
+    }
+
+    public function count_products($search = '', $category = '', $state = '')
+    {
+        $sql = "SELECT COUNT(*) as total
+            FROM products p
+            JOIN farmers f ON p.product_farmer_id = f.farmer_id
+            WHERE 1";
+
+        $params = [];
+
+        if (!empty($search)) {
+            $sql .= " AND p.product_name LIKE ?";
+            $params[] = "%$search%";
+        }
+
+        if (!empty($category)) {
+            $sql .= " AND p.product_category_id = ?";
+            $params[] = $category;
+        }
+
+        if (!empty($state)) {
+            $sql .= " AND f.farmer_state_id = ?";
+            $params[] = $state;
+        }
+
+        $stmt = $this->agconn->prepare($sql);
+        $stmt->execute($params);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
     }
 
     public function search_farmers($search = '', $state_id = null, $lga_id = null)

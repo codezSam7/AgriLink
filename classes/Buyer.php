@@ -30,7 +30,6 @@ class Buyer extends Db
         return $rsp;
     }
 
-    // small helper to validate existence
     public function state_exists($state_id)
     {
         $stmt = $this->agconn->prepare('SELECT 1 FROM state WHERE state_id = ? LIMIT 1');
@@ -136,43 +135,64 @@ class Buyer extends Db
         }
     }
 
-    public function insert_order_details($items, $buyer_id)
+    public function insert_order_details($cart_items, $buyer_id)
     {
         try {
-            $sql1 = 'INSERT INTO orders(order_buyerid) VALUES(?)';
-            $stmt1 = $this->agconn->prepare($sql1);
-            $stmt1->execute([$buyer_id]);
-            $order_id = $this->agconn->lastInsertId();
-            $total = 0;
-            if ($items) {
-                foreach ($items as $item) {
-                    $product_id = $item['cart_productid'];
-                    $qty = $item['cart_qty'];
-                    $total = $total + ($item['cart_qty'] * $item['product_price']);
-                    $sql2 = 'INSERT INTO order_details(detail_orderid,detail_productid,detail_buyerid,detail_qty) VALUES(?,?,?,?)';
-                    $stmt2 = $this->agconn->prepare($sql2);
-                    $stmt2->execute([$order_id, $product_id, $buyer_id, $qty]);
-                }
-                // sql3
-                $sql3 = 'UPDATE orders SET order_totalamt=? WHERE order_id=?';
-                $stmt3 = $this->agconn->prepare($sql3);
-                $stmt3->execute([$total, $order_id]);
-            }
+            $this->agconn->beginTransaction();
+
+            // 1. Create order
+            $sql = "INSERT INTO orders (order_buyerid, order_date, delivery_status, pay_status)
+                VALUES (:buyer_id, NOW(), 'Pending', 'Unpaid')";
+            $stmt = $this->agconn->prepare($sql);
+            $stmt->execute([':buyer_id' => $buyer_id]);
 
             $order_id = $this->agconn->lastInsertId();
+
+            if (!$order_id) {
+                $this->agconn->rollBack();
+                return false;
+            }
+
+            // ✅ ADD detail_price HERE
+            $sql2 = "INSERT INTO order_details 
+                (detail_orderid, detail_buyerid, detail_productid, detail_qty, detail_price) 
+                VALUES (:order_id, :buyer_id, :product_id, :qty, :price)";
+            $stmt2 = $this->agconn->prepare($sql2);
+
+            foreach ($cart_items as $item) {
+                $stmt2->execute([
+                    ':order_id' => $order_id,
+                    ':buyer_id' => $buyer_id,
+                    ':product_id' => $item['product_id'],
+                    ':qty' => $item['cart_qty'],
+                    ':price' => $item['product_price'] // ✅ THIS WAS MISSING
+                ]);
+            }
+
+            $this->agconn->commit();
+
             return $order_id;
         } catch (PDOException $e) {
-            // echo $e->getMessage(); die();
+            $this->agconn->rollBack();
+            die($e->getMessage());
             return false;
         }
     }
 
     public function get_buyer_orders($buyer_id)
     {
-        $sql = "SELECT * FROM orders WHERE order_buyerid = :buyer_id ORDER BY order_date DESC";
+        $sql = "SELECT 
+                o.*, 
+                SUM(od.detail_qty * od.detail_price) AS total_amount
+            FROM orders o
+            JOIN order_details od 
+                ON o.order_id = od.detail_orderid
+            WHERE o.order_buyerid = ?
+            GROUP BY o.order_id
+            ORDER BY o.order_id DESC";
+
         $stmt = $this->agconn->prepare($sql);
-        $stmt->bindValue(':buyer_id', $buyer_id);
-        $stmt->execute();
+        $stmt->execute([$buyer_id]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -201,15 +221,18 @@ class Buyer extends Db
     public function fetch_order_amount($order_id)
     {
         try {
-            $sql = 'SELECT order_totalamt FROM orders WHERE order_id = ?';
+            $sql = "SELECT SUM(detail_qty * detail_price) AS total 
+                FROM order_details 
+                WHERE detail_orderid = ?";
+
             $stmt = $this->agconn->prepare($sql);
             $stmt->execute([$order_id]);
-            $records = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            return $records['order_totalamt'];
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $result['total'] ?? 0;
         } catch (PDOException $e) {
-            // echo $e->getMessage(); die();
-            return false;
+            return 0;
         }
     }
 

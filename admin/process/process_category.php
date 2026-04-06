@@ -14,11 +14,11 @@ if (isset($_POST['add'])) {
 
     $newcat = $c->add_category($catname);
     if ($newcat) {
-        $_SESSION['msg'] = 'A new category has been added'.'✨';
+        $_SESSION['msg'] = 'A new category has been added' . '✨';
         header('location:../admin_manage_category.php');
         exit;
     } else {
-        $_SESSION['errormsg'] = 'Error in adding category'.'😢';
+        $_SESSION['errormsg'] = 'Error in adding category' . '😢';
         header('location:../admin_manage_category.php');
         exit;
     }

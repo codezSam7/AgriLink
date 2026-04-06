@@ -67,7 +67,7 @@ class Payment extends Db
     public function initialize_paystack_step1($email, $amount, $reference)
     {
         $url = 'https://api.paystack.co/transaction/initialize';
-        $postRequest = ['email' => $email, 'amount' => $amount * 100, 'reference' => $reference, 'callback_url' => 'http://localhost/agrilink/paydirect.php?reference='.$reference];
+        $postRequest = ['email' => $email, 'amount' => $amount * 100, 'reference' => $reference, 'callback_url' => 'http://localhost/agrilink/paydirect.php?reference=' . $reference];
         $headers = ['Content-Type: application/json', 'Authorization:Bearer sk_test_138e6315fff181d1a7e444e5f00e09d7f175215d'];
 
         // initialize curl

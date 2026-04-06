@@ -3,7 +3,6 @@ session_start();
 require_once 'classes/Farmer.php';
 require_once 'config/constants.php';
 
-// User Guard - Protect the page
 if (!isset($_SESSION['farmer_online'])) {
     $_SESSION['errormsg'] = "Please login to access your profile.";
     header('location: login_farmer.php');
@@ -113,14 +112,10 @@ if (!$farmer) {
     <div class="container py-4">
         <div class="profile-card">
 
-            <!-- Header -->
             <div class="profile-header">
-                <img src="<?= !empty($farmer['farmer_avatarurl'])
-                                ? BASE_URL . 'uploads/' . htmlspecialchars($farmer['farmer_avatarurl'])
-                                : BASE_URL . 'assets/images/default_dp.png' ?>"
+                <img src="<?= !empty($farmer['farmer_avatarurl']) ? BASE_URL . 'uploads/' . htmlspecialchars($farmer['farmer_avatarurl']) : BASE_URL . 'assets/images/default_dp.png' ?>"
                     alt="Profile Picture"
                     class="profile-pic rounded-circle mb-3">
-
                 <h3 class="mb-1"><?= htmlspecialchars($farmer['farmer_fullname']) ?></h3>
                 <p class="mb-0 opacity-90">Update your farmer profile</p>
             </div>
@@ -133,7 +128,6 @@ if (!$farmer) {
                     enctype="multipart/form-data">
 
                     <div class="row g-4">
-                        <!-- Full Name -->
                         <div class="col-md-12">
                             <label class="section-label">Full Name</label>
                             <input type="text"
@@ -143,7 +137,6 @@ if (!$farmer) {
                                 required>
                         </div>
 
-                        <!-- Farm Name -->
                         <div class="col-md-12">
                             <label class="section-label">Farm Name</label>
                             <input type="text"
@@ -153,7 +146,6 @@ if (!$farmer) {
                                 required>
                         </div>
 
-                        <!-- Phone -->
                         <div class="col-md-6">
                             <label class="section-label">Phone Number</label>
                             <input type="tel"
@@ -163,7 +155,6 @@ if (!$farmer) {
                                 required>
                         </div>
 
-                        <!-- Primary Produce -->
                         <div class="col-md-6">
                             <label class="section-label">Primary Produce</label>
                             <input type="text"
@@ -174,7 +165,6 @@ if (!$farmer) {
                                 required>
                         </div>
 
-                        <!-- Bio -->
                         <div class="col-12">
                             <label class="section-label">Bio / About Your Farm</label>
                             <textarea name="status"
@@ -183,7 +173,6 @@ if (!$farmer) {
                                 placeholder="Tell buyers about your farm and produce..."><?= htmlspecialchars($farmer['farmer_bio'] ?? '') ?></textarea>
                         </div>
 
-                        <!-- Profile Picture Upload -->
                         <div class="col-12">
                             <label class="section-label">Change Profile Picture</label>
                             <input type="file"
@@ -193,7 +182,6 @@ if (!$farmer) {
                             <small class="text-muted">Recommended: Square image (JPG or PNG)</small>
                         </div>
 
-                        <!-- Submit Button -->
                         <div class="col-12 mt-4">
                             <button type="submit"
                                 name="updateprofilebtn"

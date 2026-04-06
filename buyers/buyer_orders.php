@@ -4,12 +4,13 @@ require_once '../config/constants.php';
 require_once '../classes/Buyer.php';
 
 if (!isset($_SESSION['buyer_online'])) {
-    header("Location: " . BASE_URL . "login_buyer.php");
+    header("location: " . BASE_URL . "login_buyer.php");
     exit;
 }
 
 $b = new Buyer();
 $buyer_id = $_SESSION['buyer_online'];
+
 $orders = $b->get_buyer_orders($buyer_id);
 ?>
 
@@ -76,7 +77,7 @@ $orders = $b->get_buyer_orders($buyer_id);
 
                                 <div>
                                     <strong class="text-success">
-                                        ₦<?= number_format($order['order_totalamt']) ?>
+                                        ₦<?= number_format($order['total_amount']) ?>
                                     </strong>
                                 </div>
 

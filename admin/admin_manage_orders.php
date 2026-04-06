@@ -45,7 +45,6 @@ $providers = $a->fetch_logistics_providers();
             padding: 0;
         }
 
-        /* Sidebar */
         .admin-sidebar {
             position: fixed;
             top: 0;

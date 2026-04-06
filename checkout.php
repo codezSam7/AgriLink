@@ -15,10 +15,10 @@ $cart_items = $c->fetch_buyer_cart($_SESSION['buyer_online']);
 // die();
 
 $rsp = $b->insert_order_details($cart_items, $_SESSION['buyer_online']);
-echo "<pre>";
-var_dump($rsp);
-echo "</pre>";
-if ($rsp) { // this means an order has been placed, $rsp is the order_id
+// echo "<pre>";
+// var_dump($rsp);
+// echo "</pre>";
+if ($rsp) {
     $_SESSION['order_id'] = $rsp;
     header('location: order_confirm.php');
     exit;

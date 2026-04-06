@@ -12,7 +12,6 @@ if (isset($_POST['btn'])) {
     $confirm_password = $_POST['cpassword'];
     $address = $_POST['address'];
 
-    // validate
     if (empty($fullname) || empty($phone) || empty($email) || empty($password) || empty($address)) {
         $_SESSION['errormsg'] = 'All the fields are required';
         header('location:../logistics_sign.php');

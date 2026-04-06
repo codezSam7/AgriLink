@@ -5,9 +5,9 @@ class Utility
     public static function is_email($email)
     {
         $rsp = filter_var($email, FILTER_VALIDATE_EMAIL);
-        if ($rsp === false) {// not a valid email
+        if ($rsp === false) {
             return false;
-        } else {// valid email
+        } else {
             return true;
         }
     }

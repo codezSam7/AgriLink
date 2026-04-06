@@ -10,12 +10,9 @@ if (isset($_POST['updateprofilebtn'])) {
     $farmname = $_POST['farmname'];
     $phone = $_POST['phone'];
     $status = $_POST['status'];
-
-    // Get logged-in farmer details
     $farmerDetails = $f->get_farmer_details($_SESSION['farmer_online']);
     $farmer_id = $farmerDetails['farmer_id'];
 
-    // If a file was uploaded
     if (! empty($_FILES['cover']['name'])) {
 
         $filename = $_FILES['cover']['name'];
@@ -23,7 +20,6 @@ if (isset($_POST['updateprofilebtn'])) {
         $filesize = $_FILES['cover']['size'];
         $fileerror = $_FILES['cover']['error'];
 
-        // Upload file
         $result = $f->upload_file($fileerror, $filesize, $filename, $filetmp);
 
         if ($result == false) {
@@ -32,11 +28,8 @@ if (isset($_POST['updateprofilebtn'])) {
             exit;
         }
 
-        // Update WITH picture
         $final_res = $f->update_profile($fullname, $farmname, $phone, $status, $farmer_id, $result);
-
     } else {
-        // Update WITHOUT picture
         $final_res = $f->update_profile($fullname, $farmname, $phone, $status, $farmer_id);
     }
 
@@ -48,7 +41,6 @@ if (isset($_POST['updateprofilebtn'])) {
 
     header('location:../profile.php');
     exit;
-
 } else {
     header('location:../profile.php');
     exit;

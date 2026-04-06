@@ -9,7 +9,7 @@ if (!isset($_SESSION['buyer_online'])) {
 }
 
 if (!isset($_GET['id'])) {
-    header("location: " . BASE_URL . "buyer/buyer_orders.php");
+    header("location: " . BASE_URL . "buyers/buyer_orders.php");
     exit;
 }
 
@@ -23,7 +23,6 @@ if (empty($order_items)) {
     exit;
 }
 
-// Get status from first row
 $order_status = $order_items[0]['delivery_status'];
 $payment_status = $order_items[0]['pay_status'];
 ?>
@@ -120,7 +119,7 @@ $payment_status = $order_items[0]['pay_status'];
             </div>
         </div>
 
-        <a href="<?= BASE_URL ?>buyer/buyer_orders.php" class="btn btn-outline-secondary mt-4">
+        <a href="<?= BASE_URL ?>buyers/buyer_orders.php" class="btn btn-outline-secondary mt-4">
             <i class="fas fa-arrow-left"></i> Back to Orders
         </a>
     </div>
