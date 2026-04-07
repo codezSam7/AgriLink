@@ -163,7 +163,7 @@ if (!$product) {
                                 <i class="fas fa-cart-plus me-2"></i> Add to Cart
                             </a>
                         <?php elseif (isset($_SESSION['farmer_online'])): ?>
-                            <a href="<?= BASE_URL ?>farmers/update_product.php?id=<?= $product['product_id'] ?>"
+                            <a href="#"
                                 class="btn btn-outline-success btn-lg">
                                 <i class="fas fa-edit me-2"></i> Update This Product
                             </a>
@@ -173,6 +173,9 @@ if (!$product) {
                                 <i class="fas fa-user me-2"></i> Login to Buy
                             </a>
                         <?php endif; ?>
+                    </div>
+                    <div class="mt-2">
+                        <a href="products.php" class="btn btn-outline-secondary">Back to Products</a>
                     </div>
                 </div>
             </div>
