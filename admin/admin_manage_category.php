@@ -1,7 +1,7 @@
 <?php
 require_once 'classes/Admin.php';
 require_once 'classes/Category.php';
-require_once '../config/constants.php';
+require_once __DIR__ . '/../config/constants.php';
 
 $a = new Admin;
 $c = new Category;

@@ -1,9 +1,9 @@
 <?php
 
 session_start();
-require_once '../classes/Farmer.php';
-require_once '../classes/Buyer.php';
-require_once '../classes/Logistics.php';
+require_once __DIR__ . '/../classes/Farmer.php';
+require_once __DIR__ . '/../classes/Buyer.php';
+require_once __DIR__ . '/../classes/Logistics.php';
 
 $f = new Farmer;
 $b = new Buyer;

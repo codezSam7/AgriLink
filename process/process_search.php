@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once '../config/constants.php';
-require_once '../classes/Farmer.php';
+require_once __DIR__ . '/../config/constants.php';
+require_once __DIR__ . '/../classes/Farmer.php';
 
 $f = new Farmer();
 

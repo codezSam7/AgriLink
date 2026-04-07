@@ -1,8 +1,8 @@
 <?php
 session_start();
-require_once '../config/constants.php';
-require_once '../classes/Farmer.php';
-require_once '../classes/Buyer.php';
+require_once __DIR__ . '/../config/constants.php';
+require_once __DIR__ . '/../classes/Farmer.php';
+require_once __DIR__ . '/../classes/Buyer.php';
 
 $f = new Farmer();
 $b = new Buyer();

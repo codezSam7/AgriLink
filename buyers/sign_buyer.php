@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once '../config/constants.php';
-require_once(ROOT_PATH . "classes/Buyer.php");
+require_once __DIR__ . '/../config/constants.php';
+require_once __DIR__ . "/../classes/Buyer.php";
 
 $b = new Buyer();
 $states = $b->fetch_all_states();

@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once '../config/constants.php';
-require_once '../classes/Buyer.php';
+require_once __DIR__ . '/../config/constants.php';
+require_once __DIR__ . '/../classes/Buyer.php';
 
 if (!isset($_SESSION['buyer_online'])) {
     header("location: " . BASE_URL . "login_buyer.php");

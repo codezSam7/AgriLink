@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("../classes/Farmer.php");
+require_once __DIR__ . '/../classes/Farmer.php';
 
 if (isset($_POST["add"])) {
     $name = $_POST["name"];

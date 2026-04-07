@@ -1,5 +1,5 @@
 <?php
-require_once('../classes/Farmer.php');
+require_once __DIR__ . '/../classes/Farmer.php';
 $c = new Farmer();
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id']) || empty($_GET['id'])) {

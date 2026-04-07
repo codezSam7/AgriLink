@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require_once '../classes/Cart.php';
+require_once __DIR__ . '/../classes/Cart.php';
 
 $c = new Cart;
 

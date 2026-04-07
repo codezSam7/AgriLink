@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("../classes/Buyer.php");
+require_once __DIR__ . '/../classes/Buyer.php';
 $b = new Buyer;
 
 if (isset($_POST["btn"])) {

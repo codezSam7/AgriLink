@@ -1,7 +1,7 @@
 <?php
 
-require_once dirname(__DIR__, 2).'/classes/config.php';
-require_once dirname(__DIR__, 2).'/classes/Db.php';
+require_once __DIR__ . '../../classes/config.php';
+require_once __DIR__ . '/../classes/Db.php';
 
 class Category extends Db
 {

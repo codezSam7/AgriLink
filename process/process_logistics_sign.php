@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require_once '../classes/Logistics.php';
+require_once __DIR__ . '/../classes/Logistics.php';
 $l = new Logistics;
 
 if (isset($_POST['btn'])) {

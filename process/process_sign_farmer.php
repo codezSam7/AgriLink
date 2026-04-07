@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require_once '../classes/Farmer.php';
+require_once __DIR__ . '/../classes/Farmer.php';
 $farmer = new Farmer;
 
 if (isset($_POST['btn'])) {
