@@ -202,6 +202,23 @@ $order_count = $a->fetch_orders();
     </div>
 
     <script src="<?= BASE_URL ?>assets/bootstrap/js/bootstrap.bundle.js"></script>
+    <script>
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const sidebar = document.getElementById('adminSidebar');
+
+        hamburgerBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('open');
+        });
+
+        // Optional: Close sidebar when clicking on a link (on mobile)
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth < 768) {
+                    sidebar.classList.remove('open');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

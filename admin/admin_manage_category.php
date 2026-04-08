@@ -14,6 +14,7 @@ $cats = $c->fetch_all_categories();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="<?= BASE_URL ?>assets/images/logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/fontawesome/css/all.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/animate.min.css">
@@ -249,45 +250,9 @@ $cats = $c->fetch_all_categories();
 </head>
 
 <body>
-    <aside class="admin-sidebar">
-        <div class="sidebar-content">
-            <div class="brand-header">
-                <div class="icon-circle"><i class="fas fa-chart-line"></i></div>
-                <div>
-                    <h6 class="brand mb-0">AgriLink Admin</h6>
-                    <small class="text-muted">Dashboard</small>
-                </div>
-            </div>
+    <?php require_once 'admin_sidebar.php' ?>
 
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" href="admin.php">
-                        <i class="fas fa-home"></i> Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="admin_manage_products.php">
-                        <i class="fas fa-box"></i> Manage Products</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="admin_manage_users.php">
-                        <i class="fas fa-users"></i> Manage Users</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="admin_manage_orders.php">
-                        <i class="fas fa-shopping-cart"></i> Manage Orders</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="admin_manage_category.php">
-                        <i class="fas fa-layer-group"></i> Manage Categories</a>
-                </li>
-            </ul>
-            <button class="btn btn-green logout-btn">
-                <a href="process/process_logout_admin.php">Logout</a>
-            </button>
-        </div>
-    </aside>
-
-    <div class="admin-wrapper">
+    <div class="main-content">
         <div class="admin-card">
             <h2>Add New Category</h2>
 
@@ -335,6 +300,23 @@ $cats = $c->fetch_all_categories();
     </div>
 
     <script src="<?= BASE_URL ?>assets/bootstrap/js/bootstrap.bundle.js"></script>
+    <script>
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const sidebar = document.getElementById('adminSidebar');
+
+    hamburgerBtn.addEventListener('click', function() {
+        sidebar.classList.toggle('open');
+    });
+
+    // Optional: Close sidebar when clicking on a link (on mobile)
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth < 768) {
+                sidebar.classList.remove('open');
+            }
+        });
+    });
+</script>
 </body>
 
 </html>

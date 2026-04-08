@@ -111,7 +111,7 @@ require_once __DIR__ . '/../config/constants.php';
 
                         <?php require_once ROOT_PATH . "common/alert.php"; ?>
 
-                        <form action="<?= BASE_URL ?>/admin/process/process_login_admin.php" method="post">
+                        <form action="<?= BASE_URL ?>admin/process/process_login_admin.php" method="post">
                             <div class="mb-4">
                                 <label class="form-label fw-medium">Username</label>
                                 <input type="text" name="username" class="form-control" placeholder="Enter admin username" required />
